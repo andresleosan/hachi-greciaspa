@@ -7,6 +7,7 @@ import Galeria from './pages/Galeria'
 import Contacto from './pages/Contacto'
 import DashboardPage from './pages/DashboardPage'
 import Login from './pages/Login'
+import Register from './pages/Register'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/equipo" element={<Equipo />} />
         <Route path="/galeria" element={<Galeria />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
