@@ -34,9 +34,7 @@ export default function Inicio() {
               <div className="visual-card">
                 <div className="visual-card__ribbon">Nuestro favorito</div>
                 <div className="pet-window">
-                  <div className="pet-window__illustration">
-                    <div className="pet-face"></div>
-                  </div>
+                  <img src="/hachi-greciaspa.png" alt="Hachi & Grecia" style={{ width: '100%', height: 'auto', borderRadius: 12 }} />
                 </div>
 
                 <div className="visual-card__footer">
