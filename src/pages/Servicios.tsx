@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import PricesList from '../components/PricesList'
+import ServiceCard from '../components/ServiceCard'
 
 export default function Servicios() {
   return (
@@ -17,21 +18,37 @@ export default function Servicios() {
           <div className="card-grid card-grid--services">
             <PricesList />
 
-            <article className="service-card card">
-              <h3>Guardería (plan mensual)</h3>
-              <p>Plan mensual — Lunes a Viernes (hábiles) 08:00 — 18:00 — <strong>$3,500 MXN</strong></p>
-            </article>
+            <ServiceCard
+              title="Baño Completo"
+              description="Baño, secado, limpieza de oídos y corte de uñas."
+              price="$300"
+              unit="MXN"
+              img="/tl.png"
+            />
 
-            <article className="service-card card">
-              <h3>Pensión (por noche)</h3>
-              <p>Temporada baja: <strong>$300 MXN / noche</strong> — Temporada alta: <strong>$380 MXN / noche</strong></p>
-              <p>Check-in 11:00 am — Check-out 09:00 am</p>
-            </article>
+            <ServiceCard
+              title="Grooming Premium"
+              description="Corte estético completo, baño premium y secado especial."
+              price="$600"
+              unit="MXN"
+              img="/tr.png"
+            />
 
-            <article className="service-card card">
-              <h3>Horarios y citas</h3>
-              <p>Spa: Lun–Vie 09:00–18:30, Sáb 09:00–17:00, Dom 10:00–16:00. Apertura: 08:00–19:00. Tiempo por cita: 1–2 horas.</p>
-            </article>
+            <ServiceCard
+              title="Guardería por Día"
+              description="Cuidado diurno con actividades y socialización."
+              price="$250"
+              unit="/día"
+              img="/bl.png"
+            />
+
+            <ServiceCard
+              title="Pensión Nocturna"
+              description="Alojamiento nocturno supervisado con alimentación."
+              price="$400"
+              unit="/noche"
+              img="/br.png"
+            />
           </div>
         </section>
       </main>
