@@ -20,9 +20,35 @@ if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
 }
 
 export const firebaseApp = initializeApp(firebaseConfig as any);
-export const firebaseAuth = getAuth(firebaseApp);
-export const firebaseDb = getFirestore(firebaseApp);
-export const firebaseStorage = getStorage(firebaseApp);
+
+let _auth: ReturnType<typeof getAuth> | null = null
+let _db: ReturnType<typeof getFirestore> | null = null
+let _storage: ReturnType<typeof getStorage> | null = null
+
+try {
+  _auth = getAuth(firebaseApp)
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.warn('[firebase] auth init failed:', e)
+}
+
+try {
+  _db = getFirestore(firebaseApp)
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.warn('[firebase] firestore init failed:', e)
+}
+
+try {
+  _storage = getStorage(firebaseApp)
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.warn('[firebase] storage init failed:', e)
+}
+
+export const firebaseAuth = _auth
+export const firebaseDb = _db
+export const firebaseStorage = _storage
 
 // If running with emulators locally, connect the SDKs to them when requested via env
 const useEmulator = import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true'
