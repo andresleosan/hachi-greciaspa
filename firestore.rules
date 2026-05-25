@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public read-only collections (marketing content)
+    match /servicios/{doc} {
+      allow read: if true;
+    }
+
+    match /galeria/{doc} {
+      allow read: if true;
+    }
+
+    match /equipo/{doc} {
+      allow read: if true;
+    }
+
+    // User profiles: users can create their own profile and read/update it; admins can manage all
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow update: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Bookings / reservations
+    match /reservas/{resId} {
+      // Authenticated users may create a booking for themselves
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      // Owner or admin can read
+      allow read: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
+      // Only admin may update or delete bookings
+      allow update, delete: if isAdmin();
+    }
+
+    // Employees / staff data - admin only
+    match /empleados/{empId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Admin-only config or sensitive data
+    match /config/{doc} {
+      allow read, write: if isAdmin();
+    }
+
+    // Fallback: deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isAdmin() {
+      return request.auth != null && (
+        // Prefer custom claim 'admin' if set on the user's token
+        request.auth.token.admin == true
+        // or fallback to a role stored in the user's Firestore document
+        || (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+  }
+}
