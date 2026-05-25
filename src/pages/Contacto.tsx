@@ -29,7 +29,25 @@ export default function Contacto() {
               <div className="map-canvas">
                 <div className="map-pin"></div>
               </div>
-              <p className="map-caption">Estamos en Roma Norte, CDMX — abre de Lunes a Sábado</p>
+              <p className="map-caption">Estamos en Roma Norte, CDMX</p>
+
+              <div className="contact-info">
+                <h4>Horarios</h4>
+                <ul>
+                  <li>Apertura: 08:00 — 19:00</li>
+                  <li>Guardería: Lun–Vie 08:00 — 18:00</li>
+                  <li>Spa: Lun–Vie 09:00 — 18:30; Sáb 09:00 — 17:00; Dom 10:00 — 16:00</li>
+                  <li>Pensión: Check-in 11:00 am — Check-out 09:00 am</li>
+                  <li>Tiempo por cita: entre 1 y 2 horas</li>
+                </ul>
+
+                <h4>Tarifas principales</h4>
+                <ul>
+                  <li>Guardería mensual (Lun–Vie 08:00–18:00): <strong>$3,500 MXN</strong></li>
+                  <li>Pensión: <strong>$300 MXN</strong> (temporada baja) / <strong>$380 MXN</strong> (temporada alta)</li>
+                  <li>Baños y Grooming: precio variable por peso y tipo de pelo (ver lista de precios)</li>
+                </ul>
+              </div>
             </aside>
           </div>
         </section>

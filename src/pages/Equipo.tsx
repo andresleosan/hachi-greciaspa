@@ -17,8 +17,24 @@ export default function Equipo() {
             <article className="team-card card">
               <div className="team-card__visual"></div>
               <div>
-                <div className="team-card__name">Hachi</div>
-                <div className="team-card__role">Groomer Principal</div>
+                <div className="team-card__name">Harold Salcedo</div>
+                <div className="team-card__role">Fundador · Groomer · Cuidador</div>
+              </div>
+            </article>
+
+            <article className="team-card card">
+              <div className="team-card__visual"></div>
+              <div>
+                <div className="team-card__name">Daniela Padilla</div>
+                <div className="team-card__role">Groomer y Cuidadora</div>
+              </div>
+            </article>
+
+            <article className="team-card card">
+              <div className="team-card__visual"></div>
+              <div>
+                <div className="team-card__name">Alberto González</div>
+                <div className="team-card__role">Bañador y Cuidador</div>
               </div>
             </article>
           </div>
