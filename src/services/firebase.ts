@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
+import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getStorage, connectStorageEmulator } from 'firebase/storage';
 
 // Read runtime env variables injected by Vite. Keep secrets out of source control.
 const firebaseConfig = {
@@ -23,5 +23,28 @@ export const firebaseApp = initializeApp(firebaseConfig as any);
 export const firebaseAuth = getAuth(firebaseApp);
 export const firebaseDb = getFirestore(firebaseApp);
 export const firebaseStorage = getStorage(firebaseApp);
+
+// If running with emulators locally, connect the SDKs to them when requested via env
+const useEmulator = import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true'
+if (useEmulator) {
+  try {
+    // Default emulator host/ports from firebase.json
+    connectAuthEmulator(firebaseAuth, 'http://localhost:9099', { disableWarnings: true })
+  } catch (e) {
+    // ignore
+  }
+
+  try {
+    connectFirestoreEmulator(firebaseDb, 'localhost', 8080)
+  } catch (e) {
+    // ignore
+  }
+
+  try {
+    connectStorageEmulator(firebaseStorage, 'localhost', 9199)
+  } catch (e) {
+    // ignore
+  }
+}
 
 export default firebaseApp;
