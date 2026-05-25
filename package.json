@@ -1,0 +1,52 @@
+{
+  "name": "hachi-greciaspa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "set-admin": "node tools/set-admin.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andresleosan/hachi-greciaspa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/andresleosan/hachi-greciaspa/issues"
+  },
+  "homepage": "https://github.com/andresleosan/hachi-greciaspa#readme",
+  "dependencies": {
+    "axios": "^1.16.1",
+    "date-fns": "^4.3.0",
+    "firebase": "^12.13.0",
+    "react": "^19.2.6",
+    "react-calendar": "^6.0.1",
+    "react-dom": "^19.2.6",
+    "react-hook-form": "^7.76.1",
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.15.1",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "autoprefixer": "^10.5.0",
+    "firebase-tools": "^15.18.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14"
+  }
+}
