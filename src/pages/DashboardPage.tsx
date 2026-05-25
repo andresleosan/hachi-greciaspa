@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
+import AdminPrices from '../components/AdminPrices'
 import { firebaseDb } from '../services/firebase'
 import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore'
 
@@ -70,6 +71,13 @@ export default function DashboardPage() {
                 </li>
               ))}
             </ul>
+
+            {/* Admin-only: precios */}
+            {profile?.role === 'admin' && (
+              <div style={{ marginTop: '1rem' }}>
+                <AdminPrices />
+              </div>
+            )}
           </section>
         </main>
       </div>
