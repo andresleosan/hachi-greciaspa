@@ -52,6 +52,17 @@ export default function DashboardPage() {
             <div className="sidebar-brand__mark">HG</div>
             <div className="sidebar-brand__copy"><strong>Hachi & Grecia</strong><small>Admin</small></div>
           </div>
+          <nav className="sidebar-nav">
+            <a className="sidebar-link is-active" href="#">Dashboard</a>
+            <a className="sidebar-link" href="#">Citas</a>
+            <a className="sidebar-link" href="#">Clientes</a>
+            <a className="sidebar-link" href="#">Servicios</a>
+            <a className="sidebar-link" href="#">Reportes</a>
+          </nav>
+
+          <div className="sidebar-footer">
+            <div>Ana López<br/><small>Administrador</small></div>
+          </div>
         </aside>
         <main className="dashboard-main">
           <header className="dashboard-topbar">
@@ -62,11 +73,27 @@ export default function DashboardPage() {
           </header>
 
           <section className="container">
-            <div className="dashboard-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1rem', marginBottom: '1rem' }}>
-              <div className="card">Citas Hoy<br/><strong>12</strong></div>
-              <div className="card">Ingresos Hoy<br/><strong>$8,450</strong></div>
-              <div className="card">Servicios Hoy<br/><strong>18</strong></div>
-              <div className="card">Clientes Totales<br/><strong>156</strong></div>
+            <div className="metric-grid" style={{ marginBottom: '1rem' }}>
+              <div className="metric-card metric-card--teal">
+                <div className="metric-card__label">Citas Hoy</div>
+                <div className="metric-card__value">12</div>
+                <div className="metric-card__delta">Ver detalles</div>
+              </div>
+              <div className="metric-card metric-card--rose">
+                <div className="metric-card__label">Ingresos Hoy</div>
+                <div className="metric-card__value">$8,450</div>
+                <div className="metric-card__delta">+12% vs ayer</div>
+              </div>
+              <div className="metric-card metric-card--lilac">
+                <div className="metric-card__label">Servicios Hoy</div>
+                <div className="metric-card__value">18</div>
+                <div className="metric-card__delta">Ver servicios</div>
+              </div>
+              <div className="metric-card metric-card--navy">
+                <div className="metric-card__label">Clientes Totales</div>
+                <div className="metric-card__value">156</div>
+                <div className="metric-card__delta">Ver clientes</div>
+              </div>
             </div>
 
             <h3>Reservas recientes</h3>

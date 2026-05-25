@@ -200,6 +200,14 @@ main {
   transform: translateY(-1px);
 }
 
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 20px 40px rgba(246,89,113,0.18);
+}
+
 .btn-primary {
   background: linear-gradient(135deg, var(--color-primary), #ff6d84);
   color: #ffffff;
@@ -344,6 +352,7 @@ main {
 
 .hero {
   padding-top: clamp(2rem, 4vw, 4rem);
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
 }
 
 .hero-grid {
@@ -358,11 +367,27 @@ main {
   gap: 1.2rem;
 }
 
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
 .hero-copy h1 {
   font-size: clamp(3rem, 5vw, 5.4rem);
   line-height: 0.93;
   letter-spacing: -0.06em;
-  max-width: 11ch;
+  max-width: 42ch;
+  font-weight: 800;
+}
+
+.hero-copy .highlight {
+  color: var(--color-primary);
+}
+
+.hero-copy .eyebrow {
+  color: var(--color-secondary);
+  font-weight: 700;
 }
 
 .hero-lede {
@@ -447,13 +472,23 @@ main {
 
 .hero-visual {
   position: relative;
-  min-height: 640px;
+  min-height: 540px;
   border-radius: calc(var(--radius-xl) + 10px);
   padding: 1.1rem;
   background: linear-gradient(145deg, rgba(24, 170, 171, 0.18), rgba(246, 89, 113, 0.14));
   border: 1px solid rgba(21, 34, 51, 0.08);
   overflow: hidden;
   box-shadow: var(--shadow-lift);
+}
+
+.hero-actions .btn {
+  padding: 0.85rem 1.15rem;
+  border-radius: 14px;
+  font-size: 0.98rem;
+}
+
+.header-actions .btn-primary {
+  padding: 0.72rem 0.95rem;
 }
 
 .visual-orb {
@@ -712,6 +747,13 @@ main {
   overflow: hidden;
 }
 
+.service-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .service-card__thumb::before {
   content: '';
   position: absolute;
@@ -790,6 +832,14 @@ main {
   font-size: 0.9rem;
 }
 
+.service-card__footer .btn { margin-left: 0.5rem }
+
+/* Sidebar responsive: hide on narrow screens and allow top toggle (toggle not implemented here) */
+@media (max-width: 860px) {
+  .dashboard-sidebar { display: none; }
+  .dashboard-main { padding: 0.75rem; }
+}
+
 .feature-strip,
 .cta-banner {
   display: grid;
@@ -824,11 +874,31 @@ main {
 
 .feature-strip span,
 .banner-stat span,
+.feature-strip article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+.feature-strip article strong {
+  font-size: 1.25rem;
+  color: var(--color-primary-strong);
+}
+.feature-strip article span {
+  color: var(--color-ink);
+  font-size: 0.95rem;
+}
 .cta-banner p,
 .map-caption,
 .price-callout p,
 .team-card__note,
 .detail-card p,
+.service-card__price small {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
 .contact-card p,
 .dashboard-panel p {
   color: var(--color-muted);
@@ -1368,6 +1438,7 @@ main {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(21, 34, 51, 0.08);
   box-shadow: var(--shadow-soft);
+  width: var(--sidebar-width);
 }
 
 .dashboard-title strong {
@@ -1645,6 +1716,36 @@ main {
   .hero-visual {
     min-height: 560px;
   }
+}
+
+/* Additional small tweaks for services grid and responsive cards */
+.card-grid--services {
+  gap: 1rem;
+}
+
+.service-card h3 {
+  font-weight: 700;
+}
+
+@media (max-width: 1180px) {
+  .card-grid--services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .card-grid--services {
+    grid-template-columns: 1fr;
+  }
+  .service-card__thumb {
+    min-height: 180px;
+  }
+}
+
+/* small tweak: make hero visual a bit tighter on narrow viewports */
+@media (max-width: 860px) {
+  .hero-visual { min-height: 420px; }
+  .hero-copy h1 { font-size: clamp(2.1rem, 6vw, 3rem); }
 }
 
 @media (max-width: 860px) {

@@ -11,7 +11,7 @@ export default function Inicio() {
           <div className="hero-grid">
             <div className="hero-copy">
               <div className="eyebrow">Spa & Guardería</div>
-              <h1>Amor, cuidado y estilo para tu mejor amigo</h1>
+              <h1>Amor, cuidado y estilo para tu <span className="highlight">mejor amigo</span></h1>
               <p className="hero-lede">Peluquería, grooming y guardería de lujo en Roma Norte — tratamientos profesionales, ambiente seguro y cariño certificado.</p>
 
               <div className="hero-actions">
@@ -34,7 +34,9 @@ export default function Inicio() {
               <div className="visual-card">
                 <div className="visual-card__ribbon">Nuestro favorito</div>
                 <div className="pet-window">
-                  <img src="/hachi-greciaspa.png" alt="Hachi & Grecia" style={{ width: '100%', height: 'auto', borderRadius: 12 }} />
+                  <div className="pet-window__illustration">
+                    <img src="/hachi-greciaspa.png" alt="Hachi & Grecia" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 12 }} />
+                  </div>
                 </div>
 
                 <div className="visual-card__footer">
@@ -49,6 +51,21 @@ export default function Inicio() {
               </div>
             </aside>
           </div>
+        </section>
+
+        <section className="feature-strip container">
+          <article>
+            <strong>+500</strong>
+            <span>Mascotas felices</span>
+          </article>
+          <article>
+            <strong>5★</strong>
+            <span>Reseñas positivas</span>
+          </article>
+          <article>
+            <strong>+3 Años</strong>
+            <span>De experiencia</span>
+          </article>
         </section>
       </main>
       <Footer />

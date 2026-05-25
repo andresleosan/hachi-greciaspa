@@ -1,97 +1,131 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hachi & Grecia — Dashboard</title>
-  <link rel="stylesheet" href="../styles/maqueta.css">
-</head>
-<body>
-  <div class="dashboard-layout">
-    <aside class="dashboard-sidebar">
-      <div class="sidebar-brand">
-        <div class="sidebar-brand__mark">HG</div>
-        <div class="sidebar-brand__copy"><strong>Hachi & Grecia</strong><small>Admin</small></div>
-      </div>
-
-      <nav class="sidebar-nav">
-        <a class="sidebar-link is-active" href="#"><span class="sidebar-link__icon">D</span> Dashboard</a>
-        <a class="sidebar-link" href="#"><span class="sidebar-link__icon">C</span> Citas</a>
-        <a class="sidebar-link" href="#"><span class="sidebar-link__icon">M</span> Mascotas</a>
-        <a class="sidebar-link" href="#"><span class="sidebar-link__icon">S</span> Servicios</a>
-        <a class="sidebar-link" href="#"><span class="sidebar-link__icon">E</span> Empleados</a>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div>ana@hgsp.com</div>
-      </div>
-    </aside>
-
-    <main class="dashboard-main">
-      <header class="dashboard-topbar">
-        <div class="dashboard-title"><strong>Dashboard</strong><span>Resumen y actividad</span></div>
-        <div class="topbar-actions">
-          <div class="search-pill">🔍 Buscar</div>
-          <div><a class="btn btn-primary" href="#">Nuevo</a></div>
-        </div>
-      </header>
-
-      <section class="dashboard-grid dashboard-grid--split">
-        <div>
-          <div class="metric-grid">
-            <div class="metric-card metric-card--rose">
-              <div class="metric-card__label">Ingresos</div>
-              <div class="metric-card__value">$12,345</div>
-            </div>
-            <div class="metric-card metric-card--teal">
-              <div class="metric-card__label">Citas</div>
-              <div class="metric-card__value">48</div>
-            </div>
-            <div class="metric-card metric-card--navy">
-              <div class="metric-card__label">Clientes</div>
-              <div class="metric-card__value">128</div>
-            </div>
-            <div class="metric-card metric-card--lilac">
-              <div class="metric-card__label">Mascotas</div>
-              <div class="metric-card__value">216</div>
-            </div>
-          </div>
-
-          <div class="dashboard-panel table-card card">
-            <div class="dashboard-panel__head">
-              <h3>Próximas citas</h3>
-            </div>
-            <div class="table-wrap">
-              <table class="data-table">
-                <thead>
-                  <tr><th>Fecha</th><th>Cliente</th><th>Servicio</th><th>Empleado</th><th>Estado</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>25/05/2026</td><td>María</td><td>Grooming Premium</td><td>Hachi</td><td><span class="badge badge--info">Pendiente</span></td></tr>
-                </tbody>
-              </table>
-            </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Hachi & Grecia — Dashboard</title>
+    <link rel="stylesheet" href="../styles/maqueta.css" />
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-brand__mark">HG</div>
+          <div class="sidebar-brand__copy">
+            <strong>Hachi & Grecia</strong><small>Admin</small>
           </div>
         </div>
 
-        <aside>
-          <div class="dashboard-panel card">
-            <div class="dashboard-panel__head">
-              <h3>Actividad reciente</h3>
+        <nav class="sidebar-nav">
+          <a class="sidebar-link is-active" href="#"
+            ><span class="sidebar-link__icon">D</span> Dashboard</a
+          >
+          <a class="sidebar-link" href="#"
+            ><span class="sidebar-link__icon">C</span> Citas</a
+          >
+          <a class="sidebar-link" href="#"
+            ><span class="sidebar-link__icon">M</span> Mascotas</a
+          >
+          <a class="sidebar-link" href="#"
+            ><span class="sidebar-link__icon">S</span> Servicios</a
+          >
+          <a class="sidebar-link" href="#"
+            ><span class="sidebar-link__icon">E</span> Empleados</a
+          >
+        </nav>
+
+        <div class="sidebar-footer">
+          <div>ana@hgsp.com</div>
+        </div>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="dashboard-topbar">
+          <div class="dashboard-title">
+            <strong>Dashboard</strong><span>Resumen y actividad</span>
+          </div>
+          <div class="topbar-actions">
+            <div class="search-pill">🔍 Buscar</div>
+            <div><a class="btn btn-primary" href="#">Nuevo</a></div>
+          </div>
+        </header>
+
+        <section class="dashboard-grid dashboard-grid--split">
+          <div>
+            <div class="metric-grid">
+              <div class="metric-card metric-card--rose">
+                <div class="metric-card__label">Ingresos</div>
+                <div class="metric-card__value">$12,345</div>
+              </div>
+              <div class="metric-card metric-card--teal">
+                <div class="metric-card__label">Citas</div>
+                <div class="metric-card__value">48</div>
+              </div>
+              <div class="metric-card metric-card--navy">
+                <div class="metric-card__label">Clientes</div>
+                <div class="metric-card__value">128</div>
+              </div>
+              <div class="metric-card metric-card--lilac">
+                <div class="metric-card__label">Mascotas</div>
+                <div class="metric-card__value">216</div>
+              </div>
             </div>
-            <div class="timeline">
-              <article class="timeline-item"><strong>Nueva reserva</strong><p>Cliente: Luis — Grooming Básico</p></article>
-              <article class="timeline-item"><strong>Foto subida</strong><p>Empleado: Hachi subió 3 imágenes</p></article>
+
+            <div class="dashboard-panel table-card card">
+              <div class="dashboard-panel__head">
+                <h3>Próximas citas</h3>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Cliente</th>
+                      <th>Servicio</th>
+                      <th>Empleado</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>25/05/2026</td>
+                      <td>María</td>
+                      <td>Grooming Premium</td>
+                      <td>Hachi</td>
+                      <td><span class="badge badge--info">Pendiente</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
 
-          <div class="dashboard-panel card">
-            <h3>Recordatorios</h3>
-            <div class="reminder-card">Enviar recordatorio de citas 24h antes</div>
-          </div>
-        </aside>
-      </section>
-    </main>
-  </div>
-</body>
+          <aside>
+            <div class="dashboard-panel card">
+              <div class="dashboard-panel__head">
+                <h3>Actividad reciente</h3>
+              </div>
+              <div class="timeline">
+                <article class="timeline-item">
+                  <strong>Nueva reserva</strong>
+                  <p>Cliente: Luis — Grooming Básico</p>
+                </article>
+                <article class="timeline-item">
+                  <strong>Foto subida</strong>
+                  <p>Empleado: Hachi subió 3 imágenes</p>
+                </article>
+              </div>
+            </div>
+
+            <div class="dashboard-panel card">
+              <h3>Recordatorios</h3>
+              <div class="reminder-card">
+                Enviar recordatorio de citas 24h antes
+              </div>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>
