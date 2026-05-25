@@ -1,10 +1,25 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Inicio from './pages/Inicio'
+import Servicios from './pages/Servicios'
+import Equipo from './pages/Equipo'
+import Galeria from './pages/Galeria'
+import Contacto from './pages/Contacto'
+import DashboardPage from './pages/DashboardPage'
+import Login from './pages/Login'
 
 export default function App() {
   return (
-    <div>
-      <h1 style={{padding: '2rem'}}>Hachi & Grecia Spa — React prototype</h1>
-      <p style={{padding: '0 2rem'}}>Use the static HTML prototypes under <code>src/app/pages</code> or continue converting them to React routes.</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Inicio />} />
+        <Route path="/servicios" element={<Servicios />} />
+        <Route path="/equipo" element={<Equipo />} />
+        <Route path="/galeria" element={<Galeria />} />
+        <Route path="/contacto" element={<Contacto />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
