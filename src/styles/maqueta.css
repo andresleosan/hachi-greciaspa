@@ -374,11 +374,13 @@ main {
 }
 
 .hero-copy h1 {
-  font-size: clamp(3rem, 5vw, 5.4rem);
-  line-height: 0.93;
-  letter-spacing: -0.06em;
-  max-width: 42ch;
+  /* Slightly smaller, tighter heading to match the mock without overflowing */
+  font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  max-width: 46ch;
   font-weight: 800;
+  margin: 0;
 }
 
 .hero-copy .highlight {
@@ -472,11 +474,11 @@ main {
 
 .hero-visual {
   position: relative;
-  min-height: 540px;
-  border-radius: calc(var(--radius-xl) + 10px);
-  padding: 1.1rem;
-  background: linear-gradient(145deg, rgba(24, 170, 171, 0.18), rgba(246, 89, 113, 0.14));
-  border: 1px solid rgba(21, 34, 51, 0.08);
+  min-height: 460px;
+  border-radius: calc(var(--radius-xl) + 8px);
+  padding: 1rem;
+  background: linear-gradient(145deg, rgba(24, 170, 171, 0.14), rgba(246, 89, 113, 0.12));
+  border: 1px solid rgba(21, 34, 51, 0.06);
   overflow: hidden;
   box-shadow: var(--shadow-lift);
 }
@@ -521,11 +523,11 @@ main {
   display: grid;
   gap: 1rem;
   height: 100%;
-  padding: 1rem;
+  padding: 0.95rem;
   border-radius: calc(var(--radius-xl) - 6px);
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
 }
 
 .visual-card__ribbon {
@@ -563,8 +565,11 @@ main {
 
 .pet-window__illustration {
   position: relative;
-  width: min(78%, 340px);
+  width: min(80%, 340px);
   aspect-ratio: 1 / 1.06;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
 
 .pet-face {
