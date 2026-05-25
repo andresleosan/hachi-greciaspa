@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import PricesList from '../components/PricesList'
 
 export default function Servicios() {
   return (
@@ -14,15 +15,7 @@ export default function Servicios() {
           </div>
 
           <div className="card-grid card-grid--services">
-            <article className="service-card card">
-              <h3>Baño</h3>
-              <p>Precio variable — calculado por peso, tipo de pelo y condición. Ejemplos en la lista de precios.</p>
-            </article>
-
-            <article className="service-card card">
-              <h3>Grooming</h3>
-              <p>Precio variable según corte y tiempo. Se cotiza en recepción o al agendar.</p>
-            </article>
+            <PricesList />
 
             <article className="service-card card">
               <h3>Guardería (plan mensual)</h3>
@@ -33,11 +26,6 @@ export default function Servicios() {
               <h3>Pensión (por noche)</h3>
               <p>Temporada baja: <strong>$300 MXN / noche</strong> — Temporada alta: <strong>$380 MXN / noche</strong></p>
               <p>Check-in 11:00 am — Check-out 09:00 am</p>
-            </article>
-
-            <article className="service-card card">
-              <h3>Extras</h3>
-              <p>Servicios adicionales y complementos (snacks especiales, medicamentos, baños extra) aparecen en la lista de precios.</p>
             </article>
 
             <article className="service-card card">
