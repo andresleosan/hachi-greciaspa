@@ -12,6 +12,9 @@ export default function Precios() {
         <header className="page-header">
           <h1>Lista de Precios</h1>
           <p>Precios actualizados. Si eres administrador, edítalos desde el dashboard.</p>
+          <div style={{ marginTop: 12 }}>
+            <button className="btn btn-primary" onClick={() => window.print()}>Imprimir / Exportar PDF</button>
+          </div>
         </header>
 
         <section>

@@ -6,6 +6,7 @@ import { firebaseDb } from '../services/firebase'
 import { collection, query, where, getDocs, orderBy, limit } from 'firebase/firestore'
 
 export default function DashboardPage() {
+  const [showSidebar, setShowSidebar] = useState(false)
   const { user, profile } = useAuth()
   const [bookings, setBookings] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -47,17 +48,17 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <div className="dashboard-layout">
-        <aside className="dashboard-sidebar">
+        <aside className={"dashboard-sidebar" + (showSidebar ? ' is-open' : '')}>
           <div className="sidebar-brand">
             <div className="sidebar-brand__mark">HG</div>
             <div className="sidebar-brand__copy"><strong>Hachi & Grecia</strong><small>Admin</small></div>
           </div>
           <nav className="sidebar-nav">
-            <a className="sidebar-link is-active" href="#">Dashboard</a>
-            <a className="sidebar-link" href="#">Citas</a>
-            <a className="sidebar-link" href="#">Clientes</a>
-            <a className="sidebar-link" href="#">Servicios</a>
-            <a className="sidebar-link" href="#">Reportes</a>
+            <a className="sidebar-link is-active" href="#"><span className="sidebar-link__icon">D</span> Dashboard</a>
+            <a className="sidebar-link" href="#"><span className="sidebar-link__icon">C</span> Citas</a>
+            <a className="sidebar-link" href="#"><span className="sidebar-link__icon">U</span> Clientes</a>
+            <a className="sidebar-link" href="#"><span className="sidebar-link__icon">S</span> Servicios</a>
+            <a className="sidebar-link" href="#"><span className="sidebar-link__icon">R</span> Reportes</a>
           </nav>
 
           <div className="sidebar-footer">
@@ -66,6 +67,7 @@ export default function DashboardPage() {
         </aside>
         <main className="dashboard-main">
           <header className="dashboard-topbar">
+            <button className="btn btn-ghost sidebar-toggle" onClick={() => setShowSidebar((s) => !s)} aria-label="Toggle sidebar">☰</button>
             <div className="dashboard-topbar__banner">
               <img src="/dashboard_header_zoom.png" alt="Dashboard" style={{ width: '100%', borderRadius: 12 }} />
             </div>

@@ -15,8 +15,9 @@ export default function Servicios() {
             <p className="section-copy">Nuestro catálogo de servicios pensado para el bienestar de tu mascota. Los precios de baño y grooming varían según peso, tipo de pelo y condición.</p>
           </div>
 
+          <PricesList />
+
           <div className="card-grid card-grid--services">
-            <PricesList />
 
             <ServiceCard
               title="Baño Completo"

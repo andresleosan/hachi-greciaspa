@@ -11,7 +11,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "set-admin": "node tools/set-admin.js"
+    "set-admin": "node tools/set-admin.js",
+    "rules:test": "node tools/firestore-tests/run-rules-tests.mjs"
   },
   "repository": {
     "type": "git",

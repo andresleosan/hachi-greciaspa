@@ -392,6 +392,12 @@ main {
   font-weight: 700;
 }
 
+.hero-copy .eyebrow {
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .hero-lede {
   font-size: clamp(1rem, 1.4vw, 1.15rem);
   line-height: 1.75;
@@ -487,6 +493,12 @@ main {
   padding: 0.85rem 1.15rem;
   border-radius: 14px;
   font-size: 0.98rem;
+}
+
+.hero-actions .btn-primary {
+  padding: 0.95rem 1.3rem;
+  font-size: 1.03rem;
+  box-shadow: 0 20px 42px rgba(246,89,113,0.18);
 }
 
 .header-actions .btn-primary {
@@ -741,11 +753,12 @@ main {
   display: grid;
   gap: 0.9rem;
   min-height: 100%;
+  /* default: single column; desktop will switch to a two-column layout */
 }
 
 .service-card__thumb {
   min-height: 130px;
-  border-radius: 18px;
+  border-radius: 12px;
   background: linear-gradient(135deg, rgba(24, 170, 171, 0.18), rgba(246, 89, 113, 0.16)), linear-gradient(180deg, #fff, #eff1f1);
   border: 1px solid rgba(21, 34, 51, 0.08);
   position: relative;
@@ -1014,6 +1027,41 @@ main {
 
 .gallery-tile--mint {
   background: linear-gradient(135deg, rgba(163, 206, 204, 0.24), rgba(255, 255, 255, 0.92));
+}
+
+/* Prices list styles */
+.prices-list {
+  margin-bottom: 1.25rem;
+}
+.prices-toolbar {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+.prices-toolbar select,
+.prices-toolbar input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+.price-name { color: var(--color-ink); }
+.price { font-weight: 800; color: var(--color-ink); }
+.price-high { color: var(--color-muted); margin-left: 0.35rem }
+.price-note { color: var(--color-muted); font-size: 0.92rem; margin-top: 0.5rem }
+
+/* Print styles */
+@media print {
+  body * { visibility: hidden; }
+  .prices-list, .prices-list * { visibility: visible; }
+  .prices-list { position: absolute; left: 0; top: 0; width: 100%; }
+  .btn { display: none !important; }
 }
 
 .contact-layout {
@@ -1374,6 +1422,23 @@ main {
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Sidebar open state for small screens */
+.dashboard-sidebar.is-open {
+  display: grid;
+  position: absolute;
+  z-index: 40;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: min(320px, 86%);
+}
+
+.sidebar-toggle { display: none; }
+
+@media (max-width: 860px) {
+  .sidebar-toggle { display: inline-flex; }
+}
+
 .sidebar-brand,
 .sidebar-brand:hover {
   color: #ffffff;
@@ -1443,7 +1508,22 @@ main {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(21, 34, 51, 0.08);
   box-shadow: var(--shadow-soft);
-  width: var(--sidebar-width);
+}
+
+/* Metric grid layout */
+.metric-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.metric-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.metric-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 36px 88px rgba(21,34,51,0.12);
+  cursor: pointer;
 }
 
 .dashboard-title strong {
@@ -1510,12 +1590,12 @@ main {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.metric-card {
-  padding: 1rem 1.1rem;
-  border-radius: var(--radius-xl);
+metric-card {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-lg);
   color: #ffffff;
   box-shadow: var(--shadow-lift);
-  min-height: 150px;
+  min-height: 120px;
   display: grid;
   align-content: space-between;
 }
@@ -1544,7 +1624,7 @@ main {
 }
 
 .metric-card__value {
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-size: clamp(1.6rem, 2.6vw, 2.4rem);
   font-weight: 800;
   line-height: 1;
 }
@@ -1735,6 +1815,19 @@ main {
 @media (max-width: 1180px) {
   .card-grid--services {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Desktop: place thumbnail at left and content at right for compact cards */
+@media (min-width: 861px) {
+  .card-grid--services .service-card {
+    grid-template-columns: 160px 1fr;
+    align-items: start;
+  }
+
+  .card-grid--services .service-card__thumb {
+    min-height: 140px;
+    border-radius: 12px;
   }
 }
 
