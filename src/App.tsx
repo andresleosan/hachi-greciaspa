@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Inicio from './pages/Inicio'
+import LandingNueva from './pages/LandingNueva'
 import Servicios from './pages/Servicios'
 import Precios from './pages/Precios'
 import Equipo from './pages/Equipo'
@@ -15,6 +16,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Inicio />} />
+        <Route path="/inicio" element={<LandingNueva />} />
         <Route path="/servicios" element={<Servicios />} />
         <Route path="/precios" element={<Precios />} />
         <Route path="/equipo" element={<Equipo />} />
