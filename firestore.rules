@@ -15,6 +15,12 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    // Pricing: public read, admin write
+    match /precios/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // User profiles: users can create their own profile and read/update it; admins can manage all
     match /users/{userId} {
       allow create: if request.auth != null && request.auth.uid == userId;

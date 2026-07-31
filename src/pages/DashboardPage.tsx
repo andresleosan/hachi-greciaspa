@@ -20,8 +20,7 @@ export default function DashboardPage() {
       // Role checks are enforced server-side by Firestore rules.
       const reservasRef = collection(firebaseDb, 'reservas')
       let q
-      // Try to detect admin via custom claim if present on the token
-      const isAdmin = (user as any)?.admin || (user as any)?.role === 'admin'
+      const isAdmin = profile?.role === 'admin'
 
       if (isAdmin) {
         q = query(reservasRef, orderBy('createdAt', 'desc'), limit(20))
@@ -43,7 +42,7 @@ export default function DashboardPage() {
     }
 
     load()
-  }, [user])
+  }, [user, profile])
 
   return (
     <ProtectedRoute>

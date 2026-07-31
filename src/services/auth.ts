@@ -14,8 +14,7 @@ export async function signIn(email: string, password: string) {
 export async function register(
   email: string,
   password: string,
-  displayName?: string,
-  role = 'client'
+  displayName?: string
 ) {
   const cred = await createUserWithEmailAndPassword(firebaseAuth, email, password)
   if (displayName) {
@@ -30,7 +29,7 @@ export async function register(
   await setDoc(doc(firebaseDb, 'users', cred.user.uid), {
     email,
     displayName: displayName || null,
-    role,
+    role: 'client',
     createdAt: serverTimestamp(),
   })
 

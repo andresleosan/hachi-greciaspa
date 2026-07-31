@@ -15,7 +15,7 @@ export default function Register() {
     e.preventDefault()
     setError(null)
     try {
-      await register(email, password, displayName, 'client')
+      await register(email, password, displayName)
       navigate('/dashboard')
     } catch (err: any) {
       setError(err?.message || 'Error creando cuenta')
