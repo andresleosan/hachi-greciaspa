@@ -21,7 +21,7 @@ export default function Header() {
 
         <div className="header-actions">
           <Link className="btn btn-ghost" to="/login">Iniciar sesión</Link>
-          <Link className="btn btn-primary" to="/agendar">Agendar cita</Link>
+          <Link className="btn btn-primary" to="/contacto">Agendar cita</Link>
         </div>
       </div>
     </header>

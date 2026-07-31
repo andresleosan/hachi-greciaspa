@@ -15,7 +15,7 @@ async function main() {
   const guestDb = unauth.firestore()
 
   // Authenticated user (alice)
-  const alice = testEnv.authenticatedContext('alice', { uid: 'alice' })
+  const alice = testEnv.authenticatedContext('alice', { sub: 'alice' })
   const aliceDb = alice.firestore()
 
   try {

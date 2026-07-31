@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
-const Inicio = lazy(() => import('./pages/Inicio'))
 const LandingNueva = lazy(() => import('./pages/LandingNueva'))
 const Servicios = lazy(() => import('./pages/Servicios'))
 const Precios = lazy(() => import('./pages/Precios'))
@@ -11,6 +10,7 @@ const Contacto = lazy(() => import('./pages/Contacto'))
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 function Loader() {
   return <div className="container section" style={{ textAlign: 'center', paddingTop: '4rem' }}>Cargando…</div>
@@ -21,8 +21,8 @@ export default function App() {
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
-          <Route path="/" element={<Inicio />} />
-          <Route path="/inicio" element={<LandingNueva />} />
+          <Route path="/" element={<LandingNueva />} />
+          <Route path="/inicio" element={<Navigate to="/" replace />} />
           <Route path="/servicios" element={<Servicios />} />
           <Route path="/precios" element={<Precios />} />
           <Route path="/equipo" element={<Equipo />} />
@@ -31,6 +31,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

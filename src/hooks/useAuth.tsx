@@ -7,9 +7,11 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const unsub = onAuthStateChanged(firebaseAuth, async (u) => {
+      setError(null)
       if (!u) {
         setUser(null)
         setProfile(null)
@@ -21,8 +23,9 @@ export function useAuth() {
       try {
         const p = await getUserProfile(u.uid)
         setProfile(p)
-      } catch (e) {
+      } catch (e: any) {
         setProfile(null)
+        setError(e?.message || 'No se pudo cargar el perfil de usuario.')
       } finally {
         setLoading(false)
       }
@@ -30,5 +33,5 @@ export function useAuth() {
     return () => unsub()
   }, [])
 
-  return { user, profile, loading }
+  return { user, profile, loading, error }
 }
