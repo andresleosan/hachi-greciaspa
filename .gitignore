@@ -17,6 +17,10 @@ serviceAccountKey.json
 .clasprc.json
 .firebase/
 firebase-debug.log
+firestore-debug.log
+emul.err
+emul.out
+emul.pid
 
 # Dependencias e instalación
 node_modules/
@@ -47,6 +51,12 @@ Thumbs.db
 # Bases de datos locales
 *.sqlite3
 *.db
+
+# Graphify output
+graphify-out/
+
+# Playwright MCP temp
+.playwright-mcp/
 
 # Backups que dejan los scripts de la agencia al actualizar
 *.bak-*
