@@ -118,10 +118,10 @@ interface Reserva {
 Estas son las inconsistencias de la Fase 1 que conviene cerrar para evitar deuda visual.
 
 **AC:**
-- [ ] Quitar inline styles de `ServiceCard.tsx:15,27` e `Inicio.tsx:38` (`LandingNueva.tsx` también revisar). Pasar a `src/styles/maqueta.css`.
-- [ ] Agregar clases faltantes en `maqueta.css`: `.btn-danger` (referenciado en `AdminPrices.tsx:94`) y `.field-error` (referenciado en `Login.tsx:53`, `Register.tsx:73`, `DashboardPage.tsx:140`).
-- [ ] Eliminar `src/pages/Inicio.tsx` (no referenciado en `App.tsx` — la ruta `/inicio` redirige a `/`). Reducir confusión.
-- [ ] Decidir sobre el redirect de `Register.tsx:41` (`/register → /dashboard` contradice AGENTS.md) — alinear docs o revertir ese redirect (debería ir a `/login`).
+- [x] Quitar inline styles de `ServiceCard.tsx:15,27` e `Inicio.tsx:38` (`LandingNueva.tsx` también revisar). Pasar a `src/styles/maqueta.css`.
+- [x] Agregar clases faltantes en `maqueta.css`: `.btn-danger` (referenciado en `AdminPrices.tsx:94`) y `.field-error` (referenciado en `Login.tsx:53`, `Register.tsx:73`, `DashboardPage.tsx:140`).
+- [x] Eliminar `src/pages/Inicio.tsx` (no referenciado en `App.tsx` — la ruta `/inicio` redirige a `/`). Reducir confusión.
+- [x] Decidir sobre el redirect de `Register.tsx:41` (`/register → /dashboard` contradice AGENTS.md) — alinear docs o revertir ese redirect (debería ir a `/login`).
 
 **Refs:** AGENTS.md("Notable"), `Register.tsx:41`.
 

@@ -77,7 +77,7 @@ export default function Contacto() {
                 <textarea id="mensaje" name="mensaje" value={mensaje} onChange={(e) => setMensaje(e.target.value)} disabled={submitting} />
               </div>
 
-              {success && <div className="field"><p style={{ color: '#166534', fontWeight: 600 }}>Mensaje enviado correctamente. Te contactaremos pronto.</p></div>}
+              {success && <div className="field"><p className="field-success">Mensaje enviado correctamente. Te contactaremos pronto.</p></div>}
               {error && <div className="field field-error">{error}</div>}
 
               <div className="field">

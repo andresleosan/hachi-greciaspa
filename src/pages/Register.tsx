@@ -38,7 +38,7 @@ export default function Register() {
 
     try {
       await register(email, password, displayName)
-      navigate('/dashboard')
+      navigate('/login')
     } catch (err: any) {
       setError(err?.message || 'Error creando cuenta')
     }
