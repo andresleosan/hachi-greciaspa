@@ -1,8 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { firebaseDb } from '../services/firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 export default function Contacto() {
+  const [nombre, setNombre] = useState('')
+  const [telefono, setTelefono] = useState('')
+  const [correo, setCorreo] = useState('')
+  const [mensaje, setMensaje] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setError(null)
+    setSuccess(false)
+
+    if (!nombre.trim() || !correo.trim() || !mensaje.trim()) {
+      setError('Completa nombre, correo y mensaje.')
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      await addDoc(collection(firebaseDb, 'mensajes'), {
+        name: nombre.trim(),
+        email: correo.trim(),
+        phone: telefono.trim() || null,
+        message: mensaje.trim(),
+        createdAt: serverTimestamp(),
+        read: false,
+      })
+      setSuccess(true)
+      setNombre('')
+      setTelefono('')
+      setCorreo('')
+      setMensaje('')
+    } catch (e: any) {
+      setError(e?.message || 'No se pudo enviar el mensaje. Intenta de nuevo.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div>
       <Header />
@@ -14,15 +56,35 @@ export default function Contacto() {
           </div>
 
           <div className="contact-layout">
-            <form className="contact-card contact-form card" action="#" method="POST">
+            <form className="contact-card contact-form card" onSubmit={handleSubmit}>
               <div className="field-grid">
-                <div className="field"><label>Nombre</label><input name="nombre" /></div>
-                <div className="field"><label>Teléfono</label><input name="telefono" /></div>
+                <div className="field">
+                  <label htmlFor="nombre">Nombre</label>
+                  <input id="nombre" name="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} disabled={submitting} />
+                </div>
+                <div className="field">
+                  <label htmlFor="telefono">Teléfono</label>
+                  <input id="telefono" name="telefono" value={telefono} onChange={(e) => setTelefono(e.target.value)} disabled={submitting} />
+                </div>
               </div>
 
-              <div className="field"><label>Correo</label><input name="correo" type="email" /></div>
-              <div className="field"><label>Mensaje</label><textarea name="mensaje"></textarea></div>
-              <div className="field"><button className="btn btn-primary">Enviar mensaje</button></div>
+              <div className="field">
+                <label htmlFor="correo">Correo</label>
+                <input id="correo" name="correo" type="email" value={correo} onChange={(e) => setCorreo(e.target.value)} disabled={submitting} />
+              </div>
+              <div className="field">
+                <label htmlFor="mensaje">Mensaje</label>
+                <textarea id="mensaje" name="mensaje" value={mensaje} onChange={(e) => setMensaje(e.target.value)} disabled={submitting} />
+              </div>
+
+              {success && <div className="field"><p style={{ color: '#166534', fontWeight: 600 }}>Mensaje enviado correctamente. Te contactaremos pronto.</p></div>}
+              {error && <div className="field field-error">{error}</div>}
+
+              <div className="field">
+                <button className="btn btn-primary" type="submit" disabled={submitting}>
+                  {submitting ? 'Enviando…' : 'Enviar mensaje'}
+                </button>
+              </div>
             </form>
 
             <aside className="map-card card">

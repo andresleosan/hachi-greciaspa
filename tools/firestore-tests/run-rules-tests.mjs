@@ -128,6 +128,26 @@ async function main() {
     await test('client cannot read empleados', () => assertFails(aliceDb.collection('empleados').doc('e1').get()))
     await test('admin can read empleados', () => assertSucceeds(bobAdminDb.collection('empleados').doc('e1').get()))
 
+    // --- Mensajes (contact form): guest can create, admin can read/delete ---
+    await test('guest can create mensaje', () => assertSucceeds(guestDb.collection('mensajes').doc('m1').set({ name: 'Test', email: 'test@x.com', message: 'Hola', createdAt: new Date(), read: false })))
+    await test('client can create mensaje', () => assertSucceeds(aliceDb.collection('mensajes').doc('m2').set({ name: 'Alice', email: 'alice@x.com', message: 'Hola', createdAt: new Date(), read: false })))
+    await test('guest cannot read mensajes', () => assertFails(guestDb.collection('mensajes').doc('m1').get()))
+    await test('client cannot read mensajes', () => assertFails(aliceDb.collection('mensajes').doc('m1').get()))
+    await test('admin can read mensajes', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('mensajes').doc('m-admin').set({ name: 'Admin test', email: 'a@x.com', message: 'Read me', createdAt: new Date(), read: false })
+      })
+      return assertSucceeds(bobAdminDb.collection('mensajes').doc('m-admin').get())
+    })
+    await test('guest cannot update mensajes', () => assertFails(guestDb.collection('mensajes').doc('m1').update({ read: true })))
+    await test('client cannot delete mensajes', () => assertFails(aliceDb.collection('mensajes').doc('m1').delete()))
+    await test('admin can delete mensajes', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('mensajes').doc('m-del').set({ name: 'Del', email: 'd@x.com', message: 'Delete me', createdAt: new Date(), read: false })
+      })
+      return assertSucceeds(bobAdminDb.collection('mensajes').doc('m-del').delete())
+    })
+
     // --- Catch-all fallback ---
     await test('guest cannot read unknown collection', () => assertFails(guestDb.collection('unknown').doc('x').get()))
     await test('client cannot read unknown collection', () => assertFails(aliceDb.collection('unknown').doc('x').get()))

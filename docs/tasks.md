@@ -104,11 +104,11 @@ interface Reserva {
 **Por qué:** `Contacto.tsx` hoy es `action="#"`, los mensajes se pierden. Gap de MVP si el spa usa el form para consultas.
 
 **AC:**
-- [ ] Colección `mensajes` en Firestore.
-- [ ] Regla en `firestore.rules`: `allow create: if true` (cualquiera, sin login), deny read write a todos excepto admin.
-- [ ] `Contacto.tsx`: hook `onSubmit` → `addDoc(collection(db,'mensajes'), { name, email, message, createdAt: serverTimestamp() })`.
-- [ ] Feedback visual de éxito / error (sin `react-hot-toast` si fue removido por M6 — usar `.field-error` + texto inline).
-- [ ] Test de regla: guest puede crear `mensajes`, no puede leer ni escribir otros.
+- [x] Colección `mensajes` en Firestore.
+- [x] Regla en `firestore.rules`: `allow create: if true` (cualquiera, sin login), deny read write a todos excepto admin.
+- [x] `Contacto.tsx`: hook `onSubmit` → `addDoc(collection(db,'mensajes'), { name, email, message, createdAt: serverTimestamp() })`.
+- [x] Feedback visual de éxito / error (sin `react-hot-toast` si fue removido por M6 — usar `.field-error` + texto inline).
+- [x] Test de regla: guest puede crear `mensajes`, no puede leer ni escribir otros.
 
 **Refs:** `src/pages/Contacto.tsx`, `AUDITORIA.md M6` (re razastreamiento).
 

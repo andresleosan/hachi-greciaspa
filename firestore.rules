@@ -64,6 +64,13 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
+    // Contact form messages: anyone can create (guest or authenticated), only admin can read/delete
+    match /mensajes/{msgId} {
+      allow create: if true;
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
     // Admin-only config or sensitive data
     match /config/{doc} {
       allow read, write: if isAdmin();
