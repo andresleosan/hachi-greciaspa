@@ -1,4 +1,10 @@
-# Fase 2 — Backlog MVP funcional
+# Fase 2 — Backlog MVP funcional ✅ CERRADA
+
+**Estado:** cerrada el 2026-07-31. 8 tareas completadas en 8 commits (`ac6b7a3` → `c27cade`). Build y tests verdes (35/35).
+
+**Siguiente:** ver [`Fase3.md`](./Fase3.md) para backlog post-MVP.
+
+---
 
 Creado por Cronos el 2026-07-31, después del cierre de Fase 1 (hardening + verificación: build, tsc y `npm run rules:test` verdes, 23/23 PASS; bug de escalación N1 resuelto).
 
