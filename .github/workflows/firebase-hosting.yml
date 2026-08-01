@@ -34,6 +34,18 @@ jobs:
           VITE_USE_FIREBASE_EMULATOR: 'false'
         run: npm run build
 
+      - name: Decode service account to file
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_HACHI_GRECIASPA }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "::error::FIREBASE_SERVICE_ACCOUNT_HACHI_GRECIASPA secret is empty or missing"
+            exit 1
+          fi
+          echo "$FIREBASE_SERVICE_ACCOUNT" > /tmp/firebase-sa.json
+          echo "Service account length: $(wc -c < /tmp/firebase-sa.json) bytes"
+          echo "First 100 chars: $(head -c 100 /tmp/firebase-sa.json)"
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
