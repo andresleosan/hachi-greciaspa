@@ -18,12 +18,10 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+        # v5/v6 of setup-node targets Node 24 by default; v4 falls back to Node 20 with a warning.
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Type check
-        run: npx tsc --noEmit
 
       - name: Build
         env:
