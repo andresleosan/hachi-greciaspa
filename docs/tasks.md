@@ -173,7 +173,6 @@ T2.1 (schema) ─┐
 
 ## Fuera de alcance de Fase 2
 
-- Pagos online (Mercado Pago / Stripe).
 - Recordatorios por email/SMS.
 - Múltiples sucursales o terapeutas.
 - Panel de empleados (`empleados` collection ya existe pero no UI).

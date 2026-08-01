@@ -66,15 +66,14 @@ No hay plan de precio fijo wildcard — puro pay-as-you-go.
 
 | Servicio | Estado | Cuándo se consideraría |
 |---|---|---|
-| Stripe / Mercado Pago | No integrado | Fase 3 si el spa cobra online a la reserva |
 | Email transaccional (SendGrid, Postmark) | No integrado | Fase 3 para recordatorios de cita |
-| reCAPTCHA v3 | No integrado (H4 usa rateLimit client-side) | T2.8 si se habilita App Check |
+| reCAPTCHA v3 | Integrado (T2.8) | Habilitar en Firebase Console cuando se despliegue |
 
 ## Limpieza de servicios sin uso
 
-Tras Fase 1 (M6):
+Tras Fase 1 (M6) + Fase 2 (T2.7):
 - ✅ Removidos: axios, react-calendar, zustand, react-hook-form, react-hot-toast — ninguno importado en código.
-- ⚠️ Pendiente: `firebaseStorage` está inicializado en `firebase.ts:43,51` pero ningún componente lo usa. Si T2.7 (galería) no lo requiere, eliminar el init de storage y la sección `storage` de `firebase.json` para reducir superficie.
+- ✅ Removido: `firebaseStorage` init de `firebase.ts` y storage emulator de `firebase.json` (ADR-003: galería usa paths estáticos).
 
 ## Pendientes técnicos conocidos (cross-ref tasks.md)
 
