@@ -131,9 +131,9 @@ Estas son las inconsistencias de la Fase 1 que conviene cerrar para evitar deuda
 **Por qué:** `Galeria.tsx` es una tile vacía. El spa tiene fotos reales (ver `tl.png`, `tr.png`, etc. en raíz, y `src/public/`).
 
 **AC:**
-- [ ] Crear `galeria` seeds locales (emulador) o leer desde `firebaseStorage` (decisión ADR-003: Storage vs paths públicos).
-- [ ] Grid responsive con 6-8 imágenes.
-- [ ] Sin Storage: si ninguna página lo usa, considerar quitar el init de storage de `firebase.ts` y `firebase.json` (limpieza).
+- [x] Crear `galeria` seeds locales (emulador) o leer desde `firebaseStorage` (decisión ADR-003: Storage vs paths públicos).
+- [x] Grid responsive con 6-8 imágenes.
+- [x] Sin Storage: si ninguna página lo usa, considerar quitar el init de storage de `firebase.ts` y `firebase.json` (limpieza).
 
 **Refs:** `src/pages/Galeria.tsx`, `firebase.ts:43,51`, `firebase.json` (storage port 9199 added en Fase 1).
 
