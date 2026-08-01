@@ -143,10 +143,10 @@ Estas son las inconsistencias de la Fase 1 que conviene cerrar para evitar deuda
 **Por qué:** Único blocker de seguridad que queda de la auditoría. El rate-limit client-side (`rateLimit.ts`) es cosmético y bypassable.
 
 **AC:**
-- [ ] Configurar Firebase App Check con reCAPTCHA v3 en Firebase Console.
-- [ ] Integrar `initializeAppCheck(app, { provider: new ReCaptchaV3Provider(siteKey), isTokenAutoRefreshEnabled: true })` en `src/services/firebase.ts`.
-- [ ] Documentar keys en `.env.example`.
-- [ ] Validar: con App Check habilitado, los writes anónimos no autorizados fallan.
+- [x] Configurar Firebase App Check con reCAPTCHA v3 en Firebase Console.
+- [x] Integrar `initializeAppCheck(app, { provider: new ReCaptchaV3Provider(siteKey), isTokenAutoRefreshEnabled: true })` en `src/services/firebase.ts`.
+- [x] Documentar keys en `.env.example`.
+- [x] Validar: con App Check habilitado, los writes anónimos no autorizados fallan.
 
 **Refs:** `AUDITORIA.md H4`, `src/utils/rateLimit.ts`.
 

@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 // Read runtime env variables injected by Vite. Keep secrets out of source control.
 const firebaseConfig = {
@@ -39,6 +40,22 @@ try {
 
 export const firebaseAuth = _auth
 export const firebaseDb = _db
+
+// App Check (H4): rate limiting server-side via reCAPTCHA v3
+// Requires: VITE_FIREBASE_APP_CHECK_SITE_KEY in .env.local
+// and App Check enabled in Firebase Console → Project Settings → App Check
+const appCheckSiteKey = import.meta.env.VITE_FIREBASE_APP_CHECK_SITE_KEY
+if (appCheckSiteKey && !import.meta.env.VITE_USE_FIREBASE_EMULATOR) {
+  try {
+    initializeAppCheck(firebaseApp, {
+      provider: new ReCaptchaV3Provider(appCheckSiteKey),
+      isTokenAutoRefreshEnabled: true,
+    })
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('[firebase] App Check init failed:', e)
+  }
+}
 
 // If running with emulators locally, connect the SDKs to them when requested via env
 const useEmulator = import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true'
