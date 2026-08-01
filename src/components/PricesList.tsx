@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { firebaseDb } from '../services/firebase'
 import { collection, getDocs, query, orderBy } from 'firebase/firestore'
-
-type PriceItem = {
-  id?: string
-  name: string
-  price?: number | null
-  priceHigh?: number | null
-  unit?: string | null
-  note?: string | null
-  category?: string | null
-}
+import type { PriceItem } from '../types'
 
 export default function PricesList() {
   const [items, setItems] = useState<PriceItem[]>([])

@@ -1,27 +1,65 @@
-Firestore rules test harness
+# Firestore rules test harness
 
-This project includes a small test runner using `@firebase/rules-unit-testing` that exercises some of the security rules in `firestore.rules`.
+Suite de tests de las reglas de `firestore.rules` usando `@firebase/rules-unit-testing`.
 
-Files added:
+## Archivos
 
-- `tools/firestore-tests/run-rules-tests.mjs` — small ESM script that runs a few basic assertions (public read, blocked write, user profile create).
-- `package.json` script: `npm run rules:test` (calls the script above)
+- `tools/firestore-tests/run-rules-tests.mjs` — script ESM con casos de prueba cubriendo:
+  - C1 — `precios`: lectura pública, escritura solo admin
+  - `users`: perfil propio (create/read), bloqueo de perfiles ajenos, admin puede leer/borrar cualquier perfil
+  - `reservas`: owner-only create, admin-only update/delete, no spoof de `userId`
+  - `empleados` / `config`: admin-only
+  - fallback catch-all deny
+- `package.json` script: `npm run rules:test` →
+  `firebase emulators:exec --only firestore "node tools/firestore-tests/run-rules-tests.mjs"`
 
-How to run (local):
+## Cómo correr
 
-1. Install dev dependency: `npm install -D @firebase/rules-unit-testing`
-2. Option A (recommended): Use the test runner directly (it uses a sandboxed test environment):
-   - `npm run rules:test`
-   - The script will load `firestore.rules` and run the included assertions. It does not require the Firebase CLI emulator to be running.
+### Requisito: Java
 
-3. Option B (integration with emulator):
-   - Install Firebase CLI: `npm i -g firebase-tools`
-   - Start emulator: `npx firebase emulators:start --only firestore`
-   - (Optional) Run the test script while the emulator is running to exercise rules against the running emulator.
+`firebase-tools` v15+ requiere **JDK 21+** (`java -version` debe funcionar en PATH). JDK 8 no sirve. Sin Java, el test fallará con `Could not spawn java -version` o `firebase-tools no longer supports Java version before 21`.
 
-Notes:
+Instalar en Windows:
+- `winget install EclipseAdoptium.Temurin.21.JDK`
+- O descargar desde https://adoptium.net/ (elegir JDK 21 LTS)
+- Verificar: `java -version`
 
-- The test runner is minimal and intended as a starting point. Add more `assertSucceeds` / `assertFails` cases to cover admin-only paths, reservas, and user role checks.
-- If you see errors about missing packages, install `@firebase/rules-unit-testing` as above. The script expects `firestore.rules` at the repository root.
+### Ejecución
 
-If you want, I can extend the test suite to cover `reservas` creation rules, admin checks using custom claims, and automated CI integration (GitHub Actions).
+```bash
+npm run rules:test
+```
+
+Esto arranca el emulador de Firestore, corre los tests, y lo apaga automáticamente. Output esperado cuando todo pasa:
+
+```
+Firestore rules test suite
+--------------------------
+  PASS  guest can read servicios
+  ...
+20 passed, 0 failed
+```
+
+## Estado actual (2026-07-31)
+
+✅ **Java OK**: JDK 21 (Temurin) instalado en `C:\Program Files\Eclipse Adoptium\jdk-21.0.12.8-hotspot`. `firebase-tools` v15 lo requiere.
+
+✅ **Tests verdes**: `npm run rules:test` → `23 passed, 0 failed`. Cubre los hallazgos de `AUDITORIA.md` (C1 precios, N1 escalación, reservas owner-only) + admin via custom claim + catch-all deny.
+
+### Nota de PATH
+
+El instalador MSI de Temurin 21 actualiza el PATH del sistema, pero las sesiones de PowerShell ya abiertas no lo recogen. Si `java -version` falla en una shell nueva, abrir una **nueva** terminal, o setear la variable temporal:
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21.0.12.8-hotspot"
+$env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
+npm run rules:test
+```
+
+## Cómo extender
+
+El test runner usa helpers `test(name, fn)` que registran PASS/FAIL. Agregar casos nuevos dentro del bloque `try` en `main()`, usando `assertSucceeds`/`assertFails` sobre los contextos predefinidos:
+
+- `guestDb` — sin autenticar
+- `aliceDb` — cliente autenticado (role: client)
+- `bobAdminDb` — admin via custom claim `admin: true`

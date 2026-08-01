@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 type Props = {
   title: string
@@ -6,13 +7,15 @@ type Props = {
   price?: string
   unit?: string
   img?: string
+  serviceId?: string
 }
 
-export default function ServiceCard({ title, description, price, unit, img }: Props) {
+export default function ServiceCard({ title, description, price, unit, img, serviceId }: Props) {
+  const reservLink = serviceId ? `/reservar?service=${serviceId}` : '/reservar'
   return (
     <article className="service-card card">
       <div className="service-card__thumb">
-        {img ? <img src={img} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+        {img ? <img src={img} alt={title} /> : null}
       </div>
 
       <div>
@@ -24,7 +27,7 @@ export default function ServiceCard({ title, description, price, unit, img }: Pr
 
           {price && (
             <div className="service-card__price">
-              {price}{unit ? <span style={{ fontSize: '0.7rem', marginLeft: 6 }}>{unit}</span> : null}
+              {price}{unit ? <span className="service-card__price-unit">{unit}</span> : null}
             </div>
           )}
         </div>
@@ -32,8 +35,8 @@ export default function ServiceCard({ title, description, price, unit, img }: Pr
         <div className="service-card__footer">
           <div className="service-card__meta-left"></div>
           <div>
-            <a className="btn btn-ghost" href="#">Ver detalles</a>
-            <a className="btn btn-primary" href="#">Reservar</a>
+            <Link className="btn btn-ghost" to="/precios">Ver precios</Link>
+            <Link className="btn btn-primary" to={reservLink}>Reservar</Link>
           </div>
         </div>
       </div>

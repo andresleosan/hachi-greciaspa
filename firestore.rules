@@ -21,11 +21,19 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // User profiles: users can create their own profile and read/update it; admins can manage all
+    // User profiles: users can create their own profile and read/update it; admins can manage all.
+    // N1 fix: a user may NOT change their own role or email — only an admin can. This prevents
+    // privilege escalation via `users/{uid}.update({role:'admin'})`.
     match /users/{userId} {
-      allow create: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.role == 'client';
       allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
-      allow update: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow update: if request.auth != null && (
+        isAdmin()
+        || (request.auth.uid == userId
+            && !request.resource.data.diff(resource.data).affectedKeys()
+                .hasAny(['role', 'email']))
+      );
       allow delete: if isAdmin();
     }
 
@@ -35,8 +43,20 @@ service cloud.firestore {
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
       // Owner or admin can read
       allow read: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
-      // Only admin may update or delete bookings
-      allow update, delete: if isAdmin();
+      // Update: admin can edit anything; the owner may ONLY flip status to 'cancelled'
+      // (ADR-002). Field whitelist ensures userId/serviceId/price/date/timeSlot/createdAt
+      // can't be tampered with by the client.
+      allow update: if isAdmin()
+        || (
+          request.auth != null
+          && resource.data.userId == request.auth.uid
+          && request.resource.data.status == 'cancelled'
+          && !request.resource.data.diff(resource.data).affectedKeys()
+              .hasAny(['userId', 'userName', 'userEmail', 'serviceId', 'serviceName',
+                       'price', 'date', 'timeSlot', 'durationMin', 'createdAt', 'createdBy'])
+        );
+      // Only admin may delete (cancelled reservations stay for audit)
+      allow delete: if isAdmin();
     }
 
     // Employees / staff data - admin only

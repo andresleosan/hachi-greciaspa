@@ -185,6 +185,56 @@ Si `getUserProfile` falla, `profile` queda en `null` silenciosamente. No hay fee
 | H3 | Agregar `firebase-debug.log` a `.gitignore` | ✅ Corregido |
 | H4 | Rate limiting en login/register | ⏳ Requiere Cloud Functions o Firebase App Check |
 
+## Hallazgos nuevos detectados por tests de reglas (2026-07-31)
+
+Tras habilitar `npm run rules:test` con JDK 21, la suite expuso un bug no cubierto por la auditoría original:
+
+### N1 — Privilege escalation: usuario podía auto-asignarse `role: 'admin'` ✅ CORREGIDO
+**Archivo:** `firestore.rules:27-38`
+**Repro:** `npm run rules:test` (antes del fix) → test "user cannot set own role to admin" FAIL.
+La regla `allow update: ... (request.auth.uid == userId || isAdmin())` permitía a un usuario actualizar **cualquier campo** de su propio perfil, incluyendo `role`. Un cliente podía hacer `users/{uid}.update({role:'admin'})` y volverse admin sin pasar por `set-admin.js`.
+
+**Fix aplicado** (`firestore.rules`):
+- `create` exige `request.resource.data.role == 'client'` (no admin self-promotion en signup).
+- `update` solo permite al usuario modificar campos que NO sean `role` ni `email` (vía `affectedKeys().hasAny(['role','email'])`). Admin conserva control total.
+
+### N2 — Lectura cruzada de perfiles (quirk del emulador, no bug real) ✅ DESCARTADO
+El test "user cannot read other user profile" tuvo un falso-FAIL inicial por reordenamiento del seed. Tras corregir el seed (remover el doc de alice que interfería con el create test), el test pasa de forma consistente. La regla original en L30 (`request.auth.uid == userId || isAdmin()`) es correcta.
+
+### Estado de tests de reglas
+
+```
+$ npm run rules:test
+Firestore rules test suite
+--------------------------
+  PASS  guest can read servicios                     (servicios público)
+  PASS  guest cannot write servicios
+  PASS  client cannot write servicios
+  PASS  guest can read precios (C1)                  (precios público)
+  PASS  client cannot write precios (C1)
+  PASS  admin (claim) can write precios (C1)
+  PASS  user can create own profile (role:client default)   (N1 create rule)
+  PASS  user cannot set own role to admin (escalation)      (N1 fix)
+  PASS  user can update own displayName but keep role       (N1 fix)
+  PASS  user cannot create someone else profile
+  PASS  user cannot read other user profile
+  PASS  admin can read any user profile
+  PASS  admin can delete any user
+  PASS  user can create own reserva
+  PASS  user cannot create reserva for another user
+  PASS  user can read own reserva
+  PASS  user cannot update own reserva (admin only)
+  PASS  admin can update any reserva
+  PASS  guest cannot read empleados
+  PASS  client cannot read empleados
+  PASS  admin can read empleados
+  PASS  guest cannot read unknown collection
+  PASS  client cannot read unknown collection
+23 passed, 0 failed
+```
+
+Tests cubren los hallazgos: C1 (precios), C2/N1 (escalación), reservas owner-only, admin via custom claim y catch-all deny.
+
 ### Nota sobre H4 (Rate Limiting)
 La protección contra fuerza bruta requiere una de estas opciones:
 - **Firebase App Check** + reCAPTCHA v3 (recomendado, sin backend)

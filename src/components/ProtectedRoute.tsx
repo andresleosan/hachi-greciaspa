@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 interface Props {
@@ -9,9 +9,13 @@ interface Props {
 
 export default function ProtectedRoute({ children, requireRole }: Props) {
   const { user, profile, loading } = useAuth()
+  const location = useLocation()
 
   if (loading) return <div />
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) {
+    const next = encodeURIComponent(location.pathname + location.search)
+    return <Navigate to={`/login?next=${next}`} replace />
+  }
 
   if (requireRole === 'admin' && profile?.role !== 'admin') {
     return <Navigate to="/dashboard" replace />

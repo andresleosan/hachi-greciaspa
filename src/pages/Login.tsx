@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { signIn } from '../services/auth'
@@ -11,6 +11,8 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null)
   const [blocked, setBlocked] = useState(false)
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const nextPath = searchParams.get('next') || '/dashboard'
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -25,7 +27,7 @@ export default function Login() {
 
     try {
       await signIn(email, password)
-      navigate('/dashboard')
+      navigate(nextPath)
     } catch (err: any) {
       setError(err?.message || 'Error al iniciar sesión')
     }

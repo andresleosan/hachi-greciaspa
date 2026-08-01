@@ -10,15 +10,7 @@ import {
   query,
   orderBy,
 } from 'firebase/firestore'
-
-type PriceItem = {
-  id?: string
-  name: string
-  price?: number
-  priceHigh?: number
-  unit?: string
-  note?: string
-}
+import type { PriceItem } from '../types'
 
 export default function AdminPrices() {
   const [items, setItems] = useState<PriceItem[]>([])

@@ -6,6 +6,9 @@ import AdminPrices from '../components/AdminPrices'
 import { firebaseDb } from '../services/firebase'
 import { collection, query, where, getDocs, orderBy, limit, count } from 'firebase/firestore'
 import { startOfDay, endOfDay } from 'date-fns'
+import type { Reserva, ReservaStatus } from '../types'
+import { RESERVA_STATUS_LABELS } from '../types'
+import { cancelMyReserva } from '../services/reservas'
 
 interface Metrics {
   citasHoy: number
@@ -16,9 +19,27 @@ interface Metrics {
 export default function DashboardPage() {
   const [showSidebar, setShowSidebar] = useState(false)
   const { user, profile, error: profileError } = useAuth()
-  const [bookings, setBookings] = useState<any[]>([])
+  const [bookings, setBookings] = useState<Reserva[]>([])
   const [metrics, setMetrics] = useState<Metrics>({ citasHoy: 0, serviciosHoy: 0, clientesTotales: 0 })
   const [loading, setLoading] = useState(true)
+  const [cancellingId, setCancellingId] = useState<string | null>(null)
+  const [cancelError, setCancelError] = useState<string | null>(null)
+
+  async function handleCancel(reservaId: string, label: string) {
+    if (!confirm(`¿Cancelar ${label}? Esta acción no se puede deshacer.`)) return
+    setCancellingId(reservaId)
+    setCancelError(null)
+    try {
+      await cancelMyReserva(reservaId)
+      setBookings((prev) =>
+        prev.map((b) => (b.id === reservaId ? { ...b, status: 'cancelled' } : b))
+      )
+    } catch (e: any) {
+      setCancelError(e?.message || 'No se pudo cancelar la reserva.')
+    } finally {
+      setCancellingId(null)
+    }
+  }
 
   useEffect(() => {
     async function load() {
@@ -41,12 +62,12 @@ export default function DashboardPage() {
 
       try {
         const snap = await getDocs(bookingsQuery)
-        const items: any[] = []
+        const items: Reserva[] = []
         const todayServices = new Set<string>()
         let todayCount = 0
 
         snap.forEach((d) => {
-          const data = d.data()
+          const data = d.data() as Omit<Reserva, 'id'>
           items.push({ id: d.id, ...data })
 
           // Count today's bookings
@@ -142,13 +163,41 @@ export default function DashboardPage() {
             {!loading && bookings.length === 0 && <p>No hay reservas visibles.</p>}
             <ul className="list">
               {bookings.map((b) => (
-                <li key={b.id} className="card">
-                  <div><strong>{b.serviceName || 'Servicio'}</strong></div>
-                  <div>{b.userName || b.userId}</div>
-                  <div>{b.date || ''}</div>
+                <li key={b.id} className="card reserva-card">
+                  <div className="reserva-card__head">
+                    <div>
+                      <strong>{b.serviceName || 'Servicio'}</strong>
+                      <span className={`reserva-card__status reserva-card__status--${b.status}`}>
+                        {RESERVA_STATUS_LABELS[b.status as ReservaStatus] || b.status}
+                      </span>
+                    </div>
+                    <div className="reserva-card__when">
+                      {b.date || ''} · {b.timeSlot || ''}
+                    </div>
+                  </div>
+                  {profile?.role === 'admin' && (
+                    <div className="reserva-card__meta">
+                      {b.userName || b.userId}
+                      {b.userEmail ? ` · ${b.userEmail}` : ''}
+                    </div>
+                  )}
+                  {b.notes && <div className="reserva-card__notes">{b.notes}</div>}
+                  {profile?.role !== 'admin' && (b.status === 'pending' || b.status === 'confirmed') && b.id && (
+                    <div className="reserva-card__actions">
+                      <button
+                        className="btn btn-ghost"
+                        type="button"
+                        onClick={() => handleCancel(b.id!, b.serviceName || 'tu reserva')}
+                        disabled={cancellingId === b.id}
+                      >
+                        {cancellingId === b.id ? 'Cancelando…' : 'Cancelar reserva'}
+                      </button>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
+            {cancelError && <div className="field-error">{cancelError}</div>}
 
             {/* Admin-only: precios */}
             {profile?.role === 'admin' && (
