@@ -1,0 +1,281 @@
+# Fase 3 — Backlog Post-MVP
+
+Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
+
+---
+
+## Objetivos de la fase
+
+Convertir el MVP funcional en un producto **operable por el spa real**:
+1. Reducir trabajo manual del administrador (automatizar recordatorios, gestión de agenda).
+2. Abrir la operación a múltiples terapeutas y sucursales.
+3. Mejorar UX del cliente (re-booking rápido, historial de mascotas, notificaciones).
+4. Endurecer para producción (performance, observabilidad, backup, budget alerts).
+
+## Definición de "Hecho" (igual que Fase 2)
+
+1. `npx tsc --noEmit` sin errores nuevos.
+2. `npm run build` verde.
+3. `npm run rules:test` verde (o se agregan tests).
+4. No introduce `style={{}}` inline.
+5. Resuelve los campos del AC.
+6. Documenta cambios en `docs/SCHEMA.md` o `docs/STACK.md` si aplica.
+
+---
+
+## Tracks
+
+### Track A — Operación del spa (alto valor, bloqueante para producción)
+
+#### T3.1 — Recordatorios por email (24h antes de la cita)
+**Por qué:** Sin recordatorios, el índice de no-shows del spa sube. Es la única automatización que paga el MVP en el primer mes.
+
+**AC:**
+- [ ] Colección `recordatorios/{id}` con estado (`pending`, `sent`, `failed`) y `reservaId` FK.
+- [ ] Cloud Function `scheduledSendReminders` (cron cada hora vía Cloud Scheduler) que:
+  1. Lee reservas confirmadas con `date + timeSlot` entre 23h y 25h en el futuro.
+  2. Genera email HTML (SendGrid o Postmark — evaluar en T3.2).
+  3. Marca `recordatorios.sent=true` o `failed` con error.
+- [ ] Template de email en `functions/templates/reminder.html` con datos de la reserva.
+- [ ] Documentar en `docs/ADR-004-recordatorios.md` decisión: cron cada hora vs cron diario a las 18:00.
+- [ ] Variables de entorno: `SENDGRID_API_KEY` en Firebase Functions config.
+
+**Refs:** `firestore.rules` (nueva colección), `docs/STACK.md` "Email transaccional — Fase 3".
+
+---
+
+#### T3.2 — Elegir proveedor de email transaccional (ADR-004)
+**Por qué:** SendGrid vs Postmark vs Resend vs Firebase Extensions. Decisión previa a implementar T3.1.
+
+**AC:**
+- [ ] ADR en `docs/ADR-004-proveedor-email.md` con matriz: precio (hasta 100k emails/mes), deliverability, facilidad de integración con Firebase Functions, soporte de templates.
+- [ ] Decisión: SendGrid si costo prima, Postmark si deliverability prima, Resend si simplicidad prima.
+- [ ] Configurar cuenta y obtener API key de prueba.
+- [ ] Actualizar `docs/STACK.md` tabla de "Servicios externos".
+
+**Refs:** `docs/STACK.md` líneas 65-70.
+
+---
+
+#### T3.3 — Cancelación libre del cliente + reagendado
+**Por qué:** Hoy el cliente no puede cancelar (regla N1+Fase2). Si la cita es dentro de 2h y necesita cambiar, no tiene flujo. Workaround actual: llamar al spa.
+
+**AC:**
+- [ ] Relajar `firestore.rules:32-40` (ADR-002 ya documentó el patrón) para que `resource.data.userId == auth.uid` pueda:
+  1. Update `status` a `'cancelled'` (cancelación blanca).
+  2. Update `date` + `timeSlot` si `status` es `pending` (reagendado).
+- [ ] En `DashboardPage`, agregar botones "Cancelar" y "Reagendar" (este último solo si `status === 'pending'` y `date` es futura).
+- [ ] Validación server-side: reagendado no puede ser a slot ya ocupado (misma lógica de ADR-001).
+- [ ] Regla test: cliente puede cancelar propia reserva, no puede cancelar la de otro, no puede cambiar `userId` ni `serviceId` ni `price`.
+
+**Refs:** `docs/SCHEMA.md` línea 87, `firestore.rules:32-40`.
+
+---
+
+#### T3.4 — Vista "agenda del día" para admin
+**Por qué:** El admin Harold hoy ve "todas las reservas" mezcladas. Para operar el spa necesita vista por día/semana con huecos libres.
+
+**AC:**
+- [ ] Nueva sección en `DashboardPage` (o ruta `/dashboard/agenda`) con:
+  1. Selector de fecha.
+  2. Vista timeline horizontal (eje X = horas del día operativo 08:00–20:00).
+  3. Bloques por reserva (color por status).
+  4. Click en bloque → drawer con detalles + acciones (confirmar, cancelar, marcar completed).
+- [ ] Acción "Marcar completed" — solo admin, status `completed` después de la cita.
+- [ ] Filtros por servicio y por terapeuta (preparado para T3.5).
+
+**Refs:** `src/pages/DashboardPage.tsx`, `docs/SCHEMA.md` `reservas`.
+
+---
+
+#### T3.5 — Gestión de terapeutas (colección `empleados`)
+**Por qué:** La colección `empleados` ya existe en rules pero sin UI. El spa tiene al menos 3 personas (Harold, Daniela, Alberto en `/equipo`) que pueden ser groomers con agenda.
+
+**AC:**
+- [ ] UI admin: lista, alta, baja, edición de empleados (`/dashboard/empleados`).
+- [ ] Campos: `name`, `role` (groomer/bañador/cuidador), `photoUrl`, `active`, `services[]` (qué servicios puede atender).
+- [ ] Vincular `reservas.empleadoId` (nuevo campo) — agregar al schema y documentar.
+- [ ] Filtro "por terapeuta" en vista agenda (T3.4).
+- [ ] Migración: si hay reservas existentes, asignar `empleadoId=null` por default.
+
+**Refs:** `docs/SCHEMA.md` `empleados`, `firestore.rules` `empleados`.
+
+---
+
+### Track B — UX del cliente (medio valor, reduce fricción)
+
+#### T3.6 — "Mis mascotas" — perfil por mascota con historial
+**Por qué:** El cliente agenda para "Hachi" o "Grecia" (los perros del spa, según el nombre). Hoy no hay forma de decir "esta cita es para Hachi, raza Yorkshire, 4kg".
+
+**AC:**
+- [ ] Nueva colección `mascotas/{id}` (user-owned: `userId == auth.uid`).
+- [ ] Schema: `name`, `breed`, `weightKg`, `birthDate` (opcional), `notes` (alergias, temperamento), `photoUrl` (opcional).
+- [ ] UI en `/dashboard/mascotas`: CRUD de mascotas del usuario autenticado.
+- [ ] Vincular `reservas.mascotaId` (nuevo campo, opcional — si null, reserva genérica).
+- [ ] Al reservar, paso previo: "¿para qué mascota?" + selector (si hay) o "¿agregar nueva?".
+- [ ] Historial: en perfil de mascota, lista de reservas pasadas con servicio y fecha.
+
+**Refs:** `docs/SCHEMA.md` (nueva colección).
+
+---
+
+#### T3.7 — Re-booking rápido ("reservar de nuevo")
+**Por qué:** Después de la primera cita exitosa, el 60% de clientes repiten el mismo servicio. Hoy tienen que volver a elegir servicio+fecha+hora.
+
+**AC:**
+- [ ] En `DashboardPage`, en cada reserva `status='completed'`, botón "Reservar de nuevo" que pre-rellena el formulario de `Reservar.tsx` con los datos.
+- [ ] Query param en URL: `/reservar?service=X&timeSlot=Y&date=Z` (R3.3 ya planificó algo similar).
+- [ ] Tests E2E: cliente reserva, completa cita, re-reserva desde dashboard.
+
+**Refs:** `src/pages/Reservar.tsx`, `DashboardPage.tsx`.
+
+---
+
+#### T3.8 — Confirmación de cita por email al cliente
+**Por qué:** Complemento de T3.1 (recordatorio). Diferencia: T3.1 es 24h antes; este es inmediato al reservar.
+
+**AC:**
+- [ ] Cloud Function `onReservaCreated` trigger (`functions/src/onReservaCreated.ts`).
+- [ ] Envía email con resumen + link para cancelar (apunta a `/dashboard`).
+- [ ] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar.
+- [ ] Variables de plantilla: nombre del cliente, servicio, fecha, hora, link cancelación.
+
+**Refs:** T3.1 (mismo proveedor), T3.3 (link cancelación).
+
+---
+
+### Track C — Producción / escala (bajo valor inicial, alto cuando crece)
+
+#### T3.9 — Bundle splitting + performance audit
+**Por qué:** `dist/assets/firebase-P_3knSDz.js = 349 KB` (106 KB gzip). Firebase Auth+Firestore pesan. Code splitting ya está en landings pero no en admin.
+
+**AC:**
+- [ ] Lazy load `firebase.ts` solo cuando se necesita (no en landing estática).
+- [ ] Medir con Lighthouse / WebPageTest antes y después — documentar en `docs/PERFORMANCE.md`.
+- [ ] Objetivo: First Contentful Paint < 1.5s en 3G, Largest Contentful Paint < 2.5s.
+- [ ] Tree-shaking audit: verificar que `firebase/firestore` no esté importando todo el SDK.
+- [ ] Considerar migrar de `moduleResolution=node10` a `bundler` (warning TS 7.0).
+
+**Refs:** `vite.config.ts`, `docs/STACK.md` línea 10, build output actual.
+
+---
+
+#### T3.10 — Budget alerts en Google Cloud Console (COST-1)
+**Por qué:** STACK.md COST-1 documentó que no hay alerta de facturación. Sin esto, cualquier bug en Cloud Functions puede generar costos sin aviso.
+
+**AC:**
+- [ ] Crear budget en Google Cloud Console: alerta email a $1, $5, cap a $10.
+- [ ] Documentar en `docs/STACK.md` que se configuró (link al budget).
+- [ ] Si se migra a Blaze para Functions de T3.1, este paso es bloqueante, no opcional.
+
+**Refs:** `docs/STACK.md` líneas 55-63 (COST-1).
+
+---
+
+#### T3.11 — Backups automáticos de Firestore
+**Por qué:** Si Harold borra accidentalmente todas las reservas desde el dashboard, hoy no hay forma de recuperarlas. El proyecto es la fuente de verdad operacional del spa.
+
+**AC:**
+- [ ] Configurar export programado a Cloud Storage (GCS): `gcloud firestore export` diario vía Cloud Scheduler.
+- [ ] Bucket `gs://hachi-greciaspa-backups/` con lifecycle de 90 días.
+- [ ] Documentar en `docs/RUNBOOK.md` cómo restaurar desde un backup (procedimiento, no script automático).
+- [ ] Verificar primer export manual después de configurar.
+
+**Refs:** operación, no código.
+
+---
+
+#### T3.12 — Observabilidad: error tracking + logs
+**Por qué:** Hoy no hay forma de saber si algo falla en producción más allá de que el cliente reporte. Crítico cuando hay Cloud Functions (T3.1, T3.8).
+
+**AC:**
+- [ ] Integrar Sentry (o similar) en frontend: capturar errores JS no manejados + rejections.
+- [ ] Cloud Functions: logs estructurados a Cloud Logging (ya viene por default).
+- [ ] Configurar alerta en Cloud Monitoring para errores de Functions > 5/min.
+- [ ] Variable `VITE_SENTRY_DSN` en `.env.example`.
+- [ ] Privacy: Sentry NO debe capturar emails, passwords, ni tokens de Auth.
+
+**Refs:** nuevo — definir ADR si hay dudas sobre Sentry vs alternatives.
+
+---
+
+### Track D — Mejoras regulatorias / a largo plazo
+
+#### T3.13 — Política de privacidad y términos (RGPD / LFPDPPP México)
+**Por qué:** México tiene Ley Federal de Protección de Datos Personales (LFPDPPP). Si el spa tiene clientes reales, necesita aviso de privacidad visible.
+
+**AC:**
+- [ ] Páginas `/privacidad` y `/terminos` con textos base (plantilla adaptable).
+- [ ] Checkbox de aceptación en `Register.tsx` con link a ambos.
+- [ ] Almacenar `acceptedAt` Timestamp en `users/{uid}` para evidencia.
+- [ ] Link en footer (hoy apuntan a `#`).
+
+**Refs:** `Register.tsx`, footer links.
+
+---
+
+#### T3.14 — Roles intermedios (groomer, bañador)
+**Por qué:** Hoy solo hay `client` y `admin`. Un groomer necesita ver SU agenda pero no la de otros ni editar precios.
+
+**AC:**
+- [ ] Ampliar `users/{uid}.role` con `'groomer' | 'bañador'`.
+- [ ] Reglas: groomer puede leer `reservas` filtradas por `empleadoId == self` (no las de otros).
+- [ ] UI: dashboard específico para groomers con su agenda del día.
+- [ ] Custom claims: `groomer: true` en el token, además del role en Firestore.
+
+**Refs:** `docs/SCHEMA.md` `users`, `firestore.rules`.
+
+---
+
+#### T3.15 — Múltiples sucursales (multi-tenant)
+**Por qué:** Solo si el spa abre una segunda ubicación. **Bajo** porque es especulativo.
+
+**AC:**
+- [ ] Evaluar primero si es realmente necesario (YAGNI).
+- [ ] Si sí: colección `sucursales/{id}`, campo `sucursalId` en `reservas`, ruteo por subdominio o path.
+
+**Refs:** — Speculative.
+
+---
+
+## Orden de ejecución recomendado
+
+```
+Track A (operación):
+  T3.2 (proveedor email) ──► T3.1 (recordatorios)
+  T3.3 (cancelación cliente) ──► T3.4 (agenda admin) ──► T3.5 (empleados)
+
+Track B (UX cliente): T3.6 (mascotas), T3.7 (re-booking), T3.8 (confirmación email)
+  └─ paralelo a Track A
+
+Track C (producción): T3.10 (budget) ──► T3.12 (observabilidad) ──► T3.9 (perf) ──► T3.11 (backups)
+
+Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
+                        T3.14, T3.15 según necesidad
+```
+
+## ADRs por crear
+
+- `ADR-004-proveedor-email.md` — T3.2.
+- `ADR-005-cron-recordatorios.md` — T3.1 (frecuencia del job).
+- `ADR-006-backups-firestore.md` — T3.11 (frecuencia y retención).
+- `ADR-007-observabilidad.md` — T3.12 (Sentry vs alternatives).
+
+## Estimación de costo incremental
+
+| Track | Costo mensual estimado |
+|---|---|
+| A (SendGrid + Functions) | $0 (Spark free tier cubre Functions invocaciones hasta 2M/mes; recordatorios son ~30/día) |
+| B (sin nuevos servicios) | $0 |
+| C (Sentry free tier) | $0 (5k eventos/mes); backups < 1 GB = $0 |
+| D | $0 |
+
+**Si se migra a Blaze por uso de Cloud Functions**: budget de $10/mes configurado vía T3.10.
+
+## Fuera de alcance de Fase 3
+
+- App móvil nativa (PWA suficiente hasta 1k usuarios activos).
+- Pasarela de pagos (decidido no incluir en el proyecto — sin T3.x de pagos).
+- Marketplace de terceros / integraciones con veterinarias.
+- Multi-idioma (solo español por ahora).
+- Reportes avanzados / business intelligence (Metabase, Looker).
