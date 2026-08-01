@@ -91,10 +91,10 @@ interface Reserva {
 **Por qué:** Tras reservar, el cliente no tiene dónde ver SUS reservas. Hoy `DashboardPage` mezcla todo; falta una vista "mis citas".
 
 **AC:**
-- [ ] En `DashboardPage` (o nueva sub-ruta `/dashboard/citas`), mostrar listado de reservas del usuario filtradas por `userId == auth.uid`.
-- [ ] Estados visuales por `status` (pending=amarillo, confirmed=verde, cancelled=rojo).
-- [ ] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario — pero Firestore rules N1 prohíben update por no-admin. **Decisión (ADR-002):** introducir `allow update: if isAdmin() || (resource.data.userId == auth.uid && request.resource.data.status == 'cancelled')` (cancelación blanca) vs Cloud Function. Documentar.
-- [ ] Hook de fetching con `useAuth().user.uid`.
+- [x] En `DashboardPage` (o nueva sub-ruta `/dashboard/citas`), mostrar listado de reservas del usuario filtradas por `userId == auth.uid`.
+- [x] Estados visuales por `status` (pending=amarillo, confirmed=verde, cancelled=rojo).
+- [x] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario — pero Firestore rules N1 prohíben update por no-admin. **Decisión (ADR-002):** introducir `allow update: if isAdmin() || (resource.data.userId == auth.uid && request.resource.data.status == 'cancelled')` (cancelación blanca) vs Cloud Function. Documentar.
+- [x] Hook de fetching con `useAuth().user.uid`.
 
 **Refs:** `DashboardPage.tsx:34-58`, `firestore.rules:39`.
 
