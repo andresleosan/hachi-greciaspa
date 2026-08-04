@@ -72,16 +72,16 @@ export default function AdminPrices() {
                     <input defaultValue={it.name} onBlur={(e) => handleUpdate(it.id!, { name: e.currentTarget.value })} />
                   </div>
                   <div className="field">
-                    <input type="number" defaultValue={it.price as any} onBlur={(e) => handleUpdate(it.id!, { price: Number(e.currentTarget.value) || null })} placeholder="Precio" />
+                    <input type="number" defaultValue={it.price ?? ''} onBlur={(e) => handleUpdate(it.id!, { price: Number(e.currentTarget.value) || null })} placeholder="Precio" />
                   </div>
                   <div className="field">
-                    <input type="number" defaultValue={it.priceHigh as any} onBlur={(e) => handleUpdate(it.id!, { priceHigh: Number(e.currentTarget.value) || null })} placeholder="Precio alto" />
+                    <input type="number" defaultValue={it.priceHigh ?? ''} onBlur={(e) => handleUpdate(it.id!, { priceHigh: Number(e.currentTarget.value) || null })} placeholder="Precio alto" />
                   </div>
                   <div className="field">
-                    <input defaultValue={it.unit} onBlur={(e) => handleUpdate(it.id!, { unit: e.currentTarget.value })} placeholder="unidad" />
+                    <input defaultValue={it.unit ?? ''} onBlur={(e) => handleUpdate(it.id!, { unit: e.currentTarget.value })} placeholder="unidad" />
                   </div>
                   <div className="field">
-                    <input defaultValue={it.note} onBlur={(e) => handleUpdate(it.id!, { note: e.currentTarget.value })} placeholder="nota" />
+                    <input defaultValue={it.note ?? ''} onBlur={(e) => handleUpdate(it.id!, { note: e.currentTarget.value })} placeholder="nota" />
                   </div>
                   <div className="field"><button className="btn btn-danger" onClick={() => handleDelete(it.id!)}>Eliminar</button></div>
                 </div>
@@ -93,8 +93,8 @@ export default function AdminPrices() {
             <h5>Agregar tarifa</h5>
             <div className="field-grid">
               <div className="field"><input value={newItem.name} onChange={(e) => setNewItem((s) => ({ ...s, name: e.target.value }))} placeholder="Nombre del servicio" /></div>
-              <div className="field"><input type="number" value={newItem.price as any} onChange={(e) => setNewItem((s) => ({ ...s, price: Number(e.target.value) }))} placeholder="Precio" /></div>
-              <div className="field"><input type="number" value={newItem.priceHigh as any} onChange={(e) => setNewItem((s) => ({ ...s, priceHigh: Number(e.target.value) }))} placeholder="Precio alto" /></div>
+              <div className="field"><input type="number" value={newItem.price ?? ''} onChange={(e) => setNewItem((s) => ({ ...s, price: Number(e.target.value) }))} placeholder="Precio" /></div>
+              <div className="field"><input type="number" value={newItem.priceHigh ?? ''} onChange={(e) => setNewItem((s) => ({ ...s, priceHigh: Number(e.target.value) }))} placeholder="Precio alto" /></div>
               <div className="field"><input value={newItem.unit || ''} onChange={(e) => setNewItem((s) => ({ ...s, unit: e.target.value }))} placeholder="unidad" /></div>
             </div>
             <div className="field"><input value={newItem.note || ''} onChange={(e) => setNewItem((s) => ({ ...s, note: e.target.value }))} placeholder="nota" /></div>

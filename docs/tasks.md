@@ -1,6 +1,6 @@
 # Fase 2 — Backlog MVP funcional ✅ CERRADA
 
-**Estado:** cerrada el 2026-07-31. El MVP quedó implementado y verificado; las casillas reflejan el soporte actual de código y pruebas (40/40 reglas).
+**Estado:** cerrada el 2026-07-31. El MVP quedó implementado y verificado; las casillas reflejan el soporte actual de código y pruebas (`41/41` reglas; Functions: `46 passed`, `2 skipped`).
 
 **Siguiente:** ver [`Fase3.md`](./Fase3.md) para backlog post-MVP.
 
@@ -28,7 +28,7 @@ Una tarea está completa solo cuando:
 ## Deuda residual
 
 - **Race condition de doble reserva:** aceptada en ADR-001; la validación client-side es best-effort y dos clientes concurrentes todavía pueden escribir el mismo slot. El admin debe resolver el caso excepcional manualmente.
-- **Whitelist de cancelación:** `firestore.rules` protege exactamente `userId`, `userName`, `userEmail`, `serviceId`, `serviceName`, `price`, `date`, `timeSlot`, `durationMin`, `createdAt` y `createdBy`, pero no `notes` ni campos futuros no enumerados. El cliente actual solo envía `status`; queda pendiente endurecer la regla con una allowlist explícita que permita únicamente ese cambio.
+- **Cancelación y reagendado (T3.3):** `firestore.rules` permite al propietario cancelar solo con el cambio exacto de `status` a `cancelled`; las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas. El cliente usa exclusivamente la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad server-side para fecha/hora futura y disponibilidad del slot.
 - **Enlaces `href="#"`:** permanecen en `Footer.tsx` y en algunas llamadas a la acción de `LandingNueva.tsx`; quedan para la operación de privacidad/términos y navegación de Fase 3.
 - **Estilos inline:** permanecen en `LandingNueva.tsx`, `App.tsx`, `NotFound.tsx`, `Precios.tsx` y `Register.tsx`; la limpieza completa queda pendiente.
 
@@ -65,7 +65,7 @@ interface Reserva {
 }
 ```
 
-**Refs:** `firestore.rules:32-40` (regla `reservas`), `DashboardPage.tsx:34-58`, AUDITORIA.md M5 (índice compuesto userId+createdAt ya en `firestore.indexes.json`).
+**Refs:** `firestore.rules:37-60` (regla `reservas`), `DashboardPage.tsx:34-58`, AUDITORIA.md M5 (índice compuesto userId+createdAt ya en `firestore.indexes.json`).
 
 ---
 
@@ -98,7 +98,7 @@ interface Reserva {
 - [x] Ruta nueva en `App.tsx`.
 - [x] Test de regla: cliente no puede reservar para otro `userId` (cubierto por `user cannot create reserva for another user` en la suite actual).
 
-**Refs:** `src/components/ServiceCard.tsx`, `src/pages/Servicios.tsx`, `firestore.rules:32-40`, `src/services/firebase.ts` (firebaseDb).
+**Refs:** `src/components/ServiceCard.tsx`, `src/pages/Servicios.tsx`, `firestore.rules:37-60`, `src/services/firebase.ts` (firebaseDb).
 
 ---
 
@@ -108,10 +108,10 @@ interface Reserva {
 **AC:**
 - [x] En `DashboardPage` (o nueva sub-ruta `/dashboard/citas`), mostrar listado de reservas del usuario filtradas por `userId == auth.uid`.
 - [x] Estados visuales por `status` (pending=amarillo, confirmed=verde, cancelled=rojo).
-- [x] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario. **Decisión implementada (ADR-002):** el cliente solo envía `status='cancelled'`; la regla protege la lista actual de campos sensibles, mientras la allowlist estricta para bloquear campos no enumerados queda como deuda residual.
+- [x] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario. **Decisión implementada (ADR-002/T3.3):** la cancelación solo permite el cambio exacto `status='cancelled'`; el reagendado de reservas `pending` solo permite `date` y `timeSlot` y delega la disponibilidad a la callable.
 - [x] Hook de fetching con `useAuth().user.uid`.
 
-**Refs:** `DashboardPage.tsx:34-58`, `firestore.rules:39`.
+**Refs:** `DashboardPage.tsx:34-58`, `firestore.rules:44-60`.
 
 ---
 

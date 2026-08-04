@@ -5,31 +5,28 @@ Estado: aceptada e implementada
 
 ## Contexto
 
-T2.4 requiere que el cliente pueda **cancelar sus propias reservas** desde su dashboard. La regla de `firestore.rules` permite al dueño actualizar una reserva propia cuando el estado solicitado es `cancelled`, pero actualmente protege campos mediante una lista de campos prohibidos, no mediante una whitelist estricta de campos modificables. Admin conserva la capacidad de editar cualquier reserva y solo admin puede eliminarla.
-
-Pero cancelar (cambiar `status` a `'cancelled'`) es legítimo y no expone a manipulación sensible si la whitelist es estricta.
+T2.4 requiere que el cliente pueda **cancelar sus propias reservas** desde su dashboard. T3.3 agrega el reagendado de reservas propias `pending`. Ambas operaciones deben impedir que el cliente cambie identidad, servicio, precio, notas u otros campos de la reserva. Admin conserva la capacidad de editar cualquier reserva y solo admin puede eliminarla.
 
 ## Decisión
 
-**Relajar la regla `reservas.update` con una lista de campos sensibles protegidos y un valor de estado permitido:**
+**Permitir al propietario únicamente la cancelación exacta en `reservas.update`; el reagendado del cliente es callable-only:**
 
 ```firestore
 allow update: if isAdmin()
   || (
     request.auth != null
     && resource.data.userId == request.auth.uid
+    && (resource.data.status == 'pending' || resource.data.status == 'confirmed')
     && request.resource.data.status == 'cancelled'
-    && !request.resource.data.diff(resource.data).affectedKeys()
-        .hasAny(['userId', 'userName', 'userEmail', 'serviceId', 'serviceName',
-                 'price', 'date', 'timeSlot', 'durationMin', 'createdAt', 'createdBy'])
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
   );
 ```
 
-Con la regla actual, los campos sensibles protegidos son exactamente `userId`, `userName`, `userEmail`, `serviceId`, `serviceName`, `price`, `date`, `timeSlot`, `durationMin`, `createdAt` y `createdBy`. La regla no incluye `notes` ni otros campos no enumerados, por lo que esos campos podrían modificarse durante una cancelación. El cliente actual, en `cancelMyReserva`, solo envía `{ status: 'cancelled' }`; la protección server-side debe endurecerse para exigir explícitamente que el único campo afectado sea `status`.
+La cancelación acepta únicamente `{ status: 'cancelled' }` y conserva el documento para auditoría. Las escrituras directas del cliente sobre `date` y `timeSlot` son denegadas y no constituyen un contrato de reagendado. El propietario no puede cambiar campos adicionales, incluidos `notes` y cualquier campo futuro.
 
 `delete` sigue siendo solo admin (preserva historial — las canceladas quedan con `status='cancelled'` para reporting, no desaparecen).
 
-La implementación está en `firestore.rules:37-55` y el flujo de cliente en `src/services/reservas.ts:104-110`. La suite actual `npm run rules:test` tiene 40 casos y verifica que el dueño puede cancelar, pero no puede cancelar la reserva de otro usuario ni alterar precio o `timeSlot` durante la cancelación.
+El cliente cancela mediante `cancelMyReserva`, que envía solo `{ status: 'cancelled' }`. Para reagendar, `rescheduleMyReserva` llama exclusivamente a `rescheduleReserva`; no escribe `date` ni `timeSlot` directamente. La callable usa Admin SDK y es la autoridad para disponibilidad: valida fecha/hora futura en `America/Mexico_City`, ownership y estado, consulta el mismo servicio/fecha/hora dentro de una transacción, ignora únicamente conflictos `cancelled` y actualiza solo los dos campos de reagendado.
 
 ## Alternativas consideradas
 
@@ -41,23 +38,28 @@ La implementación está en `firestore.rules:37-55` y el flujo de cliente en `sr
 - **Pro:** 0 código nuevo, 0 riesgo de abuso.
 - **Con:** gap de UX mediocre. Los clientes esperan poder cancelar por la app. Aumenta fricción, valor del producto baja.
 
-### C. (Elegida) Regla Firestore con protección de campos sensibles.
-- **Pro:** 0 infra nueva, sigue en Spark. La regla es declarativa y auditable (test de rules la valida). Estado final queda trazable.
-- **Con:** la denylist actual puede dejar modificables campos nuevos o no enumerados si el schema cambia. Mitigación actual: la suite cubre `user cannot change price`, `user cannot change timeSlot`, `user can cancel own` y `user cannot cancel another user`; queda pendiente endurecerla a una allowlist explícita.
+### C. (Elegida) Regla Firestore exacta para cancelación y callable autoritativa para reagendado.
+- **Pro:** no agrega una vía directa de escritura de fecha/hora para el cliente, mantiene el estado trazable y permite que la disponibilidad se valide server-side dentro de una transacción.
+- **Con:** la callable requiere Functions configuradas y desplegadas para que el reagendado opere fuera del entorno local.
 
 ## Consecuencias
 
-- **Se gana:** UX completa de cancelación, sin agregar infraestructura, costo $0.
-- **Se sacrifica:** complejidad incremental de firestore.rules y, mientras no se endurezca, control completo sobre campos no enumerados. Es tolerable como deuda residual documentada, pero la regla debe migrar a una allowlist explícita de cambios permitidos (`status`) antes de ampliar el schema.
-- **Tests actuales (`tools/firestore-tests/run-rules-tests.mjs`):** la suite de 40 casos incluye:
-  1. user can cancel own reserva (status → cancelled)
-  2. user cannot cancel another user's reserva
-  3. user cannot change price via "cancel"
-  4. user cannot change timeSlot via "cancel"
+- **Se gana:** cancelación con un contrato de mutación explícito; el reagendado es callable-only y la disponibilidad del nuevo slot no depende de una comprobación confiada al navegador.
+- **Se sacrifica:** el reagendado depende de la callable y su configuración operativa; esta tarea no despliega Functions ni completa configuración de producción.
+- **Tests:** `npm run rules:test` reporta `41 passed, 0 failed`; la suite de Functions reporta `46 passed, 2 skipped`. Las pruebas cubren ownership, estado, cancelación exacta, disponibilidad y actualización limitada a `date`/`timeSlot`.
+
+## Rollback
+
+- **Código:** retirar la exportación de `rescheduleReserva` y el botón/formulario de reagendado del dashboard. La cancelación puede conservarse porque es una mutación independiente.
+- **Reglas:** conservar la denegación de escrituras directas de `date`/`timeSlot`; si se retira el flujo callable, repetir la suite de reglas antes de cualquier cambio adicional.
+- **Datos:** no hay migración, colección ni campo nuevo. Las reservas ya reagendadas conservan su última fecha/hora y un rollback de código no revierte datos de forma destructiva ni automática.
+- **Producción:** no desplegar ni aplicar cambios externos sin autorización explícita y backup reciente.
 
 ## Refs
 
 - tasks.md T2.4 AC.
-- firestore.rules:37-55 (regla implementada de `reservas`).
-- `npm run rules:test` — suite actual de 40 casos.
+- `firestore.rules:37-60` (regla implementada de `reservas`).
+- `src/services/reservas.ts` (cancelación directa mínima y llamada callable para reagendado).
+- `functions/src/rescheduleReserva.ts` (validación y transacción autoritativa).
+- `npm run rules:test` — suite de reglas de reservas.
 - AUDITORIA.md N1 (precedente de whitelist de campos en regla de `users`).

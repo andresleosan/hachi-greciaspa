@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 // Read runtime env variables injected by Vite. Keep secrets out of source control.
@@ -38,8 +39,13 @@ try {
   console.warn('[firebase] firestore init failed:', e)
 }
 
+if (!_auth || !_db) {
+  throw new Error('[firebase] Auth and Firestore could not be initialized.')
+}
+
 export const firebaseAuth = _auth
 export const firebaseDb = _db
+export const firebaseFunctions = getFunctions(firebaseApp)
 
 // App Check (H4): rate limiting server-side via reCAPTCHA v3
 // Requires: VITE_FIREBASE_APP_CHECK_SITE_KEY in .env.local
@@ -69,6 +75,12 @@ if (useEmulator) {
 
   try {
     connectFirestoreEmulator(firebaseDb, 'localhost', 8080)
+  } catch (e) {
+    // ignore
+  }
+
+  try {
+    connectFunctionsEmulator(firebaseFunctions, 'localhost', 5001)
   } catch (e) {
     // ignore
   }

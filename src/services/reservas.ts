@@ -1,4 +1,4 @@
-import { firebaseDb } from './firebase'
+import { firebaseDb, firebaseFunctions } from './firebase'
 import {
   collection,
   addDoc,
@@ -9,7 +9,9 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore'
+import { httpsCallable } from 'firebase/functions'
 import type { Reserva } from '../types'
+import { mapReservaError } from './reservaErrors'
 
 export class SlotTakenError extends Error {
   constructor() {
@@ -38,6 +40,14 @@ export type NewReservaInput = Pick<
   | 'durationMin'
   | 'notes'
 >
+
+export interface RescheduleReservaInput {
+  reservaId: string
+  date: string
+  timeSlot: string
+}
+
+export interface RescheduleReservaResult extends RescheduleReservaInput {}
 
 /**
  * ADR-001: validación de doble-booking client-side best-effort.
@@ -108,4 +118,22 @@ export async function createReserva(input: NewReservaInput): Promise<string> {
  */
 export async function cancelMyReserva(reservaId: string): Promise<void> {
   await updateDoc(doc(firebaseDb, 'reservas', reservaId), { status: 'cancelled' })
+}
+
+export async function rescheduleMyReserva(
+  reservaId: string,
+  date: string,
+  timeSlot: string,
+): Promise<RescheduleReservaResult> {
+  const callable = httpsCallable<RescheduleReservaInput, RescheduleReservaResult>(
+    firebaseFunctions,
+    'rescheduleReserva',
+  )
+
+  try {
+    const response = await callable({ reservaId, date, timeSlot })
+    return response.data
+  } catch (error) {
+    throw new ReservaError(mapReservaError(error))
+  }
 }

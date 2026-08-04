@@ -2,7 +2,7 @@
 
 > **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
 >
-> **Evidencia local verificada:** typecheck y build del frontend pasan; las reglas de Firestore reportan `40 passed, 0 failed`; Functions reporta `34 passed` y `2 skipped`, y su typecheck/build pasan. El código de recordatorios programados, adaptador Resend, template, modelo Firestore y reglas existe en el repositorio.
+> **Evidencia local verificada:** typecheck y build del frontend pasan; las reglas de Firestore reportan `41 passed, 0 failed`; Functions reporta `46 passed` y `2 skipped`, y su typecheck/build pasan. El código de recordatorios programados, adaptador Resend, template, modelo Firestore y reglas existe en el repositorio.
 >
 > **Pendiente de verificación externa:** dominio, secreto, billing, despliegue y browser QA.
 
@@ -63,18 +63,18 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 
 ---
 
-#### T3.3 — Cancelación libre del cliente + reagendado
-**Por qué:** Hoy el cliente no puede cancelar (regla N1+Fase2). Si la cita es dentro de 2h y necesita cambiar, no tiene flujo. Workaround actual: llamar al spa.
+#### T3.3 — Cancelación libre del cliente + reagendado ✅ Implementado localmente
+**Por qué:** El cliente necesita corregir una cita propia sin editar datos sensibles ni ocupar un slot ya reservado.
 
-**AC:**
-- [ ] Relajar `firestore.rules:32-40` (ADR-002 ya documentó el patrón) para que `resource.data.userId == auth.uid` pueda:
-  1. Update `status` a `'cancelled'` (cancelación blanca).
-  2. Update `date` + `timeSlot` si `status` es `pending` (reagendado).
-- [ ] En `DashboardPage`, agregar botones "Cancelar" y "Reagendar" (este último solo si `status === 'pending'` y `date` es futura).
-- [ ] Validación server-side: reagendado no puede ser a slot ya ocupado (misma lógica de ADR-001).
-- [ ] Regla test: cliente puede cancelar propia reserva, no puede cancelar la de otro, no puede cambiar `userId` ni `serviceId` ni `price`.
+**AC implementados:**
+- [x] Hardening de `firestore.rules`: el dueño solo puede cancelar con el cambio exacto `status -> 'cancelled'`; las escrituras directas del cliente sobre `date`/`timeSlot` están denegadas y no son una vía de reagendado.
+- [x] Controles en `DashboardPage`: cancelar reservas propias `pending`/`confirmed` y mostrar reagendado solo para reservas propias `pending` con fecha futura.
+- [x] Validación server-side en la callable `rescheduleReserva`: usa Admin SDK, autentica y valida ownership/estado, fecha y hora futuras en `America/Mexico_City`, y es la autoridad para rechazar slots activos ocupados dentro de una transacción.
+- [x] Tests de reglas (`41 passed, 0 failed`), Functions (`46 passed, 2 skipped`) y cliente para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
 
-**Refs:** `docs/SCHEMA.md` línea 87, `firestore.rules:32-40`.
+**Operación separada, no completada por esta tarea:** desplegar la callable, configurar producción y verificar el comportamiento en el entorno desplegado.
+
+**Refs:** `docs/SCHEMA.md`, `docs/adr/ADR-002-cancelacion-cliente.md`, `firestore.rules:37-60`.
 
 ---
 

@@ -84,7 +84,7 @@ Citas reservadas. Es la colección central de Fase 2.
 
 **Índices:** compuesto `userId ASC + createdAt DESC` ya en `firestore.indexes.json` (soporta la query de "mis reservas" en `DashboardPage.tsx:39`). Considerar índice `date + timeSlot + serviceId` para ADR-001 (detección de doble-booking).
 
-**Reglas:** ver `firestore.rules:32-40`. T2.4 (ADR-002) relajará `update` para permitir cancelación própria blanca.
+**Reglas:** ver `firestore.rules:37-60` y ADR-002. El propietario solo puede cancelar con el cambio exacto `status -> 'cancelled'` cuando la reserva está `pending` o `confirmed`; las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas y no puede cambiar campos adicionales. `rescheduleMyReserva` llama exclusivamente a la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad para validar fecha/hora futura y disponibilidad del slot en una transacción server-side. Admin conserva la edición completa y la callable aún requiere despliegue/configuración de producción para operar fuera del entorno local.
 
 ---
 

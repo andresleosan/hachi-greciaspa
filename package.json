@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "test:client": "vitest run src/services/reservaErrors.test.ts",
     "test": "npm run rules:test && npm --prefix functions test",
     "set-admin": "node tools/set-admin.js",
     "seed:services": "node tools/seed-services.mjs",
@@ -46,6 +47,7 @@
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "vite": "^8.0.14"
+    "vite": "^8.0.14",
+    "vitest": "^4.1.10"
   }
 }

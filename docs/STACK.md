@@ -15,7 +15,7 @@
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
 | Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
-| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 40 casos, JDK 21 requerido |
+| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 41 passed, 0 failed; JDK 21 requerido |
 
 ## Evaluación de seguridad: React Router
 
@@ -25,11 +25,12 @@ El `npm audit` actual reporta el advisory de modo RSC para `react-router-dom@7.1
 
 ### MVP verificado
 
-- Los clientes autenticados pueden leer el catálogo, crear sus propias reservas, verlas en el dashboard y cancelarlas. Firestore aplica una denylist de campos sensibles; el cliente actual solo envía `status`, mientras el endurecimiento para permitir únicamente ese cambio permanece como deuda residual.
+- Los clientes autenticados pueden leer el catálogo, crear sus propias reservas, verlas en el dashboard y cancelarlas. Firestore permite la cancelación únicamente con el cambio exacto de `status` a `cancelled`; las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas.
+- El cliente solicita el reagendado exclusivamente mediante la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad para disponibilidad. Valida ownership, estado, fecha/hora futura en `America/Mexico_City` y conflictos de slots activos dentro de una transacción. El código está implementado localmente; el despliegue y la configuración de producción siguen pendientes.
 - La validación de slots está implementada en `src/services/reservas.ts` como best-effort client-side; el tradeoff de concurrencia aceptado está documentado en ADR-001.
 - Los mensajes de contacto persisten en `mensajes`, con creación anónima y lectura/eliminación solo para admin.
 - La galería se sirve mediante seis paths públicos estáticos y no depende de Cloud Storage.
-- `firestore.rules` está cubierta por la suite actual de 40 casos, incluidos ownership de reservas, cancelación, protección de precios, mensajes de contacto y acceso admin.
+- `firestore.rules` está cubierta por la suite actual: `41 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, mensajes de contacto y acceso admin. Functions reporta `46 passed, 2 skipped`.
 - La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite en el emulador.
 
 ### Brechas de Fase 3

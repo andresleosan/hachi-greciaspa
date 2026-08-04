@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 interface Props {
-  children: JSX.Element
+  children: React.ReactElement
   requireRole?: 'admin'
 }
 

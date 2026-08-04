@@ -39,17 +39,15 @@ service cloud.firestore {
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
       // Owner or admin can read
       allow read: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
-      // Update: admin can edit anything; the owner may ONLY flip status to 'cancelled'
-      // (ADR-002). Field whitelist ensures userId/serviceId/price/date/timeSlot/createdAt
-      // can't be tampered with by the client.
+      // Update: admin can edit anything; owners may only cancel within the
+      // exact status-only mutation contract. Rescheduling uses the callable.
       allow update: if isAdmin()
         || (
           request.auth != null
           && resource.data.userId == request.auth.uid
+          && (resource.data.status == 'pending' || resource.data.status == 'confirmed')
           && request.resource.data.status == 'cancelled'
-          && !request.resource.data.diff(resource.data).affectedKeys()
-              .hasAny(['userId', 'userName', 'userEmail', 'serviceId', 'serviceName',
-                       'price', 'date', 'timeSlot', 'durationMin', 'createdAt', 'createdBy'])
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
         );
       // Only admin may delete (cancelled reservations stay for audit)
       allow delete: if isAdmin();

@@ -83,38 +83,41 @@ async function main() {
       })
       return assertSucceeds(aliceDb.collection('reservas').doc('r-alice').get())
     })
-    // ADR-002: user may cancel own reserva (status -> 'cancelled') but NOT modify
-    // any other field. Replaces the older "user cannot update own reserva (admin only)"
-    // which assumed a stricter rule.
-    await test('user can cancel own reserva (status -> cancelled)', async () => {
+    await test('owner cannot directly reschedule own pending reserva', async () => {
       await testEnv.withSecurityRulesDisabled(async (ctx) => {
-        await ctx.firestore().collection('reservas').doc('r-alice-cancel').set({ userId: 'alice', serviceId: 'spa-day', serviceName: 'Spa Day', date: '2099-01-01', timeSlot: '10:00', status: 'pending' })
+        await ctx.firestore().collection('reservas').doc('r-alice-reschedule').set({ userId: 'alice', serviceId: 'spa-day', serviceName: 'Spa Day', price: 300, notes: 'Quiet room', createdAt: new Date(), createdBy: 'staff', date: '2099-01-01', timeSlot: '10:00', status: 'pending' })
+      })
+      return assertFails(aliceDb.collection('reservas').doc('r-alice-reschedule').update({ date: '2099-01-02', timeSlot: '11:00' }))
+    })
+    await test('owner cannot reschedule confirmed reserva', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-alice-confirmed').set({ userId: 'alice', serviceId: 'spa-day', date: '2099-01-01', timeSlot: '10:00', status: 'confirmed' })
+      })
+      return assertFails(aliceDb.collection('reservas').doc('r-alice-confirmed').update({ date: '2099-01-02', timeSlot: '11:00' }))
+    })
+    await test('owner cannot reschedule another user reserva', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-bob-reschedule').set({ userId: 'bob', serviceId: 'spa-day', date: '2099-01-01', timeSlot: '10:00', status: 'pending' })
+      })
+      return assertFails(aliceDb.collection('reservas').doc('r-bob-reschedule').update({ date: '2099-01-02', timeSlot: '11:00' }))
+    })
+    await test('owner cannot combine rescheduling with price, serviceId, notes, or status', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-alice-reschedule-fields').set({ userId: 'alice', serviceId: 'spa-day', price: 300, notes: 'Quiet room', date: '2099-01-01', timeSlot: '10:00', status: 'pending' })
+      })
+      return assertFails(aliceDb.collection('reservas').doc('r-alice-reschedule-fields').update({ date: '2099-01-02', timeSlot: '11:00', price: 1, serviceId: 'other-service', notes: 'Changed', status: 'confirmed' }))
+    })
+    await test('owner can cancel own reserva with only status', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-alice-cancel').set({ userId: 'alice', serviceId: 'spa-day', serviceName: 'Spa Day', date: '2099-01-01', timeSlot: '10:00', status: 'confirmed' })
       })
       return assertSucceeds(aliceDb.collection('reservas').doc('r-alice-cancel').update({ status: 'cancelled' }))
     })
-    await test('user cannot change own reserva price (whitelist)', async () => {
+    await test('owner cannot cancel while changing notes', async () => {
       await testEnv.withSecurityRulesDisabled(async (ctx) => {
-        await ctx.firestore().collection('reservas').doc('r-alice-price').set({ userId: 'alice', serviceId: 'spa-day', serviceName: 'Spa Day', price: 300, date: '2099-01-01', timeSlot: '11:00', status: 'pending' })
+        await ctx.firestore().collection('reservas').doc('r-alice-cancel-notes').set({ userId: 'alice', serviceId: 'spa-day', notes: 'Original', date: '2099-01-01', timeSlot: '11:00', status: 'pending' })
       })
-      return assertFails(aliceDb.collection('reservas').doc('r-alice-price').update({ status: 'cancelled', price: 1 }))
-    })
-    await test('user cannot change own reserva timeSlot via cancel', async () => {
-      await testEnv.withSecurityRulesDisabled(async (ctx) => {
-        await ctx.firestore().collection('reservas').doc('r-alice-slot').set({ userId: 'alice', serviceId: 'spa-day', serviceName: 'Spa Day', date: '2099-01-01', timeSlot: '11:00', status: 'pending' })
-      })
-      return assertFails(aliceDb.collection('reservas').doc('r-alice-slot').update({ status: 'cancelled', timeSlot: '15:00' }))
-    })
-    await test('user cannot cancel another user reserva', async () => {
-      await testEnv.withSecurityRulesDisabled(async (ctx) => {
-        await ctx.firestore().collection('reservas').doc('r-bob').set({ userId: 'bob', serviceId: 'spa-day', serviceName: 'Spa Day', date: '2099-01-01', timeSlot: '12:00', status: 'pending' })
-      })
-      return assertFails(aliceDb.collection('reservas').doc('r-bob').update({ status: 'cancelled' }))
-    })
-    await test('user cannot set status to anything other than cancelled', async () => {
-      await testEnv.withSecurityRulesDisabled(async (ctx) => {
-        await ctx.firestore().collection('reservas').doc('r-alice-conf').set({ userId: 'alice', serviceId: 'spa-day', serviceName: 'Spa Day', date: '2099-01-01', timeSlot: '13:00', status: 'pending' })
-      })
-      return assertFails(aliceDb.collection('reservas').doc('r-alice-conf').update({ status: 'confirmed' }))
+      return assertFails(aliceDb.collection('reservas').doc('r-alice-cancel-notes').update({ status: 'cancelled', notes: 'Changed' }))
     })
     await test('admin can update any reserva', async () => {
       await testEnv.withSecurityRulesDisabled(async (ctx) => {

@@ -36,9 +36,14 @@ const key = JSON.parse(fs.readFileSync(fullPath, { encoding: 'utf8' }))
 
 admin.initializeApp({ credential: admin.credential.cert(key) })
 
-admin.auth().setCustomUserClaims(uid, { admin: isAdmin })
+const profileRole = isAdmin ? 'admin' : 'client'
+
+Promise.all([
+  admin.auth().setCustomUserClaims(uid, { admin: isAdmin }),
+  admin.firestore().collection('users').doc(uid).set({ role: profileRole }, { merge: true }),
+])
   .then(() => {
-    console.log(`Custom claim set: uid=${uid} admin=${isAdmin}`)
+    console.log(`Admin access synchronized: uid=${uid} admin=${isAdmin}`)
     process.exit(0)
   })
   .catch((err) => {
