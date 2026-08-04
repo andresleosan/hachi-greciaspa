@@ -4,6 +4,8 @@
 
 **Goal:** Close Phase 2 documentation, select Resend, implement idempotent 24-hour reminders, and establish a verified budget gate without touching existing local work or deploying automatically.
 
+> **Estado al 2026-08-04:** Existe evidencia de implementación para las tareas de Functions y recordatorios. Las casillas de este plan son notas históricas de ejecución; el trabajo restante es la verificación operativa. No se considera completada ninguna acción de consola, dominio, secreto, billing, despliegue o browser QA sin confirmación externa.
+
 **Architecture:** Keep the current React/Firebase MVP unchanged. Add a separate `functions/` Firebase Functions project with pure reminder-domain functions, a Firestore-backed state machine, and a Resend adapter that is called only from the backend. Treat budget configuration and deployment authorization as operational gates documented outside the code.
 
 **Tech Stack:** React 19, TypeScript 6, Vite 8, Firebase Auth/Firestore, Firebase Functions v2 on Node 22, Firebase Admin SDK, Resend, `date-fns-tz`, Firestore emulator, and Vitest for Functions tests.

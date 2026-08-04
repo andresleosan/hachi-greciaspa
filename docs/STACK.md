@@ -9,13 +9,17 @@
 | Framework UI | React | 19.2 | con Suspense + lazy routes |
 | Lenguaje | TypeScript | 6.0 | strict (warn de moduleResolution=node10, migrar a bundler en Fase 3) |
 | Build | Vite | 8.2 | bundle 107 KB Firebase + 74 KB app gzip |
-| Routing | react-router-dom | 7.15 | |
+| Routing | react-router-dom | 7.18.2 | |
 | Styling | Tailwind CSS | 4.3 | layered sobre tokens custom en `src/styles/maqueta.css` |
 | Estado | (sin store global) | — | Zustand removido en Fase 1 (M6) por no usado |
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
 | Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
 | Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 40 casos, JDK 21 requerido |
+
+## Evaluación de seguridad: React Router
+
+El `npm audit` actual reporta el advisory de modo RSC para `react-router-dom@7.18.2`. La aplicación usa únicamente `BrowserRouter`, `Routes`, `Route`, `Link`, `Navigate`, `useNavigate` y `useSearchParams`; no se encontraron APIs RSC ni de server actions. Por la arquitectura SPA actual, el advisory no es alcanzable a través del código desplegado. Debe revisitarse cuando se publique una versión parcheada; el audit no se suprime ni se considera limpio.
 
 ## Estado de entrega
 

@@ -86,7 +86,7 @@ interface Reserva {
 **Por qué:** Es el flujo central del MVP. `Reservar.tsx` crea reservas para clientes autenticados y `DashboardPage` las muestra según el rol.
 
 **AC:**
-- [ ] Crear página `src/pages/Reservar.tsx` con flujo multi-paso:
+- [x] Crear página `src/pages/Reservar.tsx` con flujo multi-paso:
   1. Selecciona servicio (lista desde `servicios`).
   2. Selecciona fecha (calendar día próximo) + slot horario.
   3. Confirma datos (nombre, email, notas).

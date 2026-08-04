@@ -35,16 +35,42 @@ Operador: [completar después de verificar]
 
 Autorizar producción solo cuando cada punto tenga evidencia y autorización explícita:
 
-- [ ] Dominio del proveedor de email verificado.
-- [ ] Secret Manager configurado para el secreto del proveedor; no colocar el valor del secreto en el repositorio, logs o frontend.
-- [ ] Evidencia de build y typecheck.
-- [ ] Evidencia de las pruebas de reglas.
+- [ ] Dominio propio del spa verificado en Resend, con SPF, DKIM y DMARC configurados según las instrucciones del proveedor; no usar un dominio compartido, personal o de prueba en producción.
+- [ ] Secret Manager configurado con el secreto exacto `RESEND_API_KEY`; no colocar su valor en el repositorio, logs o frontend.
+- [x] Evidencia local de build y typecheck registrada abajo.
+- [x] Evidencia local de las pruebas de reglas registrada abajo.
 - [ ] Revisión de seguridad completada.
 - [ ] QA de navegador completado.
 - [ ] Procedimiento de rollback revisado.
 - [ ] Autorización explícita para producción registrada por el responsable.
 
 El proveedor recomendado es Resend según ADR-004, pero la integración, el dominio, el secreto y el despliegue no están verificados en este runbook.
+
+## Evidencia Local — 2026-08-04
+
+Los siguientes resultados son evidencia local del repositorio. No constituyen autorización para desplegar ni demuestran que los gates externos estén completados.
+
+```text
+npx tsc --noEmit                         PASS
+npm run build                            PASS
+npm run rules:test                       40 passed, 0 failed
+npm --prefix functions test              34 passed, 2 skipped
+npm --prefix functions run typecheck     PASS
+npm --prefix functions run build         PASS
+```
+
+## Secuencia De Ejecución Externa
+
+Esta secuencia es una instrucción operativa pendiente; no se ha ejecutado desde este repositorio:
+
+1. Verificar en Resend el dominio propio del spa y sus registros SPF, DKIM y DMARC.
+2. Crear `RESEND_API_KEY` en Firebase Secret Manager sin exponer su valor en el repositorio, logs o frontend.
+3. Configurar el presupuesto de `$10/mes` con notificaciones de gasto real y pronosticado en `$1`, `$5` y `$10`; el budget alert permanece **no verificado**.
+4. Desplegar solo después de contar con autorización explícita para producción y con los gates de release completos.
+5. Invocar una prueba controlada y revisar su resultado sin enviar recordatorios duplicados.
+6. Verificar el rollback deshabilitando la Function programada y confirmando que no se producen nuevas ejecuciones.
+
+Google Cloud Budgets envía alertas, pero no impone un límite duro de facturación.
 
 ## Emergencia
 

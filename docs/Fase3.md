@@ -1,5 +1,11 @@
 # Fase 3 — Backlog Post-MVP
 
+> **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
+>
+> **Evidencia local verificada:** typecheck y build del frontend pasan; las reglas de Firestore reportan `40 passed, 0 failed`; Functions reporta `34 passed` y `2 skipped`, y su typecheck/build pasan. El código de recordatorios programados, adaptador Resend, template, modelo Firestore y reglas existe en el repositorio.
+>
+> **Pendiente de verificación externa:** dominio, secreto, billing, despliegue y browser QA.
+
 Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
 
 ---
@@ -38,7 +44,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
   3. Marca `recordatorios.sent=true` o `failed` con error.
 - [ ] Template de email en `functions/templates/reminder.html` con datos de la reserva.
 - [ ] Documentar en `docs/ADR-004-recordatorios.md` decisión: cron cada hora vs cron diario a las 18:00.
-- [ ] Variables de entorno: `SENDGRID_API_KEY` en Firebase Functions config.
+- [ ] Variable de entorno: `RESEND_API_KEY` en Firebase Secret Manager (configuración pendiente).
 
 **Refs:** `firestore.rules` (nueva colección), `docs/STACK.md` "Email transaccional — Fase 3".
 
