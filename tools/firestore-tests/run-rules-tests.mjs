@@ -1,4 +1,5 @@
 import { initializeTestEnvironment, assertFails, assertSucceeds } from '@firebase/rules-unit-testing'
+import { deleteField } from 'firebase/firestore'
 import fs from 'fs'
 import path from 'path'
 
@@ -131,6 +132,12 @@ async function main() {
         await ctx.firestore().collection('reservas').doc('r-alice-change-employee').set({ userId: 'alice', empleadoId: 'employee-1', status: 'pending' })
       })
       return assertFails(aliceDb.collection('reservas').doc('r-alice-change-employee').update({ empleadoId: 'employee-2' }))
+    })
+    await test('client cannot remove empleadoId from existing reserva', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-alice-remove-employee').set({ userId: 'alice', empleadoId: 'employee-1', status: 'pending' })
+      })
+      return assertFails(aliceDb.collection('reservas').doc('r-alice-remove-employee').update({ status: 'cancelled', empleadoId: deleteField() }))
     })
     await test('admin can update any reserva', async () => {
       await testEnv.withSecurityRulesDisabled(async (ctx) => {
