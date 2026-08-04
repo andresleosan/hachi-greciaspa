@@ -76,6 +76,7 @@ async function main() {
     // --- Reservas (owner create/read, admin update/delete) ---
     await test('user can create own reserva', () => assertSucceeds(aliceDb.collection('reservas').doc('r1').set({ userId: 'alice', serviceName: 'Spa', createdAt: new Date() })))
     await test('user cannot create reserva for another user', () => assertFails(aliceDb.collection('reservas').doc('r2').set({ userId: 'bob', serviceName: 'Spa' })))
+    await test('client cannot create reserva with another empleado', () => assertFails(aliceDb.collection('reservas').doc('r-with-employee').set({ userId: 'alice', serviceName: 'Spa', empleadoId: 'employee-2' })))
     await test('user can read own reserva', async () => {
       // seed own reserva then read
       await testEnv.withSecurityRulesDisabled(async (ctx) => {
@@ -119,11 +120,29 @@ async function main() {
       })
       return assertFails(aliceDb.collection('reservas').doc('r-alice-cancel-notes').update({ status: 'cancelled', notes: 'Changed' }))
     })
+    await test('client cannot add empleadoId to existing reserva', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-alice-add-employee').set({ userId: 'alice', status: 'pending' })
+      })
+      return assertFails(aliceDb.collection('reservas').doc('r-alice-add-employee').update({ empleadoId: 'employee-1' }))
+    })
+    await test('client cannot change empleadoId on existing reserva', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-alice-change-employee').set({ userId: 'alice', empleadoId: 'employee-1', status: 'pending' })
+      })
+      return assertFails(aliceDb.collection('reservas').doc('r-alice-change-employee').update({ empleadoId: 'employee-2' }))
+    })
     await test('admin can update any reserva', async () => {
       await testEnv.withSecurityRulesDisabled(async (ctx) => {
         await ctx.firestore().collection('reservas').doc('r-admin').set({ userId: 'alice', serviceId: 'spa-day', serviceName: 'Spa Day', date: '2099-01-01', timeSlot: '14:00', status: 'pending' })
       })
       return assertSucceeds(bobAdminDb.collection('reservas').doc('r-admin').set({ status: 'confirmed' }, { merge: true }))
+    })
+    await test('admin can update empleadoId on a reserva', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('reservas').doc('r-admin-employee').set({ userId: 'alice', status: 'pending', empleadoId: null })
+      })
+      return assertSucceeds(bobAdminDb.collection('reservas').doc('r-admin-employee').set({ empleadoId: 'employee-1' }, { merge: true }))
     })
 
     // --- Recordatorios (Functions-owned, admin read-only) ---
@@ -142,6 +161,11 @@ async function main() {
     await test('guest cannot read empleados', () => assertFails(guestDb.collection('empleados').doc('e1').get()))
     await test('client cannot read empleados', () => assertFails(aliceDb.collection('empleados').doc('e1').get()))
     await test('admin can read empleados', () => assertSucceeds(bobAdminDb.collection('empleados').doc('e1').get()))
+    await test('admin can create and update empleados', async () => {
+      const employee = { name: 'Employee One', role: 'groomer', photoUrl: null, active: true, services: ['spa-day'], weeklyShifts: { monday: 'full', tuesday: null, wednesday: null, thursday: null, friday: null, saturday: null, sunday: null } }
+      await assertSucceeds(bobAdminDb.collection('empleados').doc('e-admin').set(employee))
+      return assertSucceeds(bobAdminDb.collection('empleados').doc('e-admin').update({ active: false }))
+    })
 
     // --- Mensajes (contact form): guest can create, admin can read/delete ---
     await test('guest can create mensaje', () => assertSucceeds(guestDb.collection('mensajes').doc('m1').set({ name: 'Test', email: 'test@x.com', message: 'Hola', createdAt: new Date(), read: false })))
