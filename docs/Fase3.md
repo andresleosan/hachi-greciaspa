@@ -2,9 +2,9 @@
 
 > **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
 >
-> **Evidencia local verificada:** typecheck y build del frontend pasan; las reglas de Firestore reportan `41 passed, 0 failed`; Functions reporta `46 passed` y `2 skipped`, y su typecheck/build pasan. El código de recordatorios programados, adaptador Resend, template, modelo Firestore y reglas existe en el repositorio.
+> **Evidencia local al 2026-08-04:** rules `41 passed, 0 failed`; Functions `47 passed, 2 skipped`. Esta evidencia no constituye verificación de producción.
 >
-> **Pendiente de verificación externa:** dominio, secreto, billing, despliegue y browser QA.
+> **Pendiente de verificación externa:** rollback, autorización de producción, dominio, `RESEND_API_KEY`, billing, budget alert, despliegue y browser QA.
 
 Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
 
@@ -37,29 +37,29 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** Sin recordatorios, el índice de no-shows del spa sube. Es la única automatización que paga el MVP en el primer mes.
 
 **AC:**
-- [ ] Colección `recordatorios/{id}` con estado (`pending`, `sent`, `failed`) y `reservaId` FK.
-- [ ] Cloud Function `scheduledSendReminders` (cron cada hora vía Cloud Scheduler) que:
+- [x] Colección `recordatorios/{id}` con estado (`pending`, `sent`, `failed`) y `reservaId` FK.
+- [x] Cloud Function `scheduledSendReminders` (cron cada hora vía Cloud Scheduler) que:
   1. Lee reservas confirmadas con `date + timeSlot` entre 23h y 25h en el futuro.
-  2. Genera email HTML (SendGrid o Postmark — evaluar en T3.2).
-  3. Marca `recordatorios.sent=true` o `failed` con error.
-- [ ] Template de email en `functions/templates/reminder.html` con datos de la reserva.
-- [ ] Documentar en `docs/ADR-004-recordatorios.md` decisión: cron cada hora vs cron diario a las 18:00.
-- [ ] Variable de entorno: `RESEND_API_KEY` en Firebase Secret Manager (configuración pendiente).
+  2. Genera email HTML mediante Resend; el proveedor primario está documentado en T3.2.
+  3. Actualiza el estado de `recordatorios` a `sent` o `failed` con error.
+- [x] Template de email en `functions/templates/reminder.html` con datos de la reserva.
+- [ ] Documentar en `docs/adr/ADR-005-cron-recordatorios.md` la decisión de cron cada hora vs cron diario a las 18:00; este ADR de frecuencia queda pendiente hasta su creación.
+- [ ] Configurar el secreto backend `RESEND_API_KEY` en Firebase Secret Manager.
 
 **Refs:** `firestore.rules` (nueva colección), `docs/STACK.md` "Email transaccional — Fase 3".
 
 ---
 
-#### T3.2 — Elegir proveedor de email transaccional (ADR-004)
-**Por qué:** SendGrid vs Postmark vs Resend vs Firebase Extensions. Decisión previa a implementar T3.1.
+#### T3.2 — Elegir proveedor de email transaccional (ADR-004) ✅ Decisión documentada
+**Por qué:** Resend como proveedor primario, Postmark como fallback operativo y SendGrid como alternativa evaluada. La decisión precede la operación de T3.1.
 
 **AC:**
-- [ ] ADR en `docs/ADR-004-proveedor-email.md` con matriz: precio (hasta 100k emails/mes), deliverability, facilidad de integración con Firebase Functions, soporte de templates.
-- [ ] Decisión: SendGrid si costo prima, Postmark si deliverability prima, Resend si simplicidad prima.
-- [ ] Configurar cuenta y obtener API key de prueba.
-- [ ] Actualizar `docs/STACK.md` tabla de "Servicios externos".
+- [x] ADR en `docs/adr/ADR-004-proveedor-email.md` con matriz: precio (hasta 100k emails/mes), deliverability, facilidad de integración con Firebase Functions, soporte de templates.
+- [x] Decisión: Resend como proveedor primario y Postmark como fallback operativo; SendGrid no es preferido para este workload pequeño.
+- [ ] Configurar la cuenta, verificar el dominio del spa y crear `RESEND_API_KEY` en Firebase Secret Manager.
+- [x] Actualizar `docs/STACK.md` tabla de "Servicios externos".
 
-**Refs:** `docs/STACK.md` líneas 65-70.
+**Refs:** `docs/STACK.md` líneas 78-92.
 
 ---
 
@@ -70,7 +70,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Hardening de `firestore.rules`: el dueño solo puede cancelar con el cambio exacto `status -> 'cancelled'`; las escrituras directas del cliente sobre `date`/`timeSlot` están denegadas y no son una vía de reagendado.
 - [x] Controles en `DashboardPage`: cancelar reservas propias `pending`/`confirmed` y mostrar reagendado solo para reservas propias `pending` con fecha futura.
 - [x] Validación server-side en la callable `rescheduleReserva`: usa Admin SDK, autentica y valida ownership/estado, fecha y hora futuras en `America/Mexico_City`, y es la autoridad para rechazar slots activos ocupados dentro de una transacción.
-- [x] Tests de reglas (`41 passed, 0 failed`), Functions (`46 passed, 2 skipped`) y cliente para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
+- [x] Tests (evidencia local fechada 2026-08-04; no verificación de producción): reglas (`41 passed, 0 failed`), Functions (`47 passed, 2 skipped`) y cliente para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
 
 **Operación separada, no completada por esta tarea:** desplegar la callable, configurar producción y verificar el comportamiento en el entorno desplegado.
 
@@ -271,7 +271,7 @@ Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
 
 | Track | Costo mensual estimado |
 |---|---|
-| A (SendGrid + Functions) | $0 (Spark free tier cubre Functions invocaciones hasta 2M/mes; recordatorios son ~30/día) |
+| A (Resend + Functions) | $0 de email en el baseline de Resend; Functions requiere Blaze y su costo operativo sigue pendiente de verificación |
 | B (sin nuevos servicios) | $0 |
 | C (Sentry free tier) | $0 (5k eventos/mes); backups < 1 GB = $0 |
 | D | $0 |

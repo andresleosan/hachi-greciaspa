@@ -36,7 +36,7 @@
 
 - [ ] **Step 1: Record the current evidence boundary**
 
-Use the already verified facts without claiming external configuration: frontend typecheck and build pass, Firestore rules report `40 passed, 0 failed`, Functions report `34 passed` and `2 skipped`, and Functions typecheck/build pass. Record that scheduled reminders, the Resend adapter, the template, Firestore model, and rules exist in code, while domain, secret, billing, deployment, and browser QA remain unverified.
+Use the already verified local facts dated 2026-08-04 without claiming external configuration: frontend typecheck and build pass, Firestore rules report `41 passed, 0 failed`, Functions report `47 passed` and `2 skipped`, and Functions typecheck/build pass. Record that scheduled reminders, the Resend adapter, the template, Firestore model, and rules exist in code, while domain, secret, billing, deployment, and browser QA remain unverified.
 
 - [ ] **Step 2: Correct stale Phase 2 checklist entries**
 
@@ -84,8 +84,8 @@ Add a dated evidence section to `docs/RUNBOOK.md` listing the commands and obser
 ```text
 npx tsc --noEmit                         PASS
 npm run build                            PASS
-npm run rules:test                       40 passed, 0 failed
-npm --prefix functions test              34 passed, 2 skipped
+npm run rules:test                       41 passed, 0 failed
+npm --prefix functions test              47 passed, 2 skipped
 npm --prefix functions run typecheck     PASS
 npm --prefix functions run build         PASS
 ```
@@ -173,7 +173,7 @@ npm --prefix functions run build
 git diff --check
 ```
 
-Expected: Firestore reports `40 passed, 0 failed`; Functions reports `34 passed, 2 skipped`; typechecks/builds pass; and the diff has no whitespace errors.
+Expected: local Firestore evidence reports `41 passed, 0 failed`; local Functions evidence reports `47 passed, 2 skipped`; typechecks/builds pass; and the diff has no whitespace errors. This does not constitute production verification.
 
 - [ ] **Step 6: Review final scope without committing**
 

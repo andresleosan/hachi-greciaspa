@@ -1,6 +1,6 @@
 # Fase 2 — Backlog MVP funcional ✅ CERRADA
 
-**Estado:** cerrada el 2026-07-31. El MVP quedó implementado y verificado; las casillas reflejan el soporte actual de código y pruebas (`41/41` reglas; Functions: `46 passed`, `2 skipped`).
+**Estado:** cerrada el 2026-07-31. Esa fecha es el cierre histórico de la fase. La evidencia local consolidada al 2026-08-04 registra rules `41 passed, 0 failed` y Functions `47 passed, 2 skipped`; no constituye verificación de producción.
 
 **Siguiente:** ver [`Fase3.md`](./Fase3.md) para backlog post-MVP.
 
@@ -28,7 +28,7 @@ Una tarea está completa solo cuando:
 ## Deuda residual
 
 - **Race condition de doble reserva:** aceptada en ADR-001; la validación client-side es best-effort y dos clientes concurrentes todavía pueden escribir el mismo slot. El admin debe resolver el caso excepcional manualmente.
-- **Cancelación y reagendado (T3.3):** `firestore.rules` permite al propietario cancelar solo con el cambio exacto de `status` a `cancelled`; las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas. El cliente usa exclusivamente la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad server-side para fecha/hora futura y disponibilidad del slot.
+- **Cancelación y reagendado (T3.3):** `firestore.rules` permite al propietario cancelar solo con el cambio exacto de `status` a `cancelled`; el reagendado directo del cliente mediante escrituras sobre `date`/`timeSlot` está denegado. El cliente usa exclusivamente la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad server-side para fecha/hora futura y disponibilidad del slot.
 - **Enlaces `href="#"`:** permanecen en `Footer.tsx` y en algunas llamadas a la acción de `LandingNueva.tsx`; quedan para la operación de privacidad/términos y navegación de Fase 3.
 - **Estilos inline:** permanecen en `LandingNueva.tsx`, `App.tsx`, `NotFound.tsx`, `Precios.tsx` y `Register.tsx`; la limpieza completa queda pendiente.
 
@@ -108,7 +108,7 @@ interface Reserva {
 **AC:**
 - [x] En `DashboardPage` (o nueva sub-ruta `/dashboard/citas`), mostrar listado de reservas del usuario filtradas por `userId == auth.uid`.
 - [x] Estados visuales por `status` (pending=amarillo, confirmed=verde, cancelled=rojo).
-- [x] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario. **Decisión implementada (ADR-002/T3.3):** la cancelación solo permite el cambio exacto `status='cancelled'`; el reagendado de reservas `pending` solo permite `date` y `timeSlot` y delega la disponibilidad a la callable.
+- [x] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario. **Decisión implementada (ADR-002/T3.3):** la cancelación solo permite el cambio exacto `status='cancelled'`; el cliente no puede escribir directamente `date`/`timeSlot` y el reagendado usa exclusivamente la callable `rescheduleReserva`, que delega la disponibilidad al servidor.
 - [x] Hook de fetching con `useAuth().user.uid`.
 
 **Refs:** `DashboardPage.tsx:34-58`, `firestore.rules:44-60`.

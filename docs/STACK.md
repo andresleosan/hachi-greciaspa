@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-03 (MVP verificado; transición a Fase 3 operativa).
+Última actualización: 2026-08-04 (MVP verificado; transición a Fase 3 operativa).
 
 ## Stack técnico
 
@@ -15,11 +15,11 @@
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
 | Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
-| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 41 passed, 0 failed; JDK 21 requerido |
+| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 41 passed, 0 failed; evidencia local fechada 2026-08-04; no verificacion de produccion; JDK 21 requerido |
 
 ## Evaluación de seguridad: React Router
 
-El `npm audit` actual reporta el advisory de modo RSC para `react-router-dom@7.18.2`. La aplicación usa únicamente `BrowserRouter`, `Routes`, `Route`, `Link`, `Navigate`, `useNavigate` y `useSearchParams`; no se encontraron APIs RSC ni de server actions. Por la arquitectura SPA actual, el advisory no es alcanzable a través del código desplegado. Debe revisitarse cuando se publique una versión parcheada; el audit no se suprime ni se considera limpio.
+El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relacionados con el modo RSC en `react-router-dom@7.18.2`. La aplicación es una SPA y usa únicamente `BrowserRouter`, `Routes`, `Route`, `Link`, `Navigate`, `useNavigate` y `useSearchParams`; no se encontraron APIs RSC ni server actions. Por la arquitectura SPA actual, los advisories no son alcanzables a través de la ruta actual de la aplicación. Deben revisitarse cuando se publique una versión parcheada; el audit no se suprime ni se considera limpio.
 
 ## Estado de entrega
 
@@ -30,7 +30,7 @@ El `npm audit` actual reporta el advisory de modo RSC para `react-router-dom@7.1
 - La validación de slots está implementada en `src/services/reservas.ts` como best-effort client-side; el tradeoff de concurrencia aceptado está documentado en ADR-001.
 - Los mensajes de contacto persisten en `mensajes`, con creación anónima y lectura/eliminación solo para admin.
 - La galería se sirve mediante seis paths públicos estáticos y no depende de Cloud Storage.
-- `firestore.rules` está cubierta por la suite actual: `41 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, mensajes de contacto y acceso admin. Functions reporta `46 passed, 2 skipped`.
+- `firestore.rules` está cubierta por la suite actual: `41 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, mensajes de contacto y acceso admin. Functions reporta `47 passed, 2 skipped`. Esta es evidencia local fechada 2026-08-04 y no constituye verificación de producción.
 - La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite en el emulador.
 
 ### Brechas de Fase 3
@@ -42,7 +42,7 @@ El `npm audit` actual reporta el advisory de modo RSC para `react-router-dom@7.1
 
 ## Servicios de pago: Firebase
 
-Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan actual: **Spark (free)**.
+Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actualmente: **Spark (free)**; la cuenta de facturación y la habilitación de Blaze para producción siguen **no verificadas**.
 
 ### Estimación mensual (plan Spark, sin costos)
 
@@ -77,7 +77,7 @@ No hay plan de precio fijo wildcard — puro pay-as-you-go.
 
 ## Email transaccional Fase 3
 
-Proveedor recomendado: **Resend**. Fallback operativo: **Postmark**. Estado: integración implementada en `functions/`; cuenta, secreto, dominio y despliegue todavía no están configurados/verificados.
+Proveedor recomendado: **Resend**. Fallback operativo: **Postmark**. Estado: integración implementada en `functions/`; cuenta, secreto, dominio, billing, alertas de presupuesto y despliegue todavía no están configurados/verificados.
 
 Baseline de planificación: **900 recordatorios/mes**. El costo del proveedor de email se mantiene separado del costo de Firebase Functions/Blaze:
 

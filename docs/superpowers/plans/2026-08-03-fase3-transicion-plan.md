@@ -4,7 +4,7 @@
 
 **Goal:** Close Phase 2 documentation, select Resend, implement idempotent 24-hour reminders, and establish a verified budget gate without touching existing local work or deploying automatically.
 
-> **Estado al 2026-08-04:** Existe evidencia de implementación para las tareas de Functions y recordatorios. Las casillas de este plan son notas históricas de ejecución; el trabajo restante es la verificación operativa. No se considera completada ninguna acción de consola, dominio, secreto, billing, despliegue o browser QA sin confirmación externa.
+> **Estado al 2026-08-04:** Existe evidencia local de implementación para Functions y recordatorios. Las casillas de este plan son notas históricas de ejecución; dominio, secreto, billing, despliegue y browser QA requieren verificación externa y no se marcan como completos sin confirmación del operador.
 
 **Architecture:** Keep the current React/Firebase MVP unchanged. Add a separate `functions/` Firebase Functions project with pure reminder-domain functions, a Firestore-backed state machine, and a Resend adapter that is called only from the backend. Treat budget configuration and deployment authorization as operational gates documented outside the code.
 
@@ -84,7 +84,7 @@ npm run build
 npm run rules:test
 ```
 
-Expected: TypeScript exits with code 0, Vite reports a successful build, and the Firestore suite reports `40 passed, 0 failed`.
+Expected: TypeScript exits with code 0, Vite reports a successful build, and the local Firestore suite reports `41 passed, 0 failed`.
 
 - [ ] **Step 2: Update the task list.**
 
@@ -92,7 +92,7 @@ Mark T2.1 through T2.8 complete only where the current code and tests support th
 
 - [ ] **Step 3: Update ADR statuses.**
 
-Replace stale `Estado: propuesta (pendiente...)` text with accepted/implemented status and add the current evidence: `src/services/reservas.ts`, `firestore.rules`, and the 40-rule-test suite where applicable.
+Replace stale `Estado: propuesta (pendiente...)` text with accepted/implemented status and add the current local evidence: `src/services/reservas.ts`, `firestore.rules`, and the 41-rule-test suite where applicable.
 
 - [ ] **Step 4: Update the stack phase statement.**
 
@@ -327,7 +327,7 @@ Run:
 npm run rules:test
 ```
 
-Expected: the existing 40 tests plus the new recordatorio cases pass.
+Expected: the existing 41 tests plus the new recordatorio cases pass.
 
 ---
 

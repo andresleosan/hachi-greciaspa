@@ -46,7 +46,7 @@ El cliente cancela mediante `cancelMyReserva`, que envía solo `{ status: 'cance
 
 - **Se gana:** cancelación con un contrato de mutación explícito; el reagendado es callable-only y la disponibilidad del nuevo slot no depende de una comprobación confiada al navegador.
 - **Se sacrifica:** el reagendado depende de la callable y su configuración operativa; esta tarea no despliega Functions ni completa configuración de producción.
-- **Tests:** `npm run rules:test` reporta `41 passed, 0 failed`; la suite de Functions reporta `46 passed, 2 skipped`. Las pruebas cubren ownership, estado, cancelación exacta, disponibilidad y actualización limitada a `date`/`timeSlot`.
+- **Tests (evidencia local fechada 2026-08-04; no verificación de producción):** `npm run rules:test` reporta `41 passed, 0 failed`; la suite de Functions reporta `47 passed, 2 skipped`. Las pruebas cubren ownership, estado, cancelación exacta, disponibilidad y actualización limitada a `date`/`timeSlot`.
 
 ## Rollback
 

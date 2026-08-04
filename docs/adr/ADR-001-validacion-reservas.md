@@ -15,7 +15,7 @@ El proyecto está en Firebase Spark (sin Cloud Functions, no hay backend propio)
 
 Antes de escribir, el cliente consulta `reservas` con `where('serviceId','==',X).where('date','==',Y).where('timeSlot','==',Z)`. El cliente descarta los docs con `status == 'cancelled'`; si no queda ninguna reserva activa, procede con `addDoc`.
 
-La implementación está en `src/services/reservas.ts` (`assertSlotFree` y `createReserva`). `firestore.rules` solo refuerza la propiedad de la reserva al crearla: exige que el usuario esté autenticado y que `request.resource.data.userId == request.auth.uid`. Las rules no consultan otras reservas ni impiden que dos clientes escriban el mismo slot; por tanto, no son una segunda defensa contra esta race condition. La suite actual de reglas tiene 40 casos y cubre la restricción de ownership.
+La implementación está en `src/services/reservas.ts` (`assertSlotFree` y `createReserva`). `firestore.rules` solo refuerza la propiedad de la reserva al crearla: exige que el usuario esté autenticado y que `request.resource.data.userId == request.auth.uid`. Las rules no consultan otras reservas ni impiden que dos clientes escriban el mismo slot; por tanto, no son una segunda defensa contra esta race condition. La suite local de reglas tiene 41 casos según la evidencia fechada 2026-08-04 y cubre la restricción de ownership; esto no constituye verificación de producción.
 
 ## Alternativas consideradas
 
@@ -44,5 +44,5 @@ La implementación está en `src/services/reservas.ts` (`assertSlotFree` y `crea
 
 - tasks.md T2.3 (AC del flujo de reserva).
 - firestore.rules:37-55 (regla actual de `reservas`).
-- `npm run rules:test` — suite actual de 40 casos.
+- `npm run rules:test` — suite local de 41 casos, evidencia fechada 2026-08-04; no constituye verificación de producción.
 - STACK.md (plan Spark free tier).
