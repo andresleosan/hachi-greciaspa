@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:client": "vitest run src/services/reservaErrors.test.ts",
+    "test:client": "vitest run src/services/reservaErrors.test.ts src/services/agenda.test.ts",
     "test": "npm run rules:test && npm --prefix functions test",
     "set-admin": "node tools/set-admin.js",
     "seed:services": "node tools/seed-services.mjs",

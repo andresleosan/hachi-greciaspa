@@ -90,7 +90,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [ ] Acción "Marcar completed" — solo admin, status `completed` después de la cita.
 - [ ] Filtros por servicio y por terapeuta (preparado para T3.5).
 
-**Refs:** `src/pages/DashboardPage.tsx`, `docs/SCHEMA.md` `reservas`.
+**Refs:** `src/pages/DashboardPage.tsx`, `src/pages/DashboardAgenda.tsx`, `src/services/agenda.ts`, `docs/SCHEMA.md` `reservas`.
 
 ---
 

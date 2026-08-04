@@ -191,7 +191,7 @@ export default function DashboardPage() {
           </div>
           <nav className="sidebar-nav">
             <Link className="sidebar-link is-active" to="/dashboard"><span className="sidebar-link__icon">D</span> Dashboard</Link>
-            <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">C</span> Citas <small className="sidebar-link__badge">próxim.</small></span>
+            <Link className="sidebar-link" to="/dashboard/agenda"><span className="sidebar-link__icon">C</span> Citas</Link>
             <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">U</span> Clientes <small className="sidebar-link__badge">próxim.</small></span>
             <Link className="sidebar-link" to="/servicios"><span className="sidebar-link__icon">S</span> Servicios</Link>
             <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">R</span> Reportes <small className="sidebar-link__badge">próxim.</small></span>

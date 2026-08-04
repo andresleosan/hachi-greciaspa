@@ -120,6 +120,13 @@ export async function cancelMyReserva(reservaId: string): Promise<void> {
   await updateDoc(doc(firebaseDb, 'reservas', reservaId), { status: 'cancelled' })
 }
 
+export async function updateAdminReservaStatus(
+  reservaId: string,
+  status: 'confirmed' | 'cancelled' | 'completed',
+): Promise<void> {
+  await updateDoc(doc(firebaseDb, 'reservas', reservaId), { status })
+}
+
 export async function rescheduleMyReserva(
   reservaId: string,
   date: string,
