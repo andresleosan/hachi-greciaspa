@@ -67,3 +67,6 @@ qa-*.png
 
 # Backups que dejan los scripts de la agencia al actualizar
 *.bak-*
+
+# Worktrees locales de desarrollo aislado
+.worktrees/
