@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-07-31 (Cronos, inicio Fase 2).
+Última actualización: 2026-08-03 (MVP verificado; transición a Fase 3 operativa).
 
 ## Stack técnico
 
@@ -14,8 +14,26 @@
 | Estado | (sin store global) | — | Zustand removido en Fase 1 (M6) por no usado |
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
-| Backend | Firebase | 12.13 | Auth + Firestore + Storage(declarado, no usado) |
-| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 23 casos, JDK 21 requerido |
+| Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
+| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 40 casos, JDK 21 requerido |
+
+## Estado de entrega
+
+### MVP verificado
+
+- Los clientes autenticados pueden leer el catálogo, crear sus propias reservas, verlas en el dashboard y cancelarlas. Firestore aplica una denylist de campos sensibles; el cliente actual solo envía `status`, mientras el endurecimiento para permitir únicamente ese cambio permanece como deuda residual.
+- La validación de slots está implementada en `src/services/reservas.ts` como best-effort client-side; el tradeoff de concurrencia aceptado está documentado en ADR-001.
+- Los mensajes de contacto persisten en `mensajes`, con creación anónima y lectura/eliminación solo para admin.
+- La galería se sirve mediante seis paths públicos estáticos y no depende de Cloud Storage.
+- `firestore.rules` está cubierta por la suite actual de 40 casos, incluidos ownership de reservas, cancelación, protección de precios, mensajes de contacto y acceso admin.
+- La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite en el emulador.
+
+### Brechas de Fase 3
+
+- La integración de email transaccional y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
+- Las alertas de presupuesto no están configuradas en Google Cloud Console. Sigue siendo COST-1/T3.10 y no debe considerarse completado.
+- La activación de App Check en consola y la comprobación de rechazo de writes no autorizados en producción siguen pendientes; la suite del emulador de rules no prueba esa configuración de despliegue.
+- La prevención server-side fuerte de doble reserva, la agenda operativa, terapeutas, backups y observabilidad siguen siendo trabajo de Fase 3.
 
 ## Servicios de pago: Firebase
 
@@ -30,7 +48,7 @@ Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan actual: **Spark (
 | **Cloud Storage** | 5 GiB almacenamiento, 1 GB/día egress | no usado (declarado en firebase.ts pero sin callers) | $0 |
 | **Hosting** | 10 GB almacenamiento, 360 MB egress/día | build estático < 5 MB | $0 |
 
-**Costo mensual estimado Fase 2 (MVP): $0** — todo dentro del Spark free tier con amplio margen.
+**Costo mensual estimado MVP verificado: $0** — todo dentro del Spark free tier con amplio margen; no hay alertas de presupuesto configuradas todavía.
 
 ### Cuándo se excede el free tier (proyección)
 
@@ -52,6 +70,22 @@ Si se supera el free tier:
 
 No hay plan de precio fijo wildcard — puro pay-as-you-go.
 
+## Email transaccional Fase 3
+
+Proveedor recomendado: **Resend**. Fallback operativo: **Postmark**. Estado: integración implementada en `functions/`; cuenta, secreto, dominio y despliegue todavía no están configurados/verificados.
+
+Baseline de planificación: **900 recordatorios/mes**. El costo del proveedor de email se mantiene separado del costo de Firebase Functions/Blaze:
+
+| Proveedor | Plan y costo de email en 900/mes | Functions/Blaze separado | Total de planificación |
+|---|---:|---:|---:|
+| Resend | Free: $0 (3,000/mes; 100/día) | $0 de uso medido estimado; Blaze requerido; reserva incidental $0-3 | $0-3 |
+| Postmark | Basic: $15/mes (10,000 incluidos) | $0 de uso medido estimado; Blaze requerido; reserva incidental $0-3 | $15-18 |
+| SendGrid | Essentials desde $19.95/mes | $0 de uso medido estimado; Blaze requerido; reserva incidental $0-3 | $19.95-22.95 |
+
+Para 900 ejecuciones mensuales, Functions queda dentro de las cuotas sin costo publicadas en Blaze. Blaze es obligatorio para desplegar Functions aunque el uso medido estimado sea $0. **Budget alert: not verified** hasta que el operador confirme Google Cloud Console.
+
+El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Secret Manager, caller exclusivo en Firebase Functions, máximo tres retries con backoff acotado y registro sanitizado de fallas permanentes. El código de integración está implementado; todavía no hay credenciales, dominio ni despliegue configurados.
+
 ## Hallazgo de costo
 
 ### COST-1 — Sin configurar budget alert en Firebase (severidad BAJA)
@@ -60,14 +94,14 @@ No hay plan de precio fijo wildcard — puro pay-as-you-go.
 
 **Impacto si no se corrige:** En free tier el saldo nunca sube, pero si el proyecto migra a Blaze (Fase 3 o interacción con Cloud Functions para ADR-001/002), un evento imprevisto (loop infinito de un Cloud Function, query sin límite disparado por un bot, abuso del storage) puede generar facturación sin aviso. Sin alerta, el operador se entera por el recibo.
 
-**Corrección:** No bloqueante para Fase 2 (estamos en free tier sin riesgo). **Acción recomendada desde Fase 3 onboarding:** crear un budget en Google Cloud Console ("Facturación → Presupuestos") con alertas a $1 y $5, y un cap a $10 — blindado para escalar sin susto.
+**Corrección:** No bloqueante para Fase 2 (estamos en free tier sin riesgo). **Acción recomendada desde Fase 3 onboarding:** crear un budget de $10 en Google Cloud Console ("Facturación → Presupuestos"), con notificaciones de gasto real y pronosticado a $1, $5 y $10. Las alertas notifican, pero no imponen un límite duro de facturación.
 
-## Servicios externos: ninguno por ahora
+## Servicios externos
 
 | Servicio | Estado | Cuándo se consideraría |
 |---|---|---|
-| Email transaccional (SendGrid, Postmark) | No integrado | Fase 3 para recordatorios de cita |
-| reCAPTCHA v3 | Integrado (T2.8) | Habilitar en Firebase Console cuando se despliegue |
+| Email transaccional (Resend; Postmark fallback) | Código implementado en `functions/`; no configurado/desplegado | Verificación de dominio, secreto y despliegue de recordatorios |
+| reCAPTCHA v3 | Código integrado; activación de producción pendiente | Habilitar y verificar en Firebase Console |
 
 ## Limpieza de servicios sin uso
 
@@ -77,7 +111,7 @@ Tras Fase 1 (M6) + Fase 2 (T2.7):
 
 ## Pendientes técnicos conocidos (cross-ref tasks.md)
 
-- `tasks.md` T2.1-T2.8 — backlog MVP.
-- `AUDITORIA.md` H4 — App Check pendiente (→ T2.8).
-- `AUDITORIA.md` M2 — dashboard con datos reales: parcialmente corregido, se completa con T2.3.
+- `tasks.md` T2.1-T2.8 — cierre documentado con deuda residual y sub-items pendientes.
+- `AUDITORIA.md` H4 — integración App Check implementada; activación/verificación de producción pendiente.
+- `AUDITORIA.md` M2 — dashboard con datos reales implementado para reservas y métricas básicas.
 - H1 (npm audit): 19 vulns restantes en devDeps (firebase-tools), no afectan prod bundle.

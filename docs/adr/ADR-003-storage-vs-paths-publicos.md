@@ -1,24 +1,25 @@
 # ADR-003: Imágenes de galería — Storage vs paths públicos
 
 Fecha: 2026-07-31
-Estado: propuesta (pendiente de implementación en tasks.md T2.7)
+Estado: aceptada e implementada
 
 ## Contexto
 
 T2.7 (galería mínima funcional) requiere servir 6-8 fotos del spa. Hay dos opciones para dónde viven:
 
-- **Cloud Storage para Firebase** (ya inicializado en `firebase.ts:43,51`, emulador en `firebase.json` configurado en Fase 1), con `getDownloadURL(ref(storage, 'galeria/X.jpg'))`.
+- **Cloud Storage para Firebase**, con `getDownloadURL(ref(storage, 'galeria/X.jpg'))` si más adelante se necesita una galería administrable.
 - **Paths públicos estáticos** (`/galeria/X.jpg` en `public/`), servidos por el hosting (Vercel / Firebase Hosting).
 
-Hoy el spa ya usa imágenes en `public/` (`tl.png`, `tr.png`, `bl.png`, etc. — referenciadas como `src="/tl.png"` en componentes). Ningún componente importa `firebaseStorage` (verificado en exploración previa).
+Hoy el spa ya usa imágenes en `public/` (`tl.png`, `tr.png`, `bl.png`, etc. — referenciadas como `src="/tl.png"` en componentes). Ningún componente importa `firebaseStorage`.
 
 ## Decisión
 
-**Usar paths públicos estáticos en `public/galeria/`, no Cloud Storage.**
+**Usar paths públicos estáticos en `public/`, no Cloud Storage.**
 
-- Colocar las 8 fotos en `public/galeria/` (p.ej. `01.jpg` ... `08.jpg`).
-- `Galeria.tsx` referencia directamente `src="/galeria/01.jpg"`.
-- **Quitar** el init de `firebaseStorage` de `firebase.ts` (líneas 4, 26, 43, 51, 70) y la sección `storage` de `firebase.json` (agregada en Fase 1).
+- `Galeria.tsx` referencia directamente seis imágenes estáticas (`/tl.png`, `/tr.png`, `/bl.png`, `/br.png`, `/hachi-greciaspa.png` y `/contact-sheet.png`).
+- No se usa `firebaseStorage`; el init de Storage y el emulador de Storage fueron removidos de la configuración operativa.
+
+La implementación está verificada en `src/pages/Galeria.tsx` y `src/services/firebase.ts`. La galería es pública, no depende de una colección Firestore y no agrega una superficie de reglas de Storage.
 
 ## Alternativas consideradas
 
@@ -28,7 +29,7 @@ Hoy el spa ya usa imágenes en `public/` (`tl.png`, `tr.png`, `bl.png`, etc. —
 
 ### B. (Elegida) Paths públicos estáticos
 - **Pro:** 0 costo, 0 complejidad, sirve via CDN del hosting (Vercel ya configurado), cacheable aggressively, sin código async.
-- **Con:** cambio de fotos requiere redeploy. Aceptable para MVP de spa estático en Fase 2.
+- **Con:** cambio de fotos requiere redeploy. Aceptable para el MVP de spa estático; la administración dinámica queda como gap de Fase 3.
 
 ### C. Dejar Storage inicializado por si se usa en Fase 3
 - **Pro:** no hay que tocar `firebase.ts` ahora.
@@ -36,14 +37,15 @@ Hoy el spa ya usa imágenes en `public/` (`tl.png`, `tr.png`, `bl.png`, etc. —
 
 ## Consecuencias
 
-- **Se gana:** simplicidad: una muerte menos en el bundle, una configuración menos en `firebase.json`, surface reducida.
+- **Se gana:** simplicidad: una superficie menos en el bundle, una configuración menos en `firebase.json`, surface reducida.
 - **Se sacrifica:** subir fotos dinámicamente sin redeploy. Acción para Fase 3 si el spa quiere que el admin suba fotos: revertir este ADR, meter Storage, escribir Storage rules.
 - **Trigger para revisar:** si en Fase 3 el admin necesita administrar galería sin pasar por el dev, re-evaluar.
 
 ## Refs
 
 - tasks.md T2.7 AC.
-- `firebase.ts:43,51,70` (líneas a eliminar).
-- `firebase.json` (sección `storage` a eliminar).
+- `src/pages/Galeria.tsx` (paths estáticos implementados).
+- `src/services/firebase.ts` (sin inicialización de Storage).
+- `firebase.json` (sin emulador de Storage).
 - STACK.md "Limpieza de servicios sin uso".
-- AUDITORIA.md M1 (storage emulator sin definir en firebase.json — corregido en Fase 1, pero la reversión aquí lo elimina).
+- AUDITORIA.md M1 (la superficie de Storage se mantuvo fuera del MVP al elegir paths públicos).

@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run rules:test && npm --prefix functions test",
     "set-admin": "node tools/set-admin.js",
     "seed:services": "node tools/seed-services.mjs",
     "rules:test": "firebase emulators:exec --only firestore \"node tools/firestore-tests/run-rules-tests.mjs\""

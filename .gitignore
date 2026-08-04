@@ -34,6 +34,9 @@ __pycache__/
 dist/
 build/
 out/
+functions/lib/
+functions/.firebase/
+functions/.runtimeconfig.json
 *.log
 coverage/
 

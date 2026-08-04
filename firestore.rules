@@ -55,6 +55,11 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    match /recordatorios/{reminderId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
     // Employees / staff data - admin only
     match /empleados/{empId} {
       allow read, write: if isAdmin();

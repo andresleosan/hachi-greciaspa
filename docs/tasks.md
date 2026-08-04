@@ -1,6 +1,6 @@
 # Fase 2 — Backlog MVP funcional ✅ CERRADA
 
-**Estado:** cerrada el 2026-07-31. 8 tareas completadas en 8 commits (`ac6b7a3` → `c27cade`). Build y tests verdes (35/35).
+**Estado:** cerrada el 2026-07-31. El MVP quedó implementado y verificado; las casillas reflejan el soporte actual de código y pruebas (40/40 reglas).
 
 **Siguiente:** ver [`Fase3.md`](./Fase3.md) para backlog post-MVP.
 
@@ -25,16 +25,25 @@ Una tarea está completa solo cuando:
 
 ---
 
+## Deuda residual
+
+- **Race condition de doble reserva:** aceptada en ADR-001; la validación client-side es best-effort y dos clientes concurrentes todavía pueden escribir el mismo slot. El admin debe resolver el caso excepcional manualmente.
+- **Whitelist de cancelación:** `firestore.rules` protege exactamente `userId`, `userName`, `userEmail`, `serviceId`, `serviceName`, `price`, `date`, `timeSlot`, `durationMin`, `createdAt` y `createdBy`, pero no `notes` ni campos futuros no enumerados. El cliente actual solo envía `status`; queda pendiente endurecer la regla con una allowlist explícita que permita únicamente ese cambio.
+- **Enlaces `href="#"`:** permanecen en `Footer.tsx` y en algunas llamadas a la acción de `LandingNueva.tsx`; quedan para la operación de privacidad/términos y navegación de Fase 3.
+- **Estilos inline:** permanecen en `LandingNueva.tsx`, `App.tsx`, `NotFound.tsx`, `Precios.tsx` y `Register.tsx`; la limpieza completa queda pendiente.
+
+---
+
 ## Tareas priorizadas
 
 ### T2.1 — Schema y tipo `Reserva` (bloqueante)
 **Por qué:** Nada puede construirse sobre `reservas` sin conocer su contrato. `DashboardPage.tsx` ya lee campos implícitos (`userId`, `serviceName`, `userName`, `date`, `createdAt`) — hay que formalizarlos.
 
 **AC:**
-- [ ] Crear `src/types/reserva.ts` con interfaz `Reserva` (ver AC de schema abajo).
-- [ ] Crear `src/types/index.ts` barrel export (también mueve `PriceItem` allí para desduplicar el tipo duplicado en `PricesList.tsx:5` y `AdminPrices.tsx:14`).
-- [ ] Actualizar `DashboardPage.tsx` para consumir `Reserva` donde hoy usa `any`.
-- [ ] Documentar schema en `docs/SCHEMA.md` (colecciones: `reservas`, `users`, `servicios`, `precios`, `empleados`).
+- [x] Crear `src/types/reserva.ts` con interfaz `Reserva` (ver AC de schema abajo).
+- [x] Crear `src/types/index.ts` barrel export (también mueve `PriceItem` allí para desduplicar el tipo duplicado en `PricesList.tsx:5` y `AdminPrices.tsx:14`).
+- [x] Actualizar `DashboardPage.tsx` para consumir `Reserva` donde hoy usa `any`.
+- [x] Documentar schema en `docs/SCHEMA.md` (colecciones: `reservas`, `users`, `servicios`, `precios`, `empleados`).
 
 **Schema `Reserva` (consenso):**
 ```ts
@@ -61,12 +70,12 @@ interface Reserva {
 ---
 
 ### T2.2 — Catálogo de servicios real (bloqueante)
-**Por qué:** Hoy `Servicios.tsx` y `Precios.tsx` leen de Firestore (`servicios`, `precios`), pero no existen seeds para esas colecciones. Sin datos, la página de servicios está vacía y T2.3 (formulario de reserva) no tiene nada que listar.
+**Por qué:** `Servicios.tsx` y `Precios.tsx` leen de Firestore (`servicios`, `precios`); el seed idempotente mantiene datos de catálogo para que el flujo de reserva tenga servicios que listar.
 
 **AC:**
-- [ ] Crear `tools/seed-services.mjs` que, vía Admin SDK o emulador, pueble `servicios` con los 6-8 servicios reales del spa (masajes, faciales, etc. — usar los textos que ya están en `LandingNueva` y seeds.Actuales).
-- [ ] Poblar `precios` con los mismos servicios (ya hay docs de `AdminPrices.tsx` definiendo el schema `PriceItem`).
-- [ ] Documentar en `docs/README-firebase.md` cómo correr el seed.
+- [x] Crear `tools/seed-services.mjs` que, vía Admin SDK o emulador, pueble `servicios` con los servicios reales del spa (usar los textos que ya están en `LandingNueva` y seeds actuales).
+- [x] Poblar `precios` con los mismos servicios (ya hay docs de `AdminPrices.tsx` definiendo el schema `PriceItem`).
+- [x] Documentar en `docs/README-firebase.md` cómo correr el seed.
 - [ ] Verificar: `npm run dev` con emulador → `/servicios` y `/precios` muestran datos.
 
 **Refs:** `src/components/PricesList.tsx`, `src/components/AdminPrices.tsx`, `src/pages/Servicios.tsx`, `LandingNueva`.
@@ -74,7 +83,7 @@ interface Reserva {
 ---
 
 ### T2.3 — Flujo de reserva pública (feature central)
-**Por qué:** Es el gap del MVP. `DashboardPage` lee reservas pero **nada las crea**. Sin esto, el dashboard muestra "No hay reservas visibles" para siempre.
+**Por qué:** Es el flujo central del MVP. `Reservar.tsx` crea reservas para clientes autenticados y `DashboardPage` las muestra según el rol.
 
 **AC:**
 - [ ] Crear página `src/pages/Reservar.tsx` con flujo multi-paso:
@@ -82,12 +91,12 @@ interface Reserva {
   2. Selecciona fecha (calendar día próximo) + slot horario.
   3. Confirma datos (nombre, email, notas).
   4. Submit → `addDoc(collection(db,'reservas'), payload)` con role cliente.
-- [ ] Proteger el submit: solo usuarios autenticados pueden reservar. Si no logueado, botón "Reservar" → redirect a `/login?next=/reservar`.
-- [ ] Hook de validación: slot disponible (no doble-booking para mismo serviceId+date+timeSlot). **Decisión pendiente (ADR-001):** validación client-only (race condition posible) vs Cloud Function `onCreate` vs regla Firestore con `get()` / consultas atómicas. Ver `docs/ADR-001-validacion-reservas.md` (a crear).
-- [ ] Hook `ServiceCard.tsx` "Reservar" → `<Link to="/reservar?service=ID">` en lugar de `href="#"`.
-- [ ] En `Header.tsx` agregado CTA "Reservar cita" que apunta a `/reservar`.
-- [ ] Ruta nueva en `App.tsx`.
-- [ ] Test de regla: cliente no puede reservar para otro `userId` (ya cubierto, reusar el test `user cannot create reserva for another user`).
+- [x] Proteger el submit: solo usuarios autenticados pueden reservar. Si no logueado, `ProtectedRoute` redirige a `/login?next=/reservar`.
+- [x] Hook de validación: slot disponible (no doble-booking para mismo serviceId+date+timeSlot). **Decisión implementada (ADR-001):** validación client-only best-effort; la race condition queda aceptada para el MVP.
+- [x] Hook `ServiceCard.tsx` "Reservar" → `<Link to="/reservar?service=ID">` en lugar de `href="#"`.
+- [x] En `Header.tsx` agregado CTA "Reservar cita" que apunta a `/reservar`.
+- [x] Ruta nueva en `App.tsx`.
+- [x] Test de regla: cliente no puede reservar para otro `userId` (cubierto por `user cannot create reserva for another user` en la suite actual).
 
 **Refs:** `src/components/ServiceCard.tsx`, `src/pages/Servicios.tsx`, `firestore.rules:32-40`, `src/services/firebase.ts` (firebaseDb).
 
@@ -99,7 +108,7 @@ interface Reserva {
 **AC:**
 - [x] En `DashboardPage` (o nueva sub-ruta `/dashboard/citas`), mostrar listado de reservas del usuario filtradas por `userId == auth.uid`.
 - [x] Estados visuales por `status` (pending=amarillo, confirmed=verde, cancelled=rojo).
-- [x] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario — pero Firestore rules N1 prohíben update por no-admin. **Decisión (ADR-002):** introducir `allow update: if isAdmin() || (resource.data.userId == auth.uid && request.resource.data.status == 'cancelled')` (cancelación blanca) vs Cloud Function. Documentar.
+- [x] Acción "Cancelar reserva" disponible para `status='pending'|'confirmed'` del propio usuario. **Decisión implementada (ADR-002):** el cliente solo envía `status='cancelled'`; la regla protege la lista actual de campos sensibles, mientras la allowlist estricta para bloquear campos no enumerados queda como deuda residual.
 - [x] Hook de fetching con `useAuth().user.uid`.
 
 **Refs:** `DashboardPage.tsx:34-58`, `firestore.rules:39`.
@@ -124,7 +133,7 @@ interface Reserva {
 Estas son las inconsistencias de la Fase 1 que conviene cerrar para evitar deuda visual.
 
 **AC:**
-- [x] Quitar inline styles de `ServiceCard.tsx:15,27` e `Inicio.tsx:38` (`LandingNueva.tsx` también revisar). Pasar a `src/styles/maqueta.css`.
+- [ ] Quitar inline styles de `ServiceCard.tsx:15,27` e `Inicio.tsx:38` (`LandingNueva.tsx` también revisar). Pasar a `src/styles/maqueta.css`.
 - [x] Agregar clases faltantes en `maqueta.css`: `.btn-danger` (referenciado en `AdminPrices.tsx:94`) y `.field-error` (referenciado en `Login.tsx:53`, `Register.tsx:73`, `DashboardPage.tsx:140`).
 - [x] Eliminar `src/pages/Inicio.tsx` (no referenciado en `App.tsx` — la ruta `/inicio` redirige a `/`). Reducir confusión.
 - [x] Decidir sobre el redirect de `Register.tsx:41` (`/register → /dashboard` contradice AGENTS.md) — alinear docs o revertir ese redirect (debería ir a `/login`).
@@ -146,13 +155,13 @@ Estas son las inconsistencias de la Fase 1 que conviene cerrar para evitar deuda
 ---
 
 ### T2.8 — App Check (H4 server-side rate limiting)
-**Por qué:** Único blocker de seguridad que queda de la auditoría. El rate-limit client-side (`rateLimit.ts`) es cosmético y bypassable.
+**Por qué:** La integración de App Check reduce el abuso desde clientes no verificables; la activación y validación en Firebase Console siguen siendo pasos operativos.
 
 **AC:**
-- [x] Configurar Firebase App Check con reCAPTCHA v3 en Firebase Console.
+- [ ] Configurar Firebase App Check con reCAPTCHA v3 en Firebase Console.
 - [x] Integrar `initializeAppCheck(app, { provider: new ReCaptchaV3Provider(siteKey), isTokenAutoRefreshEnabled: true })` en `src/services/firebase.ts`.
 - [x] Documentar keys en `.env.example`.
-- [x] Validar: con App Check habilitado, los writes anónimos no autorizados fallan.
+- [ ] Validar: con App Check habilitado, los writes anónimos no autorizados fallan.
 
 **Refs:** `AUDITORIA.md H4`, `src/utils/rateLimit.ts`.
 
@@ -174,7 +183,7 @@ T2.1 (schema) ─┐
 ## ADRs por crear (en `docs/`)
 
 - `ADR-001-validacion-reservas.md` — T2.3: cómo evitar doble-booking.
-- `ADR-002-permitir-cancelacion-cliente.md` — T2.4: relajar regla de update o Cloud Function.
+- `ADR-002-cancelacion-cliente.md` — T2.4: relajar regla de update o Cloud Function.
 - `ADR-003-storage-vs-paths-publicos.md` — T2.7: dónde viven las imágenes de galería.
 
 ## Fuera de alcance de Fase 2

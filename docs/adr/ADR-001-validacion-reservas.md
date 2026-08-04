@@ -1,7 +1,7 @@
 # ADR-001: Validación de doble-booking en reservas
 
 Fecha: 2026-07-31
-Estado: propuesta (pendiente de implementación en tasks.md T2.3)
+Estado: aceptada e implementada
 
 ## Contexto
 
@@ -11,9 +11,11 @@ El proyecto está en Firebase Spark (sin Cloud Functions, no hay backend propio)
 
 ## Decisión
 
-**Sin Cloud Functions, aceptar validación client-side best-effort + timestamp server-side.**
+**Sin Cloud Functions, aceptar validación client-side best-effort + timestamp server-side.** La race condition residual es un tradeoff aceptado para el MVP: la solución reduce duplicados en el flujo normal, pero no ofrece garantía atómica bajo concurrencia.
 
-Antes de escribir, el cliente consulta `reservas` con `where('serviceId','==',X).where('date','==',Y).where('timeSlot','==',Z).where('status','in',['pending','confirmed'])`. Si la query retorna 0 docs, proceder con `addDoc`.
+Antes de escribir, el cliente consulta `reservas` con `where('serviceId','==',X).where('date','==',Y).where('timeSlot','==',Z)`. El cliente descarta los docs con `status == 'cancelled'`; si no queda ninguna reserva activa, procede con `addDoc`.
+
+La implementación está en `src/services/reservas.ts` (`assertSlotFree` y `createReserva`). `firestore.rules` solo refuerza la propiedad de la reserva al crearla: exige que el usuario esté autenticado y que `request.resource.data.userId == request.auth.uid`. Las rules no consultan otras reservas ni impiden que dos clientes escriban el mismo slot; por tanto, no son una segunda defensa contra esta race condition. La suite actual de reglas tiene 40 casos y cubre la restricción de ownership.
 
 ## Alternativas consideradas
 
@@ -30,16 +32,17 @@ Antes de escribir, el cliente consulta `reservas` con `where('serviceId','==',X)
 
 ### D. (Elegida) Query client-side + escritura directa
 - **Pro:** 0 costo, 0 infra adicional, usa solo el SDK. Adecuado al ritmo del spa (decenas de reservas por semana, no miles por hora).
-- **Con:** race condition real: dos clientes hacen la query casi simultánea, ambos ven 0 docs, ambos escriben → doble booking. Probabilidad baja en escala de spa. Mitigación: at the admin's manual confirmation, decide cuál cancelar. El campo `status` ya contempla 'pending' para este efecto.
+- **Con:** race condition real: dos clientes hacen la query casi simultánea, ambos ven 0 docs, ambos escriben → doble booking. Probabilidad baja en escala de spa. Mitigación: en la confirmación manual del admin, decidir cuál cancelar. El campo `status` ya contempla `pending` para este efecto.
 
 ## Consecuencias
 
 - **Se gana:** MVP funcional sin salir de Spark, sin infra extra, sin surface de deploy nueva.
-- **Se sacrifica:** garantía estricta de no-duplicación. Asumimos que a baja concurrencia es tolerable y el admin mitiga casos raros vía cancelación manual (T2.4).
+- **Se sacrifica:** garantía estricta de no-duplicación. Asumimos que a baja concurrencia es tolerable y el admin mitiga casos raros vía cancelación manual (T2.4). Esta deuda queda aceptada explícitamente hasta que el crecimiento justifique una solución server-side.
 - **Trigger para revisar:** si ocurren >3 dobles reservas reportadas en un mes, o si se agregan >10k reservas/mes, escalar a A o C.
 
 ## Refs
 
 - tasks.md T2.3 (AC del flujo de reserva).
-- firestore.rules:32-40 (regla actual de `reservas`).
+- firestore.rules:37-55 (regla actual de `reservas`).
+- `npm run rules:test` — suite actual de 40 casos.
 - STACK.md (plan Spark free tier).

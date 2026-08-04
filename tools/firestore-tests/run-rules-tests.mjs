@@ -123,6 +123,18 @@ async function main() {
       return assertSucceeds(bobAdminDb.collection('reservas').doc('r-admin').set({ status: 'confirmed' }, { merge: true }))
     })
 
+    // --- Recordatorios (Functions-owned, admin read-only) ---
+    await test('guest cannot read recordatorios', () => assertFails(guestDb.collection('recordatorios').doc('reminder-1').get()))
+    await test('guest cannot write recordatorios', () => assertFails(guestDb.collection('recordatorios').doc('reminder-1').set({ status: 'pending' })))
+    await test('client cannot read recordatorios', () => assertFails(aliceDb.collection('recordatorios').doc('reminder-1').get()))
+    await test('client cannot write recordatorios', () => assertFails(aliceDb.collection('recordatorios').doc('reminder-1').set({ status: 'pending' })))
+    await test('admin can read recordatorios', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('recordatorios').doc('reminder-admin').set({ status: 'pending' })
+      })
+      return assertSucceeds(bobAdminDb.collection('recordatorios').doc('reminder-admin').get())
+    })
+
     // --- Admin-only collections (empleados, config) ---
     await test('guest cannot read empleados', () => assertFails(guestDb.collection('empleados').doc('e1').get()))
     await test('client cannot read empleados', () => assertFails(aliceDb.collection('empleados').doc('e1').get()))
