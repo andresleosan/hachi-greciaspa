@@ -15,7 +15,8 @@
     "set-admin": "node tools/set-admin.js",
     "seed:employees": "node tools/seed-employees.mjs",
     "seed:services": "node tools/seed-services.mjs",
-    "rules:test": "firebase emulators:exec --only firestore \"node tools/firestore-tests/run-rules-tests.mjs\""
+    "rules:test": "firebase emulators:exec --only firestore \"node tools/firestore-tests/run-rules-tests.mjs\"",
+    "release:preflight": "node tools/release-preflight.mjs"
   },
   "repository": {
     "type": "git",

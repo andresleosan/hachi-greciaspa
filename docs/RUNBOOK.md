@@ -7,6 +7,20 @@ Estado: transición operativa; las verificaciones de Google Cloud Console perman
 
 Este runbook cubre el gate de costos, la operación segura de las Functions programadas para recordatorios y la operación local de empleados/asignación. No registra como completada ninguna configuración de Google Cloud Console, Firebase, Secret Manager, dominio o despliegue que el operador todavía no haya verificado.
 
+## Preflight Local De Release
+
+Ejecutar desde la raíz del repositorio:
+
+```bash
+npm run release:preflight
+```
+
+El comando ejecuta la matriz local de tests, rules, Functions, typechecks, builds, `git diff --check` y auditorías. `PASS` indica un comando sin errores; `WARN` conserva un advisory de auditoría; `BLOCKED` indica un fallo de un check requerido; `PASS_WITH_WARNINGS` significa que la evidencia local pasó, pero existen warnings o gates externos pendientes.
+
+El reporte se escribe en `docs/release-preflight.md`. Un preflight local exitoso no autoriza producción, no configura proveedores externos y no ejecuta deploy. La salida nunca debe interpretarse como `production ready` mientras los gates de dominio, Resend, Secret Manager, Billing/Blaze, budget, browser QA, rollback y autorización continúen bloqueados.
+
+El preflight no lee valores de `.env`, claves, tokens ni cuentas de servicio. No ejecutar `npm audit fix --force`; los advisories conocidos se conservan como evidencia para una decisión separada.
+
 ## Empleados Y Asignación Local
 
 ### Prerrequisitos del emulador
@@ -87,6 +101,21 @@ Autorizar producción solo cuando cada punto tenga evidencia y autorización exp
 - [ ] Autorización explícita para producción registrada por el responsable.
 
 El proveedor recomendado es Resend según ADR-004, pero la integración, el dominio, el secreto y el despliegue no están verificados en este runbook.
+
+## Secuencia Futura De Dominio Y DNS
+
+Esta secuencia requiere acción del operador y no forma parte del preflight local:
+
+1. Adquirir un dominio propio y controlar sus nameservers.
+2. Agregar en Cloudflare los registros web que indique Vercel para el apex y/o `www`.
+3. Validar el sitio en Vercel antes de habilitar proxying opcional.
+4. Agregar los registros SPF, DKIM y DMARC que entregue Resend, en modo DNS-only cuando corresponda.
+5. Agregar el dominio propio a Firebase Auth `Authorized domains` y configurar App Check si aplica.
+6. Confirmar Billing/Blaze, budget, Secret Manager, rollback, autorización y browser QA antes del deploy de Functions.
+
+Los valores exactos de DNS deben copiarse de las instrucciones vigentes de Vercel, Cloudflare y Resend; nunca se inventan en el repositorio. `hachi-greciaspa.vercel.app` no es un dominio válido para verificar Resend porque el operador no controla su DNS.
+
+Costos de planificación: Vercel Free `$0`, Firebase Spark `$0`, Blaze/Functions `$0–3/mes`, Resend `$0–3/mes`, Cloudflare DNS `$0`; la compra del dominio es independiente. El budget de `$10/mes` aún no está configurado y sus alertas no imponen un límite duro de facturación.
 
 ## Evidencia Local — 2026-08-04
 
