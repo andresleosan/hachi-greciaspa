@@ -157,10 +157,12 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** Complemento de T3.1 (recordatorio). Diferencia: T3.1 es 24h antes; este es inmediato al reservar.
 
 **AC:**
-- [ ] Cloud Function `onReservaCreated` trigger (`functions/src/onReservaCreated.ts`).
-- [ ] Envía email con resumen + link para cancelar (apunta a `/dashboard`).
-- [ ] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar.
-- [ ] Variables de plantilla: nombre del cliente, servicio, fecha, hora, link cancelación.
+- [x] Cloud Function `onReservaConfirmationCreated` trigger (`functions/src/onReservaConfirmationCreated.ts`), independiente del trigger de asignación `onReservaCreated`.
+- [x] Envía email con resumen y enlace al dashboard `/dashboard`; la reserva no se cancela si el proveedor falla.
+- [x] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar; usa `confirmaciones/{reservaId}` y clave determinística de Resend.
+- [x] Variables de plantilla: nombre del cliente, servicio, fecha, hora y enlace al dashboard.
+
+**Verificación local:** 60 casos de rules, 99 tests de Functions (2 skips existentes), typecheck y build pasan. La configuración de Resend, dominio, Secret Manager, Billing/Blaze, despliegue y browser QA permanecen pendientes como gates operativos.
 
 **Refs:** T3.1 (mismo proveedor), T3.3 (link cancelación).
 
