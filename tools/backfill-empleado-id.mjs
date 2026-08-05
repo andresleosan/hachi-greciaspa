@@ -8,43 +8,45 @@ const DEFAULT_PROJECT_ID = 'hachi-greciaspa'
 function usage() {
   return [
     'Usage:',
-    '  node tools/backfill-empleado-id.mjs --emulator [--apply]',
-    '  node tools/backfill-empleado-id.mjs --service-account /path/to/serviceAccount.json [--apply]',
+    '  node tools/backfill-empleado-id.mjs --emulator [--apply] [--manifest path]',
+    '  node tools/backfill-empleado-id.mjs --service-account /path/to/serviceAccount.json [--apply] [--manifest path]',
   ].join('\n')
 }
 
 function parseArgs(argv) {
-  const apply = argv.includes('--apply')
-  const emulator = argv.includes('--emulator')
-  const serviceAccountIndex = argv.indexOf('--service-account')
-  const hasServiceAccount = serviceAccountIndex !== -1
+  let apply = false
+  let emulator = false
+  let serviceAccountPath = null
+  let manifestPath = 'backfill-empleado-id-manifest.json'
 
-  if (emulator === hasServiceAccount) {
+  for (let index = 0; index < argv.length; index += 1) {
+    const argument = argv[index]
+    if (argument === '--apply') {
+      apply = true
+    } else if (argument === '--emulator') {
+      emulator = true
+    } else if (argument === '--service-account') {
+      serviceAccountPath = argv[index + 1]
+      if (!serviceAccountPath || serviceAccountPath.startsWith('--')) {
+        throw new Error(`--service-account requires a JSON file path.\n${usage()}`)
+      }
+      index += 1
+    } else if (argument === '--manifest') {
+      manifestPath = argv[index + 1]
+      if (!manifestPath || manifestPath.startsWith('--')) {
+        throw new Error(`--manifest requires an output file path.\n${usage()}`)
+      }
+      index += 1
+    } else {
+      throw new Error(`Unknown argument: ${argument}\n${usage()}`)
+    }
+  }
+
+  if (emulator === Boolean(serviceAccountPath)) {
     throw new Error(`Choose exactly one data source mode.\n${usage()}`)
   }
 
-  if (hasServiceAccount) {
-    const serviceAccountPath = argv[serviceAccountIndex + 1]
-    if (!serviceAccountPath || serviceAccountPath.startsWith('--')) {
-      throw new Error(`--service-account requires a JSON file path.\n${usage()}`)
-    }
-    const unexpected = argv.filter((arg, index) => (
-      arg !== '--apply'
-      && index !== serviceAccountIndex
-      && index !== serviceAccountIndex + 1
-    ))
-    if (unexpected.length > 0) {
-      throw new Error(`Unknown argument: ${unexpected[0]}\n${usage()}`)
-    }
-    return { apply, emulator: false, serviceAccountPath }
-  }
-
-  const unexpected = argv.filter((arg) => arg !== '--emulator' && arg !== '--apply')
-  if (unexpected.length > 0) {
-    throw new Error(`Unknown argument: ${unexpected[0]}\n${usage()}`)
-  }
-
-  return { apply, emulator: true, serviceAccountPath: null }
+  return { apply, emulator, serviceAccountPath, manifestPath }
 }
 
 async function loadAdmin() {
@@ -70,6 +72,7 @@ async function backfillReservations(db, apply) {
   let lastDocument = null
   let missingCount = 0
   let writtenCount = 0
+  const affectedReservationIds = []
 
   while (true) {
     let query = db.collection('reservas').orderBy('__name__').limit(BATCH_SIZE)
@@ -80,6 +83,7 @@ async function backfillReservations(db, apply) {
 
     const missingDocuments = snapshot.docs.filter((document) => !hasEmpleadoId(document.data()))
     missingCount += missingDocuments.length
+    if (!apply) affectedReservationIds.push(...missingDocuments.map((document) => document.id))
 
     if (apply && missingDocuments.length > 0) {
       const writtenInBatch = await db.runTransaction(async (transaction) => {
@@ -88,22 +92,23 @@ async function backfillReservations(db, apply) {
           currentDocuments.push(await transaction.get(document.ref))
         }
 
-        let count = 0
+        const writtenIds = []
         currentDocuments.forEach((document) => {
           if (!document.exists || hasEmpleadoId(document.data())) return
           transaction.update(document.ref, { empleadoId: null })
-          count++
+          writtenIds.push(document.id)
         })
-        return count
+        return writtenIds
       })
-      writtenCount += writtenInBatch
+      writtenCount += writtenInBatch.length
+      affectedReservationIds.push(...writtenInBatch)
     }
 
     lastDocument = snapshot.docs[snapshot.docs.length - 1]
     if (snapshot.size < BATCH_SIZE) break
   }
 
-  return { missingCount, writtenCount }
+  return { missingCount, writtenCount, affectedReservationIds }
 }
 
 async function main() {
@@ -126,12 +131,23 @@ async function main() {
 
   try {
     const result = await backfillReservations(getFirestore(app), options.apply)
+    const manifest = {
+      generatedAt: new Date().toISOString(),
+      collection: 'reservas',
+      field: 'empleadoId',
+      value: null,
+      mode: options.apply ? 'apply' : 'dry-run',
+      reservationIds: result.affectedReservationIds,
+      count: result.affectedReservationIds.length,
+    }
+    fs.writeFileSync(options.manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
     if (options.apply) {
       console.log(`Backfill applied: ${result.writtenCount} reservation(s) updated with empleadoId: null.`)
     } else {
       console.log(`Dry run: ${result.missingCount} reservation(s) would receive empleadoId: null.`)
       console.log('No writes performed. Re-run with --apply to write only the missing field.')
     }
+    console.log(`Manifest written: ${options.manifestPath} (${manifest.count} reservation ID(s)).`)
   } finally {
     await deleteApp(app)
   }

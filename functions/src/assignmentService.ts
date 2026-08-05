@@ -3,8 +3,10 @@ import { onDocumentCreated } from 'firebase-functions/v2/firestore'
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https'
 
 import {
+  getNoCandidateReason,
   getWeekday,
   selectFirstEligibleEmployee,
+  type NoCandidateReason,
   type AssignmentReservation,
 } from './assignment.js'
 import {
@@ -56,7 +58,11 @@ function sortReservations(left: AssignmentReservation, right: AssignmentReservat
 }
 
 function sanitizedReason(error: unknown): string {
-  const name = error instanceof Error ? error.name : 'UnknownError'
+  const name = error instanceof Error
+    ? error.name
+    : typeof error === 'string'
+      ? error
+      : 'UnknownError'
   return name.replace(/[^A-Za-z0-9_.-]/g, '').slice(0, 64) || 'UnknownError'
 }
 
@@ -67,7 +73,7 @@ function sanitizedReservationId(value: string): string {
 type AssignmentOutcome =
   | { status: 'assigned'; employeeId: string }
   | { status: 'already-assigned' }
-  | { status: 'pending' }
+  | { status: 'pending'; reason: NoCandidateReason }
   | { status: 'skipped' }
 
 async function assignReservaWithOutcome(
@@ -90,12 +96,15 @@ async function assignReservaWithOutcome(
     const reservationsSnapshot = await transaction.get(
       reservationsForDateQuery(db, reservation.date),
     )
-    const candidate = selectFirstEligibleEmployee(
-      readEmployees(employeesSnapshot),
-      reservation,
-      readReservations(reservationsSnapshot).filter((item) => item.id !== reservaId),
-    )
-    if (!candidate) return { status: 'pending' }
+    const employees = readEmployees(employeesSnapshot)
+    const existingReservations = readReservations(reservationsSnapshot).filter((item) => item.id !== reservaId)
+    const candidate = selectFirstEligibleEmployee(employees, reservation, existingReservations)
+    if (!candidate) {
+      return {
+        status: 'pending',
+        reason: getNoCandidateReason(employees, reservation, existingReservations),
+      }
+    }
 
     transaction.update(reservationReference, { empleadoId: candidate.id })
     return { status: 'assigned', employeeId: candidate.id }
@@ -150,7 +159,13 @@ export async function onReservaCreatedHandler(
   if (!event.data) return
 
   try {
-    await assignReservaWithOutcome(db, reservaId)
+    const outcome = await assignReservaWithOutcome(db, reservaId)
+    if (outcome.status === 'pending') {
+      console.warn('Reservation assignment pending', {
+        reservaId: sanitizedReservationId(reservaId),
+        reason: sanitizedReason(outcome.reason),
+      })
+    }
   } catch (error) {
     console.error('Reservation assignment failed', {
       reservaId: sanitizedReservationId(reservaId),

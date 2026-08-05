@@ -31,6 +31,7 @@ vi.mock('./firebase', () => ({
 
 import {
   assignPendingReservasForDate,
+  countFutureReservationsByEmployee,
   createEmpleado,
   deactivateEmpleado,
   EmpleadoError,
@@ -137,6 +138,19 @@ describe('empleados service', () => {
     await expect(assignPendingReservasForDate('2026-08-04')).rejects.not.toThrow(
       'token=secret server stack trace',
     )
+  })
+
+  it('counts only assigned active reservations on or after the selected day', () => {
+    expect(countFutureReservationsByEmployee([
+      { empleadoId: 'employee-1', date: '2026-08-03', status: 'confirmed' },
+      { empleadoId: 'employee-1', date: '2026-08-04', status: 'pending' },
+      { empleadoId: 'employee-1', date: '2026-08-05', status: 'confirmed' },
+      { empleadoId: 'employee-1', date: '2026-08-06', status: 'cancelled' },
+      { empleadoId: null, date: '2026-08-05', status: 'confirmed' },
+      { empleadoId: 'employee-2', date: '2026-08-05', status: 'completed' },
+    ], '2026-08-04')).toEqual({
+      'employee-1': 2,
+    })
   })
 })
 

@@ -67,6 +67,7 @@ qa-*.png
 
 # Backups que dejan los scripts de la agencia al actualizar
 *.bak-*
+backfill-empleado-id-manifest*.json
 
 # Worktrees locales de desarrollo aislado
 .worktrees/

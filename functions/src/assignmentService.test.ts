@@ -288,6 +288,22 @@ describe('assignReservaIfNeeded', () => {
     expect(db.documents.get('reservas/reserva-blank')?.empleadoId).toBe(' ')
   })
 
+  it('fails closed when a malformed active reservation could hide an overlap', async () => {
+    const db = new FirestoreFake()
+    addEmployee(db, 'employee-1')
+    addReservation(db, 'reserva-target')
+    addReservation(db, 'malformed-active', {
+      empleadoId: 'employee-1',
+      timeSlot: 'not-a-time',
+    })
+
+    await expect(
+      assignReservaIfNeeded(db as unknown as Firestore, 'reserva-target'),
+    ).rejects.toMatchObject({ name: 'AssignmentDataMalformedError' })
+    expect(db.updates).toEqual([])
+    expect(db.documents.get('reservas/reserva-target')?.empleadoId).toBeNull()
+  })
+
   it('rejects incomplete same-date snapshots instead of risking an overlap miss', async () => {
     const db = new FirestoreFake()
     addEmployee(db, 'employee-1')
@@ -462,5 +478,30 @@ describe('assignPendingReservasForDateHandler', () => {
       empleadoId: null,
     })
     errorSpy.mockRestore()
+  })
+
+  it('logs a sanitized operational reason when no employee is eligible', async () => {
+    const db = new FirestoreFake()
+    addEmployee(db, 'employee-1', { active: false })
+    addReservation(db, 'reserva-1', { userEmail: 'customer-secret@example.com' })
+    const warningSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+
+    await expect(
+      onReservaCreatedHandler(
+        { params: { reservaId: 'reserva-1' }, data: {} },
+        db as unknown as Firestore,
+      ),
+    ).resolves.toBeUndefined()
+
+    expect(warningSpy).toHaveBeenCalledWith('Reservation assignment pending', {
+      reservaId: 'reserva-1',
+      reason: 'no-eligible-service',
+    })
+    expect(warningSpy.mock.calls.flat().join(' ')).not.toContain('customer-secret@example.com')
+    expect(db.documents.get('reservas/reserva-1')).toMatchObject({
+      status: 'pending',
+      empleadoId: null,
+    })
+    warningSpy.mockRestore()
   })
 })

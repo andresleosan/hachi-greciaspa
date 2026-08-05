@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-04 (MVP y T3.5 verificados localmente; transición a Fase 3 operativa).
+Última actualización: 2026-08-04 (MVP y código/tests de T3.5 verificados localmente; browser QA de T3.5 incompleto).
 
 ## Stack técnico
 
@@ -15,7 +15,7 @@
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
 | Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
-| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 47 passed, 0 failed; evidencia local fechada 2026-08-04; no verificacion de produccion; JDK 21 requerido |
+| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 48 passed, 0 failed; evidencia local fechada 2026-08-04; no verificacion de produccion; JDK 21 requerido |
 
 ## Evaluación de seguridad: React Router
 
@@ -30,7 +30,7 @@ El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relaci
 - La validación de slots está implementada en `src/services/reservas.ts` como best-effort client-side; el tradeoff de concurrencia aceptado está documentado en ADR-001.
 - Los mensajes de contacto persisten en `mensajes`, con creación anónima y lectura/eliminación solo para admin.
 - La galería se sirve mediante seis paths públicos estáticos y no depende de Cloud Storage.
-- `firestore.rules` está cubierta por la suite actual: `47 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, asignación y acceso admin. Functions reporta `82 passed, 2 skipped`, incluidos asignación, solapamientos y reagendado. Esta es evidencia local fechada 2026-08-04 y no constituye verificación de producción.
+- `firestore.rules` está cubierta por la suite actual: `48 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, asignación y acceso admin. Functions reporta `84 passed, 2 skipped`, incluidos asignación, solapamientos y reagendado. Esta es evidencia local fechada 2026-08-04 y no constituye verificación de producción.
 - La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite en el emulador.
 
 ### Brechas de Fase 3
@@ -44,7 +44,7 @@ El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relaci
 - Backfill dry-run local: `node tools/backfill-empleado-id.mjs --emulator`. Aplicación local: `node tools/backfill-empleado-id.mjs --emulator --apply`. El backfill solo agrega `empleadoId: null` a documentos legacy y nunca asigna empleados.
 - `onReservaCreated` intenta asignar una reserva nueva y está configurada con retry. `assignPendingReservasForDate` permite a un admin reintentar la cola al cargar la agenda. `rescheduleReserva` conserva `empleadoId` si el empleado sigue elegible y libre; lo limpia si el nuevo slot entra en conflicto.
 - La selección usa empleados activos que atienden el servicio, tienen turno compatible y no están ocupados por una reserva `pending` o `confirmed` solapada. `cancelled` y `completed` no bloquean. Sin candidato, `empleadoId` permanece `null` y la agenda muestra "Sin terapeuta asignado".
-- Browser QA local verificó la mayoría de estos flujos contra emuladores. El flujo de reagendado no se pudo completar de forma reproducible porque el proceso de emuladores terminó durante la corrida limpia y el navegador recibió `ERR_CONNECTION_REFUSED`; no se usaron credenciales ni datos productivos.
+- Browser QA local verificó la mayoría de estos flujos contra emuladores. La repetición de reagendado y retry post-cancelación quedó incompleta porque el proceso de emuladores terminó durante la corrida y el navegador recibió `ERR_CONNECTION_REFUSED`; no se usaron credenciales ni datos productivos. El gate de browser QA permanece pendiente.
 - No se ejecutó backfill productivo, no se desplegaron Functions y no se cambió configuración de producción en esta tarea.
 
 - La integración de email transaccional y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.

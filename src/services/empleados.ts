@@ -7,7 +7,7 @@ import {
 } from 'firebase/firestore'
 import { httpsCallable } from 'firebase/functions'
 
-import type { Empleado, EmpleadoInput } from '../types'
+import type { Empleado, EmpleadoInput, Reserva } from '../types'
 import { firebaseDb, firebaseFunctions } from './firebase'
 
 export interface AssignPendingReservasInput {
@@ -17,6 +17,22 @@ export interface AssignPendingReservasInput {
 export interface AssignPendingReservasResult {
   assignedReservationIds: string[]
   pendingReservationIds: string[]
+}
+
+export function countFutureReservationsByEmployee(
+  reservations: Array<Pick<Reserva, 'empleadoId' | 'date' | 'status'>>,
+  fromDate: string,
+): Record<string, number> {
+  return reservations.reduce<Record<string, number>>((counts, reservation) => {
+    const employeeId = reservation.empleadoId
+    const isActiveStatus = reservation.status === 'pending' || reservation.status === 'confirmed'
+    if (typeof employeeId !== 'string' || !employeeId.trim() || reservation.date < fromDate || !isActiveStatus) {
+      return counts
+    }
+
+    counts[employeeId] = (counts[employeeId] || 0) + 1
+    return counts
+  }, {})
 }
 
 export class EmpleadoError extends Error {

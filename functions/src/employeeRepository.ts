@@ -11,6 +11,7 @@ import type {
   ShiftName,
   Weekday,
 } from './assignment.js'
+import { getWeekday, parseAssignmentTime } from './assignment.js'
 
 export const MAX_ASSIGNMENT_DOCUMENTS = 1000
 
@@ -18,6 +19,13 @@ export class AssignmentDataOverflowError extends Error {
   constructor(collection: string) {
     super(`Assignment data exceeds the ${MAX_ASSIGNMENT_DOCUMENTS}-document limit for ${collection}`)
     this.name = 'AssignmentDataOverflowError'
+  }
+}
+
+export class AssignmentDataMalformedError extends Error {
+  constructor(reservationId: string) {
+    super(`Malformed reservation data: ${reservationId}`)
+    this.name = 'AssignmentDataMalformedError'
   }
 }
 
@@ -87,7 +95,9 @@ export function normalizeReservation(
   if (
     typeof value.serviceId !== 'string' ||
     typeof value.date !== 'string' ||
+    getWeekday(value.date) === null ||
     typeof value.timeSlot !== 'string' ||
+    parseAssignmentTime(value.timeSlot) === null ||
     typeof value.durationMin !== 'number' ||
     !Number.isInteger(value.durationMin) ||
     value.durationMin <= 0 ||
@@ -155,9 +165,10 @@ export function readReservations(
     throw new AssignmentDataOverflowError('reservas')
   }
 
-  return snapshot.docs.flatMap((document) => {
+  return snapshot.docs.map((document) => {
     const reservation = normalizeReservation(document.id, document.data())
-    return reservation ? [reservation] : []
+    if (!reservation) throw new AssignmentDataMalformedError(document.id)
+    return reservation
   })
 }
 

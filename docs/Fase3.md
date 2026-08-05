@@ -2,7 +2,7 @@
 
 > **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
 >
-> **Evidencia local al 2026-08-04:** client `30 passed`; `tsc --noEmit` y build del cliente verdes; rules `47 passed, 0 failed`; Functions `82 passed, 2 skipped`; typecheck y build de Functions verdes. Esta evidencia no constituye verificación de producción.
+> **Evidencia local al 2026-08-04:** client `31 passed`; `tsc --noEmit` y build del cliente verdes; rules `48 passed, 0 failed`; Functions `84 passed, 2 skipped`; typecheck y build de Functions verdes. Esta evidencia no constituye verificación de producción.
 >
 > **Pendiente de verificación externa:** rollback, autorización de producción, dominio, `RESEND_API_KEY`, billing, budget alert, despliegue y browser QA.
 
@@ -70,7 +70,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Hardening de `firestore.rules`: el dueño solo puede cancelar con el cambio exacto `status -> 'cancelled'`; las escrituras directas del cliente sobre `date`/`timeSlot` están denegadas y no son una vía de reagendado.
 - [x] Controles en `DashboardPage`: cancelar reservas propias `pending`/`confirmed` y mostrar reagendado solo para reservas propias `pending` con fecha futura.
 - [x] Validación server-side en la callable `rescheduleReserva`: usa Admin SDK, autentica y valida ownership/estado, fecha y hora futuras en `America/Mexico_City`, y es la autoridad para rechazar slots activos ocupados dentro de una transacción.
-- [x] Tests (evidencia local fechada 2026-08-04; no verificación de producción): reglas (`41 passed, 0 failed`), Functions (`47 passed, 2 skipped`) y cliente para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
+- [x] Tests (evidencia local fechada 2026-08-04; no verificación de producción): reglas (`48 passed, 0 failed`), Functions (`84 passed, 2 skipped`) y cliente (`31 passed`) para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
 
 **Operación separada, no completada por esta tarea:** desplegar la callable, configurar producción y verificar el comportamiento en el entorno desplegado.
 
@@ -108,10 +108,11 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Filtro "por terapeuta" en la agenda, incluyendo "Sin terapeuta".
 - [x] Cola "Sin terapeuta asignado" para reservas sin candidato elegible.
 - [ ] Backfill opcional e idempotente de legacy: el comando está documentado, pero esta tarea no lo ejecutó ni contra emulador ni contra producción.
-- [ ] Browser QA completo del reagendado en emulador: la corrida quedó interrumpida cuando el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`.
+- [ ] Browser QA completo del reagendado en emulador: la nueva tentativa de preservación y limpieza por conflicto quedó interrumpida cuando el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`.
+- [ ] Browser QA completo del retry posterior a cancelación: la repetición no alcanzó el flujo porque el mismo proceso de emuladores terminó; el gate permanece pendiente.
 - [ ] Despliegue, backfill productivo, configuración productiva y browser QA contra producción.
 
-**Verificación local fechada 2026-08-04:** client `30/30`; rules `47 passed, 0 failed`; Functions `82 passed, 2 skipped`; typecheck y builds verdes. La QA manual contra emuladores verificó autorización no-admin, CRUD admin, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. La primera recarga posterior a una cancelación mantuvo la cola; una segunda invocación local del asignador y posterior reload mostraron la reserva asignada, por lo que este caso queda como concern para repetir antes de release.
+**Verificación local fechada 2026-08-04:** client `31/31`; rules `48 passed, 0 failed`; Functions `84 passed, 2 skipped`; typecheck y builds verdes. La QA previa contra emuladores verificó autorización no-admin, CRUD admin, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. La repetición de esta ola para retry post-cancelación y reagendado no pudo ejecutarse hasta completar porque el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`; ambos gates quedan pendientes.
 
 **Refs:** `docs/SCHEMA.md` `empleados`, `firestore.rules` `empleados`.
 

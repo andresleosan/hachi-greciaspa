@@ -142,20 +142,20 @@ Datos de staff y disponibilidad para la asignación de reservas.
 
 ### Backfill opcional de `reservas.empleadoId`
 
-El comando es idempotente y funciona en modo dry-run por defecto. Lee `reservas` por lotes y, únicamente con `--apply`, agrega `empleadoId: null` a documentos que no tienen el campo. No asigna empleados ni modifica otros campos.
+El comando es idempotente y funciona en modo dry-run por defecto. Lee `reservas` por lotes y, únicamente con `--apply`, agrega `empleadoId: null` a documentos que no tienen el campo. No asigna empleados ni modifica otros campos. En ambos modos emite un manifiesto JSON con los IDs que serían o fueron afectados; en modo `--apply` solo incluye IDs confirmados dentro de la transacción.
 
 ```bash
 # Emulador: inspección sin escrituras (modo por defecto)
-node tools/backfill-empleado-id.mjs --emulator
+node tools/backfill-empleado-id.mjs --emulator --manifest /tmp/backfill-empleado-id-dry-run.json
 
 # Emulador: aplicar la normalización
-node tools/backfill-empleado-id.mjs --emulator --apply
+node tools/backfill-empleado-id.mjs --emulator --apply --manifest /tmp/backfill-empleado-id-apply.json
 
 # Cuenta de servicio: siempre indicar explícitamente el archivo
-node tools/backfill-empleado-id.mjs --service-account /ruta/serviceAccount.json [--apply]
+node tools/backfill-empleado-id.mjs --service-account /ruta/serviceAccount.json [--apply] [--manifest /ruta/backfill-manifest.json]
 ```
 
-Esta tarea no ejecuta el backfill contra producción. Antes de cualquier ejecución productiva futura debe existir un respaldo verificado; el rollback manual consiste en eliminar `empleadoId` únicamente de los documentos afectados por esa ejecución, sin tocar el resto del documento.
+El manifiesto contiene `reservationIds`, `mode`, `count` y el campo normalizado. Consérvalo junto con la evidencia de la ejecución para descubrir exactamente los documentos del rollback. Esta tarea no ejecuta el backfill contra producción. Antes de cualquier ejecución productiva futura debe existir un respaldo verificado; el rollback manual consiste en eliminar `empleadoId` únicamente de los IDs del manifiesto de esa ejecución, sin tocar el resto del documento.
 
 ---
 

@@ -28,11 +28,11 @@ npm run seed:employees -- --emulator
 Para normalizar reservas legacy, el modo por defecto es dry-run:
 
 ```bash
-node tools/backfill-empleado-id.mjs --emulator
-node tools/backfill-empleado-id.mjs --emulator --apply
+node tools/backfill-empleado-id.mjs --emulator --manifest /tmp/backfill-empleado-id-dry-run.json
+node tools/backfill-empleado-id.mjs --emulator --apply --manifest /tmp/backfill-empleado-id-apply.json
 ```
 
-El backfill solo agrega `empleadoId: null` cuando falta el campo. No elige empleados ni modifica otros campos. La variante con cuenta de servicio requiere `--service-account /ruta/serviceAccount.json`; antes de una ejecución productiva futura debe existir un respaldo verificado. Esta tarea no ejecuta el backfill productivo.
+El backfill solo agrega `empleadoId: null` cuando falta el campo. No elige empleados ni modifica otros campos. Cada corrida escribe un manifiesto JSON con los IDs que serían o fueron afectados; el modo apply incluye únicamente los IDs confirmados por la transacción. Conserva ese archivo para localizar exactamente los documentos si se autoriza un rollback posterior. La variante con cuenta de servicio requiere `--service-account /ruta/serviceAccount.json`; antes de una ejecución productiva futura debe existir un respaldo verificado. Esta tarea no ejecuta el backfill productivo.
 
 ### Semántica Operativa
 
@@ -93,11 +93,11 @@ El proveedor recomendado es Resend según ADR-004, pero la integración, el domi
 Estos resultados pertenecen al repositorio local. No autorizan despliegue ni demuestran que los gates externos estén completados.
 
 ```text
-npm run test:client                    30 passed, 0 failed
+npm run test:client                    31 passed, 0 failed
 npx tsc --noEmit                         PASS
 npm run build                            PASS
-npm run rules:test                       47 passed, 0 failed
-npm --prefix functions test              82 passed, 2 skipped
+npm run rules:test                       48 passed, 0 failed
+npm --prefix functions test              84 passed, 2 skipped
 npm --prefix functions run typecheck     PASS
 npm --prefix functions run build         PASS
 git diff --check                         PASS
@@ -112,7 +112,8 @@ Se intentó QA manual con Auth, Firestore y Functions emulator, datos sembrados 
 Limitaciones observadas:
 
 - La primera recarga posterior a una cancelación conservó temporalmente una reserva en cola; una segunda invocación local de la callable y un reload posterior mostraron la asignación. Repetir este caso antes de release.
-- El reagendado de navegador no pudo completarse de forma reproducible: al reiniciar la corrida limpia, el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED` en Auth/Firestore. Las pruebas de Functions del reagendado sí quedaron verdes, pero eso no sustituye browser QA.
+- El reagendado de navegador no pudo completarse de forma reproducible: en la repetición de preservación y limpieza por conflicto, el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED` en Auth/Firestore. Las pruebas de Functions del reagendado sí quedaron verdes, pero eso no sustituye browser QA.
+- La repetición del retry posterior a cancelación tampoco alcanzó el flujo: el mismo proceso de emuladores terminó antes de la verificación. Ambos gates de browser QA quedan explícitamente pendientes.
 - Se observó un `404` de `/favicon.ico`, además de un error transitorio causado por un documento de fixture malformado creado y eliminado exclusivamente en el emulador. No se introdujo cambio de source para corregirlos en esta tarea.
 - No se usaron credenciales, cuentas, servicios ni datos de producción.
 

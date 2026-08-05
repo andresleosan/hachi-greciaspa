@@ -1,11 +1,13 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
+import { format } from 'date-fns'
 import { Link } from 'react-router-dom'
 
 import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
 import {
   createEmpleado,
+  countFutureReservationsByEmployee,
   deactivateEmpleado,
   listEmpleados,
   updateEmpleado,
@@ -16,6 +18,7 @@ import type {
   EmpleadoInput,
   EmpleadoRole,
   EmpleadoShift,
+  Reserva,
   Servicio,
   Weekday,
   WeeklyShifts,
@@ -52,6 +55,12 @@ const SHIFT_OPTIONS: readonly { value: EmpleadoShift; label: string }[] = [
   { value: 'afternoon', label: 'Tarde (14:00–20:00)' },
   { value: 'full', label: 'Día completo (08:00–20:00)' },
 ]
+
+const SHIFT_LABELS: Record<EmpleadoShift, string> = {
+  morning: 'Mañana',
+  afternoon: 'Tarde',
+  full: 'Completo',
+}
 
 interface EmpleadoFormValues extends Omit<EmpleadoInput, 'photoUrl'> {
   photoUrl: string
@@ -104,6 +113,7 @@ export default function DashboardEmpleados() {
   const { user, profile, loading: authLoading } = useAuth()
   const [showSidebar, setShowSidebar] = useState(false)
   const [employees, setEmployees] = useState<Empleado[]>([])
+  const [futureReservationCounts, setFutureReservationCounts] = useState<Record<string, number>>({})
   const [services, setServices] = useState<Servicio[]>([])
   const [form, setForm] = useState<EmpleadoFormValues>(() => createEmptyForm())
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -129,12 +139,17 @@ export default function DashboardEmpleados() {
       setReadError(null)
 
       try {
-        const [employeeData, serviceSnapshot] = await Promise.all([
+        const fromDate = format(new Date(), 'yyyy-MM-dd')
+        const [employeeData, serviceSnapshot, reservationSnapshot] = await Promise.all([
           listEmpleados(),
           getDocs(query(
             collection(firebaseDb, 'servicios'),
             where('active', '==', true),
             orderBy('order', 'asc'),
+          )),
+          getDocs(query(
+            collection(firebaseDb, 'reservas'),
+            where('date', '>=', fromDate),
           )),
         ])
 
@@ -145,6 +160,10 @@ export default function DashboardEmpleados() {
         })
         setEmployees(employeeData)
         setServices(serviceData)
+        const futureReservations = reservationSnapshot.docs.map((document) => (
+          document.data() as Pick<Reserva, 'empleadoId' | 'date' | 'status'>
+        ))
+        setFutureReservationCounts(countFutureReservationsByEmployee(futureReservations, fromDate))
       } catch {
         if (mounted) setReadError('No se pudieron cargar los empleados y servicios. Intenta nuevamente.')
       } finally {
@@ -359,7 +378,9 @@ export default function DashboardEmpleados() {
                           <th scope="col">Empleado</th>
                           <th scope="col">Rol</th>
                           <th scope="col">Servicios</th>
+                          <th scope="col">Turnos semanales</th>
                           <th scope="col">Estado</th>
+                          <th scope="col">Reservas futuras</th>
                           <th scope="col">Acciones</th>
                         </tr>
                       </thead>
@@ -378,10 +399,21 @@ export default function DashboardEmpleados() {
                                 {employee.services.map((serviceId) => <span key={serviceId}>{serviceName(serviceId)}</span>)}
                               </div>
                             </td>
+                            <td data-label="Turnos semanales">
+                              <div className="empleados-shift-tags">
+                                {WEEKDAYS.map((weekday) => {
+                                  const shift = employee.weeklyShifts[weekday.key]
+                                  return <span key={weekday.key}>{weekday.label.slice(0, 3)}: {shift ? SHIFT_LABELS[shift] : 'Sin turno'}</span>
+                                })}
+                              </div>
+                            </td>
                             <td data-label="Estado">
                               <span className={`empleados-status empleados-status--${employee.active ? 'active' : 'inactive'}`}>
                                 {employee.active ? 'Activo' : 'Inactivo'}
                               </span>
+                            </td>
+                            <td data-label="Reservas futuras">
+                              <span className="empleados-future-count">{futureReservationCounts[employee.id] || 0}</span>
                             </td>
                             <td data-label="Acciones">
                               <div className="empleados-actions">

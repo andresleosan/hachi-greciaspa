@@ -2909,6 +2909,27 @@ metric-card {
   font-size: 0.72rem;
 }
 
+.empleados-shift-tags {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 150px;
+  color: var(--color-text);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.empleados-future-count {
+  display: inline-grid;
+  min-width: 2rem;
+  padding: 0.35rem 0.5rem;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: rgba(24, 170, 171, 0.12);
+  color: #137b7c;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 .empleados-status {
   display: inline-flex;
   padding: 0.35rem 0.58rem;

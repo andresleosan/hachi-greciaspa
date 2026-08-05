@@ -39,6 +39,8 @@ export interface AssignmentReservation {
   empleadoId?: string | null
 }
 
+export type NoCandidateReason = 'no-eligible-service' | 'shift-unavailable' | 'overlap'
+
 const WEEKDAYS: Weekday[] = [
   'sunday',
   'monday',
@@ -172,4 +174,25 @@ export function selectFirstEligibleEmployee(
   })
 
   return eligible[0] ?? null
+}
+
+export function getNoCandidateReason(
+  employees: AssignmentEmployee[],
+  reservation: AssignmentReservation,
+  existingReservations: AssignmentReservation[],
+): NoCandidateReason {
+  const serviceEligible = employees.filter(
+    (employee) => employee.active && employee.services.includes(reservation.serviceId),
+  )
+  if (serviceEligible.length === 0) return 'no-eligible-service'
+
+  const shiftEligible = serviceEligible.filter((employee) => isEmployeeEligible(employee, reservation))
+  if (shiftEligible.length === 0) return 'shift-unavailable'
+
+  return shiftEligible.every((employee) => existingReservations.some(
+    (existingReservation) =>
+      existingReservation.empleadoId === employee.id &&
+      (existingReservation.status === 'pending' || existingReservation.status === 'confirmed') &&
+      reservationsOverlap(existingReservation, reservation),
+  )) ? 'overlap' : 'shift-unavailable'
 }
