@@ -9,6 +9,7 @@ import {
 } from './assignment.js'
 import {
   activeEmployeesQuery,
+  AssignmentDataOverflowError,
   isAdminUser,
   normalizeReservation,
   pendingReservationsForDateQuery,
@@ -16,6 +17,8 @@ import {
   readReservations,
   reservationsForDateQuery,
 } from './employeeRepository.js'
+
+export { AssignmentDataOverflowError } from './employeeRepository.js'
 
 export interface AssignPendingReservasInput {
   date: string
@@ -61,21 +64,27 @@ function sanitizedReservationId(value: string): string {
   return value.replace(/[^A-Za-z0-9_-]/g, '_').slice(0, 128)
 }
 
-export async function assignReservaIfNeeded(
+type AssignmentOutcome =
+  | { status: 'assigned'; employeeId: string }
+  | { status: 'already-assigned' }
+  | { status: 'pending' }
+  | { status: 'skipped' }
+
+async function assignReservaWithOutcome(
   db: Firestore,
   reservaId: string,
-): Promise<string | null> {
-  if (!reservaId.trim() || reservaId.includes('/')) return null
+): Promise<AssignmentOutcome> {
+  if (!reservaId.trim() || reservaId.includes('/')) return { status: 'skipped' }
 
   return db.runTransaction(async (transaction) => {
     const reservationReference = db.collection('reservas').doc(reservaId)
     const reservationSnapshot = await transaction.get(reservationReference)
-    if (!reservationSnapshot.exists) return null
+    if (!reservationSnapshot.exists) return { status: 'skipped' }
 
     const reservation = normalizeReservation(reservaId, reservationSnapshot.data())
-    if (!reservation || reservation.status !== 'pending' || reservation.empleadoId !== null) {
-      return null
-    }
+    if (!reservation) return { status: 'skipped' }
+    if (reservation.status !== 'pending') return { status: 'skipped' }
+    if (reservation.empleadoId !== null) return { status: 'already-assigned' }
 
     const employeesSnapshot = await transaction.get(activeEmployeesQuery(db))
     const reservationsSnapshot = await transaction.get(
@@ -86,11 +95,19 @@ export async function assignReservaIfNeeded(
       reservation,
       readReservations(reservationsSnapshot).filter((item) => item.id !== reservaId),
     )
-    if (!candidate) return null
+    if (!candidate) return { status: 'pending' }
 
     transaction.update(reservationReference, { empleadoId: candidate.id })
-    return candidate.id
+    return { status: 'assigned', employeeId: candidate.id }
   })
+}
+
+export async function assignReservaIfNeeded(
+  db: Firestore,
+  reservaId: string,
+): Promise<string | null> {
+  const outcome = await assignReservaWithOutcome(db, reservaId)
+  return outcome.status === 'assigned' ? outcome.employeeId : null
 }
 
 export async function assignPendingReservasForDateHandler(
@@ -114,10 +131,10 @@ export async function assignPendingReservasForDateHandler(
   const assignedReservationIds: string[] = []
   const pendingReservationIds: string[] = []
   for (const reservation of pendingReservations) {
-    const employeeId = await assignReservaIfNeeded(db, reservation.id)
-    if (employeeId) {
+    const outcome = await assignReservaWithOutcome(db, reservation.id)
+    if (outcome.status === 'assigned') {
       assignedReservationIds.push(reservation.id)
-    } else {
+    } else if (outcome.status === 'pending') {
       pendingReservationIds.push(reservation.id)
     }
   }
@@ -125,22 +142,27 @@ export async function assignPendingReservasForDateHandler(
   return { assignedReservationIds, pendingReservationIds }
 }
 
-export const onReservaCreated = onDocumentCreated(
-  'reservas/{reservaId}',
-  async (event) => {
-    const reservaId = event.params.reservaId
-    if (!event.data) return
+export async function onReservaCreatedHandler(
+  event: { params: { reservaId: string }; data?: unknown },
+  db: Firestore,
+): Promise<void> {
+  const reservaId = event.params.reservaId
+  if (!event.data) return
 
-    try {
-      await assignReservaIfNeeded(getFirestore(), reservaId)
-    } catch (error) {
-      console.error('Reservation assignment failed', {
-        reservaId: sanitizedReservationId(reservaId),
-        reason: sanitizedReason(error),
-      })
-      throw new Error('Reservation assignment failed')
-    }
-  },
+  try {
+    await assignReservaWithOutcome(db, reservaId)
+  } catch (error) {
+    console.error('Reservation assignment failed', {
+      reservaId: sanitizedReservationId(reservaId),
+      reason: sanitizedReason(error),
+    })
+    throw new Error('Reservation assignment failed')
+  }
+}
+
+export const onReservaCreated = onDocumentCreated(
+  { document: 'reservas/{reservaId}', retry: true },
+  async (event) => onReservaCreatedHandler(event, getFirestore()),
 )
 
 export const assignPendingReservasForDate = onCall<AssignPendingReservasInput>(

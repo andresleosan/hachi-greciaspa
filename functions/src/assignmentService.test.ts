@@ -1,10 +1,12 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { Firestore } from 'firebase-admin/firestore'
 import type { CallableRequest } from 'firebase-functions/v2/https'
 
 import {
   assignPendingReservasForDateHandler,
   assignReservaIfNeeded,
+  AssignmentDataOverflowError,
+  onReservaCreatedHandler,
   type AssignPendingReservasInput,
 } from './assignmentService.js'
 
@@ -30,6 +32,8 @@ class FirestoreFake {
   readonly updates: Array<{ path: string; data: DocumentData }> = []
   readonly queries: QueryReference[] = []
   transactionCalls = 0
+  conflictOnFirstTransaction = false
+  transactionFailure: Error | null = null
 
   collection(name: string) {
     return {
@@ -88,6 +92,9 @@ class FirestoreFake {
 
   async runTransaction<T>(callback: (transaction: unknown) => Promise<T>): Promise<T> {
     this.transactionCalls += 1
+    if (this.transactionFailure) throw this.transactionFailure
+
+    const stagedUpdates: Array<{ path: string; data: DocumentData }> = []
     const transaction = {
       get: async (reference: DocumentReference | QueryReference) => {
         if (reference.kind === 'document') {
@@ -103,12 +110,25 @@ class FirestoreFake {
       update: (reference: DocumentReference, data: DocumentData) => {
         const current = this.documents.get(reference.path)
         if (!current) throw new Error('Missing document')
-        this.documents.set(reference.path, { ...current, ...data })
-        this.updates.push({ path: reference.path, data })
+        stagedUpdates.push({ path: reference.path, data })
       },
     }
 
-    return callback(transaction)
+    const result = await callback(transaction)
+    if (this.conflictOnFirstTransaction && stagedUpdates.length && this.transactionCalls === 1) {
+      this.conflictOnFirstTransaction = false
+      const reservation = this.documents.get(stagedUpdates[0].path)
+      if (reservation) reservation.empleadoId = 'assigned-by-another-worker'
+      return this.runTransaction(callback)
+    }
+
+    for (const update of stagedUpdates) {
+      const current = this.documents.get(update.path)
+      if (!current) throw new Error('Missing document')
+      this.documents.set(update.path, { ...current, ...update.data })
+      this.updates.push(update)
+    }
+    return result
   }
 }
 
@@ -249,6 +269,57 @@ describe('assignReservaIfNeeded', () => {
     expect(db.updates).toEqual([])
     expect(db.documents.get('reservas/reserva-1')?.empleadoId).toBe('existing-employee')
   })
+
+  it('does not overwrite malformed non-null empleadoId values', async () => {
+    const db = new FirestoreFake()
+    addEmployee(db, 'employee-1')
+    addReservation(db, 'reserva-number', { empleadoId: 42 })
+    addReservation(db, 'reserva-blank', { empleadoId: ' ' })
+
+    await expect(
+      assignReservaIfNeeded(db as unknown as Firestore, 'reserva-number'),
+    ).resolves.toBeNull()
+    await expect(
+      assignReservaIfNeeded(db as unknown as Firestore, 'reserva-blank'),
+    ).resolves.toBeNull()
+
+    expect(db.updates).toEqual([])
+    expect(db.documents.get('reservas/reserva-number')?.empleadoId).toBe(42)
+    expect(db.documents.get('reservas/reserva-blank')?.empleadoId).toBe(' ')
+  })
+
+  it('rejects incomplete same-date snapshots instead of risking an overlap miss', async () => {
+    const db = new FirestoreFake()
+    addEmployee(db, 'employee-1')
+    addReservation(db, 'reserva-target')
+    for (let index = 0; index < 1000; index += 1) {
+      addReservation(db, `reserva-${index}`)
+    }
+
+    await expect(
+      assignReservaIfNeeded(db as unknown as Firestore, 'reserva-target'),
+    ).rejects.toBeInstanceOf(AssignmentDataOverflowError)
+    expect(db.updates).toEqual([])
+    expect(db.documents.get('reservas/reserva-target')?.empleadoId).toBeNull()
+  })
+
+  it('retries a transaction conflict and omits a reservation assigned by another worker', async () => {
+    const db = new FirestoreFake()
+    addEmployee(db, 'employee-1')
+    addReservation(db, 'reserva-1')
+    db.conflictOnFirstTransaction = true
+
+    const result = await assignPendingReservasForDateHandler(
+      request({ date: '2026-08-04' }, { adminClaim: true }),
+      db as unknown as Firestore,
+    )
+
+    expect(result).toEqual({ assignedReservationIds: [], pendingReservationIds: [] })
+    expect(db.transactionCalls).toBe(2)
+    expect(db.documents.get('reservas/reserva-1')?.empleadoId).toBe(
+      'assigned-by-another-worker',
+    )
+  })
 })
 
 describe('assignPendingReservasForDateHandler', () => {
@@ -275,6 +346,45 @@ describe('assignPendingReservasForDateHandler', () => {
         db as unknown as Firestore,
       ),
     ).resolves.toEqual({ assignedReservationIds: [], pendingReservationIds: ['reserva-1'] })
+  })
+
+  it('assigns a legacy reservation with an absent empleadoId', async () => {
+    const db = new FirestoreFake()
+    addEmployee(db, 'employee-1')
+    addReservation(db, 'legacy-reserva')
+    delete db.documents.get('reservas/legacy-reserva')?.empleadoId
+
+    await expect(
+      assignPendingReservasForDateHandler(
+        request({ date: '2026-08-04' }, { adminClaim: true }),
+        db as unknown as Firestore,
+      ),
+    ).resolves.toEqual({
+      assignedReservationIds: ['legacy-reserva'],
+      pendingReservationIds: [],
+    })
+  })
+
+  it('orders callable work by timeSlot before reservation ID', async () => {
+    const db = new FirestoreFake()
+    addEmployee(db, 'employee-1')
+    addEmployee(db, 'employee-2')
+    addReservation(db, 'late', { timeSlot: '18:00' })
+    addReservation(db, 'early', { timeSlot: '09:00' })
+
+    await expect(
+      assignPendingReservasForDateHandler(
+        request({ date: '2026-08-04' }, { adminClaim: true }),
+        db as unknown as Firestore,
+      ),
+    ).resolves.toEqual({
+      assignedReservationIds: ['early', 'late'],
+      pendingReservationIds: [],
+    })
+    expect(db.updates.map((update) => update.path)).toEqual([
+      'reservas/early',
+      'reservas/late',
+    ])
   })
 
   it('rejects unauthenticated and non-admin requests', async () => {
@@ -326,5 +436,31 @@ describe('assignPendingReservasForDateHandler', () => {
       assignPendingReservasForDateHandler(adminRequest, db as unknown as Firestore),
     ).resolves.toEqual({ assignedReservationIds: [], pendingReservationIds: [] })
     expect(db.updates).toHaveLength(updateCount)
+  })
+
+  it('logs a sanitized trigger failure, preserves the reservation, and rethrows generically', async () => {
+    const db = new FirestoreFake()
+    addReservation(db, 'reserva?1', { notes: 'preserve me' })
+    db.transactionFailure = new Error('secret firestore internals')
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    await expect(
+      onReservaCreatedHandler(
+        { params: { reservaId: 'reserva?1' }, data: {} },
+        db as unknown as Firestore,
+      ),
+    ).rejects.toThrow('Reservation assignment failed')
+
+    expect(errorSpy).toHaveBeenCalledWith('Reservation assignment failed', {
+      reservaId: 'reserva_1',
+      reason: 'Error',
+    })
+    expect(errorSpy.mock.calls.flat().join(' ')).not.toContain('secret firestore internals')
+    expect(db.documents.get('reservas/reserva?1')).toMatchObject({
+      status: 'pending',
+      notes: 'preserve me',
+      empleadoId: null,
+    })
+    errorSpy.mockRestore()
   })
 })

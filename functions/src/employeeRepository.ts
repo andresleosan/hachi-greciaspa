@@ -14,6 +14,13 @@ import type {
 
 export const MAX_ASSIGNMENT_DOCUMENTS = 1000
 
+export class AssignmentDataOverflowError extends Error {
+  constructor(collection: string) {
+    super(`Assignment data exceeds the ${MAX_ASSIGNMENT_DOCUMENTS}-document limit for ${collection}`)
+    this.name = 'AssignmentDataOverflowError'
+  }
+}
+
 const WEEKDAYS: Weekday[] = [
   'monday',
   'tuesday',
@@ -84,7 +91,10 @@ export function normalizeReservation(
     typeof value.durationMin !== 'number' ||
     !Number.isInteger(value.durationMin) ||
     value.durationMin <= 0 ||
-    !RESERVATION_STATUSES.includes(value.status as (typeof RESERVATION_STATUSES)[number])
+    !RESERVATION_STATUSES.includes(value.status as (typeof RESERVATION_STATUSES)[number]) ||
+    (value.empleadoId !== undefined &&
+      value.empleadoId !== null &&
+      (typeof value.empleadoId !== 'string' || !value.empleadoId.trim()))
   ) {
     return null
   }
@@ -96,9 +106,9 @@ export function normalizeReservation(
     timeSlot: value.timeSlot,
     durationMin: value.durationMin,
     status: value.status as AssignmentReservation['status'],
-    empleadoId: typeof value.empleadoId === 'string' && value.empleadoId.trim()
-      ? value.empleadoId
-      : null,
+    empleadoId: value.empleadoId === undefined || value.empleadoId === null
+      ? null
+      : value.empleadoId,
   }
 }
 
@@ -106,14 +116,14 @@ export function activeEmployeesQuery(db: Firestore): Query<DocumentData> {
   return db
     .collection('empleados')
     .where('active', '==', true)
-    .limit(MAX_ASSIGNMENT_DOCUMENTS)
+    .limit(MAX_ASSIGNMENT_DOCUMENTS + 1)
 }
 
 export function reservationsForDateQuery(db: Firestore, date: string): Query<DocumentData> {
   return db
     .collection('reservas')
     .where('date', '==', date)
-    .limit(MAX_ASSIGNMENT_DOCUMENTS)
+    .limit(MAX_ASSIGNMENT_DOCUMENTS + 1)
 }
 
 export function pendingReservationsForDateQuery(
@@ -124,10 +134,14 @@ export function pendingReservationsForDateQuery(
     .collection('reservas')
     .where('status', '==', 'pending')
     .where('date', '==', date)
-    .limit(MAX_ASSIGNMENT_DOCUMENTS)
+    .limit(MAX_ASSIGNMENT_DOCUMENTS + 1)
 }
 
 export function readEmployees(snapshot: QuerySnapshot<DocumentData>): AssignmentEmployee[] {
+  if (snapshot.docs.length > MAX_ASSIGNMENT_DOCUMENTS) {
+    throw new AssignmentDataOverflowError('empleados')
+  }
+
   return snapshot.docs.flatMap((document) => {
     const employee = normalizeEmployee(document.id, document.data())
     return employee?.active ? [employee] : []
@@ -137,6 +151,10 @@ export function readEmployees(snapshot: QuerySnapshot<DocumentData>): Assignment
 export function readReservations(
   snapshot: QuerySnapshot<DocumentData>,
 ): AssignmentReservation[] {
+  if (snapshot.docs.length > MAX_ASSIGNMENT_DOCUMENTS) {
+    throw new AssignmentDataOverflowError('reservas')
+  }
+
   return snapshot.docs.flatMap((document) => {
     const reservation = normalizeReservation(document.id, document.data())
     return reservation ? [reservation] : []
