@@ -82,13 +82,15 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** El admin Harold hoy ve "todas las reservas" mezcladas. Para operar el spa necesita vista por día/semana con huecos libres.
 
 **AC:**
-- [ ] Nueva sección en `DashboardPage` (o ruta `/dashboard/agenda`) con:
-  1. Selector de fecha.
-  2. Vista timeline horizontal (eje X = horas del día operativo 08:00–20:00).
-  3. Bloques por reserva (color por status).
-  4. Click en bloque → drawer con detalles + acciones (confirmar, cancelar, marcar completed).
-- [ ] Acción "Marcar completed" — solo admin, status `completed` después de la cita.
-- [ ] Filtros por servicio y por terapeuta (preparado para T3.5).
+- [x] Nueva sección en `DashboardPage` (o ruta `/dashboard/agenda`) con:
+   1. Selector de fecha.
+   2. Vista timeline horizontal (eje X = horas del día operativo 08:00–20:00).
+   3. Bloques por reserva (color por status).
+   4. Click en bloque → drawer con detalles + acciones (confirmar, cancelar, marcar completed).
+- [x] Acción "Marcar completed" — solo admin, status `completed` después de la cita.
+- [x] Filtros por servicio y por terapeuta (preparado para T3.5).
+
+**Verificación de implementación:** `src/pages/DashboardAgenda.tsx` contiene la ruta operativa, timeline, drawer accesible y filtros. La validación visual E2E de navegador continúa pendiente como gate independiente de release.
 
 **Refs:** `src/pages/DashboardPage.tsx`, `src/pages/DashboardAgenda.tsx`, `src/services/agenda.ts`, `docs/SCHEMA.md` `reservas`.
 
