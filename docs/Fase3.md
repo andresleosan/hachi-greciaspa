@@ -143,9 +143,11 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** Después de la primera cita exitosa, el 60% de clientes repiten el mismo servicio. Hoy tienen que volver a elegir servicio+fecha+hora.
 
 **AC:**
-- [ ] En `DashboardPage`, en cada reserva `status='completed'`, botón "Reservar de nuevo" que pre-rellena el formulario de `Reservar.tsx` con los datos.
-- [ ] Query param en URL: `/reservar?service=X&timeSlot=Y&date=Z` (R3.3 ya planificó algo similar).
+- [x] En `DashboardPage`, en cada reserva `status='completed'`, botón "Reservar de nuevo" que pre-rellena el formulario de `Reservar.tsx` con los datos.
+- [x] Query param en URL: `/reservar?service=X&timeSlot=Y&date=Z` (R3.3 ya planificó algo similar).
 - [ ] Tests E2E: cliente reserva, completa cita, re-reserva desde dashboard.
+
+**Verificación local:** el parser seguro de query params está cubierto por `src/services/bookingPrefill.test.ts`; el E2E visual permanece pendiente por falta de Playwright habilitado en este entorno.
 
 **Refs:** `src/pages/Reservar.tsx`, `DashboardPage.tsx`.
 

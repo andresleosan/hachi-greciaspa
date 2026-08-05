@@ -344,9 +344,19 @@ export default function DashboardPage() {
                        >
                         {cancellingId === b.id ? 'Cancelando…' : 'Cancelar reserva'}
                       </button>
-                    </div>
-                  )}
-                </li>
+                     </div>
+                   )}
+                   {profile?.role !== 'admin' && b.status === 'completed' && b.serviceId && (
+                     <div className="reserva-card__actions">
+                       <Link
+                         className="btn btn-primary"
+                         to={`/reservar?service=${encodeURIComponent(b.serviceId)}&timeSlot=${encodeURIComponent(b.timeSlot || '')}&date=${encodeURIComponent(b.date || '')}`}
+                       >
+                         Reservar de nuevo
+                       </Link>
+                     </div>
+                   )}
+                 </li>
               ))}
             </ul>
             {cancelError && <div className="field-error">{cancelError}</div>}

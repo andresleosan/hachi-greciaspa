@@ -9,6 +9,7 @@ import { useAuth } from '../hooks/useAuth'
 import { firebaseDb } from '../services/firebase'
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
 import { createReserva, SlotTakenError, ReservaError } from '../services/reservas'
+import { readBookingPrefill } from '../services/bookingPrefill'
 import { listMyMascotas } from '../services/mascotas'
 import type { Mascota } from '../types'
 import { format, addDays, parseISO, isToday } from 'date-fns'
@@ -75,7 +76,10 @@ function WizardPanel({ children }: { children: React.ReactNode }) {
 export default function Reservar() {
   const { user, profile } = useAuth()
   const [searchParams] = useSearchParams()
-  const preselect = searchParams.get('service')
+  const prefill = useMemo(() => readBookingPrefill(searchParams), [searchParams])
+  const preselect = prefill.serviceId
+  const initialDate = prefill.date >= format(new Date(), 'yyyy-MM-dd') ? prefill.date : ''
+  const initialTimeSlot = initialDate && buildSlots(initialDate).includes(prefill.timeSlot) ? prefill.timeSlot : ''
 
   const [servicios, setServicios] = useState<Servicio[]>([])
   const [mascotas, setMascotas] = useState<Mascota[]>([])
@@ -84,8 +88,8 @@ export default function Reservar() {
   const [step, setStep] = useState(0)
   const [serviceId, setServiceId] = useState('')
   const [mascotaId, setMascotaId] = useState('')
-  const [date, setDate] = useState('')
-  const [timeSlot, setTimeSlot] = useState('')
+  const [date, setDate] = useState(initialDate)
+  const [timeSlot, setTimeSlot] = useState(initialTimeSlot)
   const [notes, setNotes] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
