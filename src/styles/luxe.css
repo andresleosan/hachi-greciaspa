@@ -1408,6 +1408,36 @@ html.lenis body {
   gap: 0.8rem;
 }
 
+.sl-booking-mascota-choice {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1.4rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid var(--sl-hairline);
+}
+
+.sl-booking-mascota-choice label {
+  color: var(--sl-cream-faint);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.sl-booking-mascota-choice select {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--sl-hairline);
+  border-radius: 4px;
+  background: rgba(12, 14, 11, 0.4);
+  color: var(--sl-cream);
+  font: inherit;
+}
+
+.sl-booking-mascota-link {
+  color: var(--sl-amber);
+  font-size: 0.8rem;
+}
+
 .sl-booking-option {
   display: flex;
   justify-content: space-between;

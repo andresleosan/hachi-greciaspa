@@ -2,7 +2,7 @@
 
 Documento de referencia de las colecciones de Firestore del proyecto `hachi-greciaspa`. Mantenido en sincronía con el código; cualquier cambio de schema debe reflejarse acá y en `firestore.rules`.
 
-Última actualización: 2026-08-04 (Fase 3, modelo de recordatorios).
+Última actualización: 2026-08-05 (Fase 3, mascotas y modelo de recordatorios).
 
 ## Convenciones
 
@@ -72,6 +72,7 @@ Citas reservadas. Es la colección central de Fase 2.
 | `userName` | string \| null | client | snapshot del displayName |
 | `userEmail` | string \| null | client | snapshot del email |
 | `serviceId` | string | client | FK a `servicios/{docId}` |
+| `mascotaId` | string \| null | client | FK opcional a `mascotas/{mascotaId}`; debe pertenecer al mismo usuario |
 | `serviceName` | string | client | snapshot del nombre |
 | `price` | number \| null | client | snapshot del precio |
 | `date` | string | client | ISO "YYYY-MM-DD" |
@@ -83,7 +84,7 @@ Citas reservadas. Es la colección central de Fase 2.
 | `createdAt` | Timestamp | client | `serverTimestamp()` |
 | `createdBy` | 'client' \| 'admin' | client | qué flujo originó la reserva |
 
-**Índices:** compuesto `userId ASC + createdAt DESC` ya en `firestore.indexes.json` (soporta la query de "mis reservas" en `DashboardPage.tsx:39`). Considerar índice `date + timeSlot + serviceId` para ADR-001 (detección de doble-booking).
+**Índices:** compuestos `userId ASC + createdAt DESC` ("mis reservas"), `userId ASC + mascotaId ASC` (historial por mascota) y `serviceId ASC + date ASC + timeSlot ASC` (detección de doble-booking) están en `firestore.indexes.json`.
 
 **Reglas:** ver `firestore.rules:37-62` y ADR-002. El cliente solo puede crear una reserva propia con `empleadoId` ausente o `null`; no puede agregar, cambiar ni quitar ese campo después. El propietario solo puede cancelar con el cambio exacto `status -> 'cancelled'` cuando la reserva está `pending` o `confirmed`; las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas y no puede cambiar campos adicionales. `rescheduleMyReserva` llama exclusivamente a la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad para validar fecha/hora futura y disponibilidad del slot en una transacción server-side. Admin conserva la edición completa y la asignación automática también usa Admin SDK.
 

@@ -9,6 +9,8 @@ import { useAuth } from '../hooks/useAuth'
 import { firebaseDb } from '../services/firebase'
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
 import { createReserva, SlotTakenError, ReservaError } from '../services/reservas'
+import { listMyMascotas } from '../services/mascotas'
+import type { Mascota } from '../types'
 import { format, addDays, parseISO, isToday } from 'date-fns'
 import { es } from 'date-fns/locale'
 
@@ -21,7 +23,7 @@ type Servicio = {
   active?: boolean
 }
 
-const STEPS = ['Servicio', 'Fecha', 'Hora', 'Confirmación'] as const
+const STEPS = ['Mascota y servicio', 'Fecha', 'Hora', 'Confirmación'] as const
 
 function buildSlots(date: string): string[] {
   const d = parseISO(date)
@@ -76,10 +78,12 @@ export default function Reservar() {
   const preselect = searchParams.get('service')
 
   const [servicios, setServicios] = useState<Servicio[]>([])
+  const [mascotas, setMascotas] = useState<Mascota[]>([])
   const [loadingCatalog, setLoadingCatalog] = useState(true)
 
   const [step, setStep] = useState(0)
   const [serviceId, setServiceId] = useState('')
+  const [mascotaId, setMascotaId] = useState('')
   const [date, setDate] = useState('')
   const [timeSlot, setTimeSlot] = useState('')
   const [notes, setNotes] = useState('')
@@ -125,10 +129,28 @@ export default function Reservar() {
     }
   }, [preselect])
 
+  useEffect(() => {
+    let mounted = true
+    if (!user) {
+      setMascotas([])
+      setMascotaId('')
+      return () => { mounted = false }
+    }
+    listMyMascotas(user.uid)
+      .then((items) => {
+        if (mounted) setMascotas(items)
+      })
+      .catch(() => {
+        if (mounted) setMascotas([])
+      })
+    return () => { mounted = false }
+  }, [user])
+
   const days = useMemo(() => nextDays(14), [])
   const slots = useMemo(() => (date ? buildSlots(date) : []), [date])
 
   const selectedService = servicios.find((s) => s.id === serviceId)
+  const selectedMascota = mascotas.find((mascota) => mascota.id === mascotaId)
 
   function goNext() {
     setError(null)
@@ -179,6 +201,7 @@ export default function Reservar() {
         userEmail: user.email || null,
         serviceId: servicio.id,
         serviceName: servicio.name,
+        mascotaId: mascotaId || null,
         price: null,
         date,
         timeSlot,
@@ -270,6 +293,14 @@ export default function Reservar() {
 
                   {servicios.length > 0 && step === 0 && (
                     <div role="radiogroup" aria-label="Servicio">
+                      <div className="sl-booking-mascota-choice">
+                        <label htmlFor="booking-mascota">¿Para qué mascota es esta cita?</label>
+                        <select id="booking-mascota" value={mascotaId} onChange={(event) => setMascotaId(event.target.value)}>
+                          <option value="">Reserva general</option>
+                          {mascotas.map((mascota) => <option key={mascota.id} value={mascota.id}>{mascota.name}</option>)}
+                        </select>
+                        <Link to="/dashboard/mascotas" className="sl-booking-mascota-link">Gestionar mascotas</Link>
+                      </div>
                       <div className="sl-booking-options">
                         {servicios.map((s) => {
                           const active = s.id === serviceId
@@ -374,6 +405,7 @@ export default function Reservar() {
                     <form onSubmit={handleSubmit}>
                       <div className="sl-booking-summary">
                         {[
+                          ['Mascota', selectedMascota?.name ?? 'Reserva general'],
                           ['Servicio', selectedService?.name ?? '—'],
                           ['Fecha', date ? format(parseISO(date), "EEEE d 'de' MMMM yyyy", { locale: es }) : '—'],
                           ['Horario', timeSlot || '—'],

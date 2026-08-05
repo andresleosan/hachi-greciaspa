@@ -193,6 +193,7 @@ export default function DashboardPage() {
             <Link className="sidebar-link is-active" to="/dashboard"><span className="sidebar-link__icon">D</span> Dashboard</Link>
             <Link className="sidebar-link" to="/dashboard/agenda"><span className="sidebar-link__icon">C</span> Citas</Link>
             {profile?.role === 'admin' && <Link className="sidebar-link" to="/dashboard/empleados"><span className="sidebar-link__icon">E</span> Empleados</Link>}
+            <Link className="sidebar-link" to="/dashboard/mascotas"><span className="sidebar-link__icon">M</span> Mis mascotas</Link>
             <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">U</span> Clientes <small className="sidebar-link__badge">próxim.</small></span>
             <Link className="sidebar-link" to="/servicios"><span className="sidebar-link__icon">S</span> Servicios</Link>
             <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">R</span> Reportes <small className="sidebar-link__badge">próxim.</small></span>

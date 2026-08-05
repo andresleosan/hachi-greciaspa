@@ -33,12 +33,34 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Pets: each client owns only their own pet profiles; admins can support operation.
+    match /mascotas/{mascotaId} {
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && validMascota(request.resource.data);
+      allow read: if isAdmin()
+        || (request.auth != null && resource.data.userId == request.auth.uid);
+      allow update: if isAdmin()
+        || (
+          request.auth != null
+          && resource.data.userId == request.auth.uid
+          && request.resource.data.userId == request.auth.uid
+          && validMascota(request.resource.data)
+        );
+      allow delete: if isAdmin()
+        || (request.auth != null && resource.data.userId == request.auth.uid);
+    }
+
     // Bookings / reservations
     match /reservas/{resId} {
       // Authenticated users may create a booking for themselves
       allow create: if request.auth != null
         && request.resource.data.userId == request.auth.uid
-        && request.resource.data.get('empleadoId', null) == null;
+        && request.resource.data.get('empleadoId', null) == null
+        && (
+          request.resource.data.get('mascotaId', null) == null
+          || get(/databases/$(database)/documents/mascotas/$(request.resource.data.mascotaId)).data.userId == request.auth.uid
+        );
       // Owner or admin can read
       allow read: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
       // Update: admin can edit anything; owners may only cancel within the
@@ -89,6 +111,24 @@ service cloud.firestore {
         // or fallback to a role stored in the user's Firestore document
         || (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
       );
+    }
+
+    function validMascota(data) {
+      return data.keys().hasOnly([
+          'userId', 'name', 'breed', 'weightKg', 'birthDate', 'notes', 'photoUrl', 'createdAt', 'updatedAt'
+        ])
+        && data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 80
+        && data.get('breed', '') is string
+        && data.get('breed', '').size() <= 80
+        && (
+          data.get('weightKg', null) == null
+          || (data.weightKg is number && data.weightKg >= 0 && data.weightKg <= 150)
+        )
+        && (data.get('birthDate', null) == null || data.birthDate is string)
+        && (data.get('notes', null) == null || data.notes is string)
+        && (data.get('photoUrl', null) == null || (data.photoUrl is string && data.photoUrl.matches('https?://.*')));
     }
   }
 }

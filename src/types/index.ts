@@ -10,3 +10,4 @@ export type {
   Weekday,
   WeeklyShifts,
 } from './empleado'
+export type { Mascota, MascotaInput } from './mascota'

@@ -33,7 +33,8 @@ export type NewReservaInput = Pick<
   | 'userName'
   | 'userEmail'
   | 'serviceId'
-  | 'serviceName'
+   | 'serviceName'
+   | 'mascotaId'
   | 'price'
   | 'date'
   | 'timeSlot'
@@ -97,6 +98,7 @@ export async function createReserva(input: NewReservaInput): Promise<string> {
     userEmail: input.userEmail,
     serviceId: input.serviceId,
     serviceName: input.serviceName,
+    mascotaId: input.mascotaId ?? null,
     price: input.price,
     date: input.date,
     timeSlot: input.timeSlot,

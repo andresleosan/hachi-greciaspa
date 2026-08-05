@@ -126,12 +126,14 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** El cliente agenda para "Hachi" o "Grecia" (los perros del spa, según el nombre). Hoy no hay forma de decir "esta cita es para Hachi, raza Yorkshire, 4kg".
 
 **AC:**
-- [ ] Nueva colección `mascotas/{id}` (user-owned: `userId == auth.uid`).
-- [ ] Schema: `name`, `breed`, `weightKg`, `birthDate` (opcional), `notes` (alergias, temperamento), `photoUrl` (opcional).
-- [ ] UI en `/dashboard/mascotas`: CRUD de mascotas del usuario autenticado.
-- [ ] Vincular `reservas.mascotaId` (nuevo campo, opcional — si null, reserva genérica).
-- [ ] Al reservar, paso previo: "¿para qué mascota?" + selector (si hay) o "¿agregar nueva?".
-- [ ] Historial: en perfil de mascota, lista de reservas pasadas con servicio y fecha.
+- [x] Nueva colección `mascotas/{id}` (user-owned: `userId == auth.uid`).
+- [x] Schema: `name`, `breed`, `weightKg`, `birthDate` (opcional), `notes` (alergias, temperamento), `photoUrl` (opcional).
+- [x] UI en `/dashboard/mascotas`: CRUD de mascotas del usuario autenticado.
+- [x] Vincular `reservas.mascotaId` (nuevo campo, opcional — si null, reserva genérica).
+- [x] Al reservar, paso previo: "¿para qué mascota?" + selector (si hay) o "agregar nueva".
+- [x] Historial: en perfil de mascota, lista de reservas pasadas con servicio y fecha.
+
+**Verificación local:** rules owner-only y vínculo de reserva cubiertos por `tools/firestore-tests/run-rules-tests.mjs`; validación de entrada y servicio cubiertos por `src/services/mascotas.test.ts`. Browser QA permanece pendiente como gate separado.
 
 **Refs:** `docs/SCHEMA.md` (nueva colección).
 

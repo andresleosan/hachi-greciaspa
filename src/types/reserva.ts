@@ -9,6 +9,7 @@ export interface Reserva {
   userName: string | null
   userEmail: string | null
   serviceId: string
+  mascotaId?: string | null
   empleadoId?: string | null
   serviceName: string
   price: number | null

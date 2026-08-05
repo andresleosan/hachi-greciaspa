@@ -11,6 +11,7 @@ const Reservar = lazy(() => import('./pages/Reservar'))
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const DashboardAgenda = lazy(() => import('./pages/DashboardAgenda'))
 const DashboardEmpleados = lazy(() => import('./pages/DashboardEmpleados'))
+const DashboardMascotas = lazy(() => import('./pages/DashboardMascotas'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const NotFound = lazy(() => import('./pages/NotFound'))
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/dashboard/agenda" element={<DashboardAgenda />} />
           <Route path="/dashboard/empleados" element={<DashboardEmpleados />} />
+          <Route path="/dashboard/mascotas" element={<DashboardMascotas />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

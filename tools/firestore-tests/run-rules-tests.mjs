@@ -74,9 +74,39 @@ async function main() {
     await test('admin can read any user profile', () => assertSucceeds(bobAdminDb.collection('users').doc('alice').get()))
     await test('admin can delete any user', () => assertSucceeds(bobAdminDb.collection('users').doc('alice').delete()))
 
+    // --- Mascotas (owner-only, optional link from reservas) ---
+    await test('client can create own mascota', () => assertSucceeds(aliceDb.collection('mascotas').doc('m-alice').set({
+      userId: 'alice', name: 'Hachi', breed: 'Yorkshire', weightKg: 4.2, birthDate: null, notes: 'Tranquilo', photoUrl: null,
+    })))
+    await test('client cannot create mascota for another user', () => assertFails(aliceDb.collection('mascotas').doc('m-bob').set({
+      userId: 'bob', name: 'Grecia', breed: 'Poodle', weightKg: 6, birthDate: null, notes: null, photoUrl: null,
+    })))
+    await test('client can read and update own mascota', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('mascotas').doc('m-alice-read').set({ userId: 'alice', name: 'Hachi', breed: '', weightKg: null, birthDate: null, notes: null, photoUrl: null })
+      })
+      await assertSucceeds(aliceDb.collection('mascotas').doc('m-alice-read').get())
+      return assertSucceeds(aliceDb.collection('mascotas').doc('m-alice-read').update({ notes: 'Actualizado' }))
+    })
+    await test('client cannot read another user mascota', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('mascotas').doc('m-bob-read').set({ userId: 'bob', name: 'Grecia' })
+      })
+      return assertFails(aliceDb.collection('mascotas').doc('m-bob-read').get())
+    })
+    await test('client can delete own mascota', async () => {
+      await testEnv.withSecurityRulesDisabled(async (ctx) => {
+        await ctx.firestore().collection('mascotas').doc('m-alice-delete').set({ userId: 'alice', name: 'Hachi' })
+      })
+      return assertSucceeds(aliceDb.collection('mascotas').doc('m-alice-delete').delete())
+    })
+    await test('admin can read any mascota', () => assertSucceeds(bobAdminDb.collection('mascotas').doc('m-alice').get()))
+
       // --- Reservas (owner create/read, admin update/delete) ---
       await test('user can create own reserva', () => assertSucceeds(aliceDb.collection('reservas').doc('r1').set({ userId: 'alice', serviceName: 'Spa', createdAt: new Date() })))
       await test('client can create own reserva with empleadoId null', () => assertSucceeds(aliceDb.collection('reservas').doc('r-with-null-employee').set({ userId: 'alice', serviceName: 'Spa', empleadoId: null })))
+      await test('client can create own reserva with own mascota', () => assertSucceeds(aliceDb.collection('reservas').doc('r-with-mascota').set({ userId: 'alice', serviceName: 'Spa', mascotaId: 'm-alice' })))
+      await test('client cannot create reserva with another user mascota', () => assertFails(aliceDb.collection('reservas').doc('r-with-other-mascota').set({ userId: 'alice', serviceName: 'Spa', mascotaId: 'm-bob-read' })))
       await test('user cannot create reserva for another user', () => assertFails(aliceDb.collection('reservas').doc('r2').set({ userId: 'bob', serviceName: 'Spa' })))
     await test('client cannot create reserva with another empleado', () => assertFails(aliceDb.collection('reservas').doc('r-with-employee').set({ userId: 'alice', serviceName: 'Spa', empleadoId: 'employee-2' })))
     await test('user can read own reserva', async () => {
