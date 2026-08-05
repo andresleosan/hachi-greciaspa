@@ -2,6 +2,14 @@ import { formatInTimeZone, fromZonedTime } from 'date-fns-tz'
 import { getFirestore, type Firestore } from 'firebase-admin/firestore'
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https'
 
+import { isEmployeeEligible, reservationsOverlap } from './assignment.js'
+import {
+  normalizeEmployee,
+  normalizeReservation,
+  readReservations,
+  reservationsForDateQuery,
+} from './employeeRepository.js'
+
 const TIME_ZONE = 'America/Mexico_City'
 
 export interface RescheduleReservaInput {
@@ -88,10 +96,47 @@ export async function rescheduleReservaHandler(
       }
     }
 
-    transaction.update(reservationReference, {
+    const update: Record<string, string | null> = {
       date: input.date,
       timeSlot: input.timeSlot,
-    })
+    }
+
+    const currentEmployeeId = reservation.empleadoId
+    if (typeof currentEmployeeId === 'string' && currentEmployeeId.trim()) {
+      const employeeReference = db.collection('empleados').doc(currentEmployeeId)
+      const employeeSnapshot = await transaction.get(employeeReference)
+      const employee = employeeSnapshot.exists
+        ? normalizeEmployee(currentEmployeeId, employeeSnapshot.data())
+        : null
+      const rescheduledReservation = normalizeReservation(input.reservaId, {
+        ...reservation,
+        date: input.date,
+        timeSlot: input.timeSlot,
+      })
+
+      let employeeIsAvailable = Boolean(
+        employee &&
+          rescheduledReservation &&
+          isEmployeeEligible(employee, rescheduledReservation),
+      )
+
+      if (employeeIsAvailable && rescheduledReservation) {
+        const reservationsSnapshot = await transaction.get(
+          reservationsForDateQuery(db, input.date),
+        )
+        employeeIsAvailable = !readReservations(reservationsSnapshot).some(
+          (existingReservation) =>
+            existingReservation.id !== input.reservaId &&
+            existingReservation.empleadoId === currentEmployeeId &&
+            (existingReservation.status === 'pending' || existingReservation.status === 'confirmed') &&
+            reservationsOverlap(existingReservation, rescheduledReservation),
+        )
+      }
+
+      if (!employeeIsAvailable) update.empleadoId = null
+    }
+
+    transaction.update(reservationReference, update)
 
     return {
       reservaId: input.reservaId,

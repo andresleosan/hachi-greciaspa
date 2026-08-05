@@ -24,10 +24,20 @@ class TransactionFirestoreFake {
         filters: [{ field, value }],
         kind: 'query' as const,
         collection: name,
+        limit: (_value: number) => ({
+          filters: [{ field, value }],
+          kind: 'query' as const,
+          collection: name,
+        }),
         where: (nextField: string, _nextOperator: '==', nextValue: unknown) => ({
           filters: [{ field, value }, { field: nextField, value: nextValue }],
           kind: 'query' as const,
           collection: name,
+          limit: (_value: number) => ({
+            filters: [{ field, value }, { field: nextField, value: nextValue }],
+            kind: 'query' as const,
+            collection: name,
+          }),
           where: (lastField: string, _lastOperator: '==', lastValue: unknown) => ({
             filters: [
               { field, value },
@@ -36,6 +46,15 @@ class TransactionFirestoreFake {
             ],
             kind: 'query' as const,
             collection: name,
+            limit: (_value: number) => ({
+              filters: [
+                { field, value },
+                { field: nextField, value: nextValue },
+                { field: lastField, value: lastValue },
+              ],
+              kind: 'query' as const,
+              collection: name,
+            }),
           }),
         }),
       }),
@@ -110,6 +129,24 @@ function reservation(overrides: Reservation = {}): Reservation {
     status: 'pending',
     date: '2026-08-05',
     timeSlot: '11:00',
+    ...overrides,
+  }
+}
+
+function employee(overrides: Reservation = {}): Reservation {
+  return {
+    name: 'Ana',
+    active: true,
+    services: ['service-1'],
+    weeklyShifts: {
+      monday: 'full',
+      tuesday: 'full',
+      wednesday: 'full',
+      thursday: 'full',
+      friday: 'full',
+      saturday: 'full',
+      sunday: 'full',
+    },
     ...overrides,
   }
 }
@@ -198,6 +235,90 @@ describe('rescheduleReservaHandler', () => {
     await expect(
       rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW),
     ).resolves.toEqual({ reservaId: 'reserva-1', date: '2026-08-06', timeSlot: '12:00' })
+  })
+
+  it('preserves an assigned employee who is eligible and free at the new slot', async () => {
+    const firestore = firestoreWithReservation({ empleadoId: 'employee-1', durationMin: 60 })
+    firestore.documents.set('empleados/employee-1', employee())
+
+    await expect(
+      rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW),
+    ).resolves.toEqual({ reservaId: 'reserva-1', date: '2026-08-06', timeSlot: '12:00' })
+
+    expect(firestore.documents.get('reservas/reserva-1')).toMatchObject({
+      date: '2026-08-06',
+      timeSlot: '12:00',
+      empleadoId: 'employee-1',
+    })
+    expect(firestore.updates).toEqual([
+      { path: 'reservas/reserva-1', data: { date: '2026-08-06', timeSlot: '12:00' } },
+    ])
+  })
+
+  it('clears an assigned employee who overlaps an active reservation at the new slot', async () => {
+    const firestore = firestoreWithReservation({ empleadoId: 'employee-1', durationMin: 60 })
+    firestore.documents.set('empleados/employee-1', employee())
+    firestore.documents.set(
+      'reservas/occupied',
+      reservation({
+        date: '2026-08-06',
+        timeSlot: '12:30',
+        durationMin: 60,
+        status: 'confirmed',
+        empleadoId: 'employee-1',
+      }),
+    )
+
+    await rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW)
+
+    expect(firestore.updates).toEqual([
+      {
+        path: 'reservas/reserva-1',
+        data: { date: '2026-08-06', timeSlot: '12:00', empleadoId: null },
+      },
+    ])
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBeNull()
+  })
+
+  it('clears an assigned employee who is inactive', async () => {
+    const firestore = firestoreWithReservation({ empleadoId: 'employee-1', durationMin: 60 })
+    firestore.documents.set('empleados/employee-1', employee({ active: false }))
+
+    await rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW)
+
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBeNull()
+    expect(firestore.updates).toEqual([
+      {
+        path: 'reservas/reserva-1',
+        data: { date: '2026-08-06', timeSlot: '12:00', empleadoId: null },
+      },
+    ])
+  })
+
+  it('clears an assigned employee who no longer serves the reservation service', async () => {
+    const firestore = firestoreWithReservation({ empleadoId: 'employee-1', durationMin: 60 })
+    firestore.documents.set('empleados/employee-1', employee({ services: ['service-2'] }))
+
+    await rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW)
+
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBeNull()
+    expect(firestore.updates).toEqual([
+      {
+        path: 'reservas/reserva-1',
+        data: { date: '2026-08-06', timeSlot: '12:00', empleadoId: null },
+      },
+    ])
+  })
+
+  it('leaves an unassigned reservation unassigned during rescheduling', async () => {
+    const firestore = firestoreWithReservation({ empleadoId: null, durationMin: 60 })
+
+    await rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW)
+
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBeNull()
+    expect(firestore.updates).toEqual([
+      { path: 'reservas/reserva-1', data: { date: '2026-08-06', timeSlot: '12:00' } },
+    ])
   })
 
   it('rejects a missing reservation', async () => {
