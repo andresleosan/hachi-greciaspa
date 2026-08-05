@@ -1,4 +1,4 @@
-import type { Reserva, ReservaStatus } from '../types';
+import type { Empleado, Reserva, ReservaStatus } from '../types';
 
 export const AGENDA_START_MINUTES = 480;
 export const AGENDA_END_MINUTES = 1200;
@@ -61,6 +61,29 @@ export function filterAgendaBookings(bookings: Reserva[], serviceId: string): Re
   }
 
   return bookings.filter((booking) => (booking as AgendaReserva).serviceId === serviceId);
+}
+
+export function filterAgendaBookingsByEmployee(
+  bookings: Reserva[],
+  employeeFilter: 'all' | 'unassigned' | string,
+): Reserva[] {
+  if (employeeFilter === 'all') {
+    return [...bookings];
+  }
+
+  if (employeeFilter === 'unassigned') {
+    return bookings.filter((booking) => booking.empleadoId == null);
+  }
+
+  return bookings.filter((booking) => booking.empleadoId === employeeFilter);
+}
+
+export function getEmployeeDisplayName(
+  employeeId: string | null | undefined,
+  employees: Empleado[],
+): string {
+  if (employeeId == null) return 'Sin terapeuta asignado';
+  return employees.find((employee) => employee.id === employeeId)?.name || 'Terapeuta no encontrado';
 }
 
 export function getAgendaActions(reserva: Reserva, now: Date): AgendaAction[] {

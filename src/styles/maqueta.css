@@ -2081,6 +2081,7 @@ metric-card {
 .agenda-header,
 .agenda-panel,
 .agenda-filters,
+.agenda-unassigned,
 .agenda-empty {
   border: 1px solid rgba(21, 34, 51, 0.08);
   border-radius: var(--radius-xl);
@@ -2176,6 +2177,10 @@ metric-card {
   cursor: not-allowed;
   color: var(--color-muted);
   background: var(--color-bg-soft);
+}
+
+.agenda-filters select:not(:disabled) {
+  cursor: pointer;
 }
 
 .agenda-filters__summary {
@@ -2305,6 +2310,18 @@ metric-card {
   font-weight: 700;
 }
 
+.agenda-event .agenda-event__employee,
+.agenda-incident .agenda-event__employee {
+  color: #137b7c;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.agenda-event .agenda-event__employee--unassigned,
+.agenda-incident .agenda-event__employee--unassigned {
+  color: #8f3044;
+}
+
 .agenda-event--pending {
   background: rgba(255, 213, 156, 0.52);
   border-color: rgba(154, 93, 0, 0.18);
@@ -2387,6 +2404,68 @@ metric-card {
   border-top: 1px solid rgba(21, 34, 51, 0.09);
 }
 
+.agenda-unassigned {
+  display: grid;
+  gap: 0.8rem;
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  border-color: rgba(163, 61, 78, 0.2);
+  background: rgba(255, 247, 246, 0.94);
+}
+
+.agenda-unassigned__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.agenda-unassigned__head h2 {
+  margin-top: 0.45rem;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+}
+
+.agenda-unassigned__head > span {
+  flex: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: rgba(245, 208, 201, 0.65);
+  color: #8f3044;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.agenda-unassigned ul {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0;
+  list-style: none;
+}
+
+.agenda-unassigned__item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid rgba(163, 61, 78, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--color-ink);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.agenda-unassigned__item:hover {
+  border-color: rgba(163, 61, 78, 0.32);
+  background: #ffffff;
+}
+
+.agenda-unassigned__item span {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
 .agenda-incidents h3 {
   font-size: 1.05rem;
 }
@@ -2450,6 +2529,15 @@ metric-card {
   border-radius: 14px;
   background: rgba(245, 208, 201, 0.45);
   color: #8f3044;
+  font-size: 0.9rem;
+}
+
+.agenda-assignment-error {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(154, 93, 0, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 213, 156, 0.35);
+  color: #7c4a00;
   font-size: 0.9rem;
 }
 
@@ -2536,6 +2624,10 @@ metric-card {
   text-align: right;
 }
 
+.agenda-drawer__details dd.agenda-drawer__employee--unassigned {
+  color: #8f3044;
+}
+
 .agenda-status {
   display: inline-flex;
   padding: 0.3rem 0.6rem;
@@ -2587,7 +2679,8 @@ metric-card {
 @media (max-width: 720px) {
   .agenda-header,
   .agenda-panel__head,
-  .agenda-incidents__head {
+  .agenda-incidents__head,
+  .agenda-unassigned__head {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -2610,12 +2703,19 @@ metric-card {
     flex-direction: column;
     gap: 0.3rem;
   }
+
+  .agenda-unassigned__item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .agenda-back-link,
   .agenda-event,
   .agenda-incident,
+  .agenda-unassigned__item,
   .agenda-date-card input,
   .agenda-filters select {
     transition: none;

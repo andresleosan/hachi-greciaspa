@@ -5,15 +5,18 @@ import { format } from 'date-fns'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
 import { firebaseDb } from '../services/firebase'
+import { assignPendingReservasForDate, listEmpleados } from '../services/empleados'
 import { updateAdminReservaStatus } from '../services/reservas'
 import {
   filterAgendaBookings,
+  filterAgendaBookingsByEmployee,
   getAgendaActions,
+  getEmployeeDisplayName,
   getAgendaPlacement,
   getAgendaStatusLabel,
   type AgendaAction,
 } from '../services/agenda'
-import type { Reserva, ReservaStatus } from '../types'
+import type { Empleado, Reserva, ReservaStatus } from '../types'
 import { RESERVA_STATUS_LABELS } from '../types'
 
 const AGENDA_SLOT_COUNT = 24
@@ -72,9 +75,12 @@ export default function DashboardAgenda() {
   const { user, profile, error: profileError } = useAuth()
   const [selectedDate, setSelectedDate] = useState(() => format(new Date(), 'yyyy-MM-dd'))
   const [serviceFilter, setServiceFilter] = useState('all')
+  const [employeeFilter, setEmployeeFilter] = useState('all')
   const [bookings, setBookings] = useState<Reserva[]>([])
+  const [employees, setEmployees] = useState<Empleado[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [assignmentError, setAssignmentError] = useState<string | null>(null)
   const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null)
   const [busyById, setBusyById] = useState<Record<string, boolean>>({})
   const [drawerError, setDrawerError] = useState<string | null>(null)
@@ -108,17 +114,35 @@ export default function DashboardAgenda() {
 
       setLoading(true)
       setError(null)
-      setBookings([])
+      setAssignmentError(null)
       closeDrawer()
 
       try {
+        try {
+          await assignPendingReservasForDate(selectedDate)
+        } catch (assignmentLoadError) {
+          if (active) {
+            setAssignmentError(
+              assignmentLoadError instanceof Error
+                ? assignmentLoadError.message
+                : 'No se pudo completar la asignación automática. Intenta nuevamente.',
+            )
+          }
+        }
+
         const agendaQuery = query(collection(firebaseDb, 'reservas'), where('date', '==', selectedDate))
-        const snapshot = await getDocs(agendaQuery)
+        const [snapshot, employeeData] = await Promise.all([
+          getDocs(agendaQuery),
+          listEmpleados(),
+        ])
         const items = snapshot.docs
           .map((document) => ({ id: document.id, ...document.data() }) as Reserva)
           .sort((left, right) => left.timeSlot.localeCompare(right.timeSlot))
 
-        if (active) setBookings(items)
+        if (active) {
+          setBookings(items)
+          setEmployees(employeeData)
+        }
       } catch (loadError) {
         if (active) {
           setError(loadError instanceof Error ? loadError.message : 'No se pudo cargar la agenda.')
@@ -134,8 +158,12 @@ export default function DashboardAgenda() {
     }
   }, [profile?.role, selectedDate, user])
 
+  const previousSelectedDateRef = useRef(selectedDate)
   useEffect(() => {
+    if (previousSelectedDateRef.current === selectedDate) return
+    previousSelectedDateRef.current = selectedDate
     setServiceFilter('all')
+    setEmployeeFilter('all')
   }, [selectedDate])
 
   useEffect(() => {
@@ -191,9 +219,12 @@ export default function DashboardAgenda() {
     }, new Map<string, string>()),
   ).sort((left, right) => left[1].localeCompare(right[1]))
 
-  const filteredBookings = filterAgendaBookings(bookings, serviceFilter)
+  const serviceFilteredBookings = filterAgendaBookings(bookings, serviceFilter)
+  const filteredBookings = filterAgendaBookingsByEmployee(serviceFilteredBookings, employeeFilter)
   const timelineBookings = filteredBookings.filter((booking) => getTimelinePlacement(booking))
   const incidentBookings = filteredBookings.filter((booking) => !getTimelinePlacement(booking))
+  const unassignedBookings = bookings.filter((booking) => booking.empleadoId == null)
+  const employeeOptions = [...employees].sort((left, right) => left.name.localeCompare(right.name))
   const selectedBooking = bookings.find((booking) => booking.id === selectedBookingId) || null
   const selectedBusy = selectedBooking?.id ? Boolean(busyById[selectedBooking.id]) : false
 
@@ -263,9 +294,19 @@ export default function DashboardAgenda() {
               </select>
             </div>
             <div className="field">
-              <label htmlFor="agenda-therapist">Terapeuta <span>(preparado para T3.5)</span></label>
-              <select id="agenda-therapist" disabled value="all" onChange={() => undefined}>
-                <option value="all">Todos los terapeutas</option>
+              <label htmlFor="agenda-therapist">Terapeuta</label>
+              <select
+                id="agenda-therapist"
+                value={employeeFilter}
+                onChange={(event) => setEmployeeFilter(event.target.value)}
+              >
+                <option value="all">Todas</option>
+                {employeeOptions.map((employee) => (
+                  <option key={employee.id} value={employee.id}>
+                    {employee.name} ({employee.active ? 'activa' : 'inactiva'})
+                  </option>
+                ))}
+                <option value="unassigned">Sin terapeuta</option>
               </select>
             </div>
             <p className="agenda-filters__summary">
@@ -274,6 +315,11 @@ export default function DashboardAgenda() {
           </section>
 
           {profileError && <p className="agenda-error" role="alert">{profileError}</p>}
+          {assignmentError && (
+            <p className="agenda-assignment-error" role="alert">
+              No se pudo actualizar la asignación automática: {assignmentError}
+            </p>
+          )}
           {loading && <p className="agenda-state" role="status">Cargando agenda...</p>}
           {!loading && error && <p className="agenda-error" role="alert">{error}</p>}
           {!loading && !error && filteredBookings.length === 0 && (
@@ -281,6 +327,34 @@ export default function DashboardAgenda() {
               <strong>No hay reservas para esta selección.</strong>
               <span>Probá otra fecha o servicio para ver la agenda.</span>
             </div>
+          )}
+
+          {!loading && unassignedBookings.length > 0 && (
+            <section className="agenda-unassigned" aria-labelledby="agenda-unassigned-title">
+              <div className="agenda-unassigned__head">
+                <div>
+                  <p className="eyebrow eyebrow--coral">Cola de asignación</p>
+                  <h2 id="agenda-unassigned-title">Sin terapeuta asignado</h2>
+                </div>
+                <span>{unassignedBookings.length} {unassignedBookings.length === 1 ? 'reserva' : 'reservas'}</span>
+              </div>
+              <ul>
+                {unassignedBookings.map((booking) => (
+                  <li key={booking.id}>
+                    <button
+                      className="agenda-unassigned__item"
+                      type="button"
+                      onClick={(event) => {
+                        if (booking.id) openDrawer(booking.id, event.currentTarget)
+                      }}
+                    >
+                      <strong>{getBookingLabel(booking)}</strong>
+                      <span>{getCustomerLabel(booking)} · {booking.timeSlot || 'Horario inválido'}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
 
           {!loading && !error && filteredBookings.length > 0 && (
@@ -311,10 +385,13 @@ export default function DashboardAgenda() {
                             type="button"
                             className={`agenda-event ${STATUS_CLASS[booking.status]} agenda-event--start-${placement.startSlot} agenda-event--span-${placement.span}`}
                             onClick={(event) => openDrawer(bookingId, event.currentTarget)}
-                            aria-label={`Ver ${getBookingLabel(booking)} a las ${booking.timeSlot}`}
+                            aria-label={`Ver ${getBookingLabel(booking)} a las ${booking.timeSlot}. ${getEmployeeDisplayName(booking.empleadoId, employees)}`}
                           >
                             <strong>{getBookingLabel(booking)}</strong>
                             <span>{getCustomerLabel(booking)}</span>
+                            <span className={booking.empleadoId == null ? 'agenda-event__employee agenda-event__employee--unassigned' : 'agenda-event__employee'}>
+                              {getEmployeeDisplayName(booking.empleadoId, employees)}
+                            </span>
                             <small>{booking.timeSlot} · {getStatusLabel(booking.status)}</small>
                           </button>
                         )
@@ -346,6 +423,9 @@ export default function DashboardAgenda() {
                         >
                           <strong>{getBookingLabel(booking)}</strong>
                           <span>{getCustomerLabel(booking)} · {booking.timeSlot || 'Horario inválido'}</span>
+                          <small className={booking.empleadoId == null ? 'agenda-event__employee agenda-event__employee--unassigned' : 'agenda-event__employee'}>
+                            {getEmployeeDisplayName(booking.empleadoId, employees)}
+                          </small>
                         </button>
                       </li>
                     ))}
@@ -394,6 +474,7 @@ export default function DashboardAgenda() {
                 <div><dt>Fecha</dt><dd>{selectedBooking.date}</dd></div>
                 <div><dt>Horario</dt><dd>{selectedBooking.timeSlot || 'No informado'}</dd></div>
                 <div><dt>Duración</dt><dd>{selectedBooking.durationMin || 0} minutos</dd></div>
+                <div><dt>Terapeuta</dt><dd className={selectedBooking.empleadoId == null ? 'agenda-drawer__employee--unassigned' : undefined}>{getEmployeeDisplayName(selectedBooking.empleadoId, employees)}</dd></div>
                 <div><dt>Estado</dt><dd><span className={`agenda-status agenda-status--${selectedBooking.status}`}>{getStatusLabel(selectedBooking.status)}</span></dd></div>
               </dl>
 

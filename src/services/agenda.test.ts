@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import type { Reserva, ReservaStatus } from '../types';
+import type { Empleado, Reserva, ReservaStatus } from '../types';
 import {
   AGENDA_END_MINUTES,
   AGENDA_SLOT_MINUTES,
   AGENDA_START_MINUTES,
   filterAgendaBookings,
+  filterAgendaBookingsByEmployee,
   getAgendaActions,
+  getEmployeeDisplayName,
   getAgendaPlacement,
   getAgendaStatusLabel,
   parseTimeSlot,
@@ -20,6 +22,26 @@ const makeReserva = (overrides: Partial<Reserva> = {}): Reserva =>
     status: 'pending' as ReservaStatus,
     ...overrides,
   }) as Reserva;
+
+const makeEmpleado = (overrides: Partial<Empleado> = {}): Empleado =>
+  ({
+    id: 'empleado-1',
+    name: 'Ana García',
+    role: 'groomer',
+    photoUrl: null,
+    active: true,
+    services: ['masaje'],
+    weeklyShifts: {
+      monday: 'full',
+      tuesday: 'full',
+      wednesday: 'full',
+      thursday: 'full',
+      friday: 'full',
+      saturday: null,
+      sunday: null,
+    },
+    ...overrides,
+  }) as Empleado;
 
 describe('agenda domain helpers', () => {
   it('parses only strict HH:mm time slots', () => {
@@ -80,6 +102,35 @@ describe('agenda domain helpers', () => {
       'three',
     ]);
     expect(filterAgendaBookings(bookings, 'all')).toEqual(bookings);
+  });
+
+  it('filters bookings by employee without mutating the source array', () => {
+    const bookings = [
+      makeReserva({ id: 'assigned-one', empleadoId: 'empleado-1' }),
+      makeReserva({ id: 'assigned-two', empleadoId: 'empleado-2' }),
+      makeReserva({ id: 'unassigned-null', empleadoId: null }),
+      makeReserva({ id: 'unassigned-missing' }),
+    ];
+
+    expect(filterAgendaBookingsByEmployee(bookings, 'all')).toEqual(bookings);
+    expect(filterAgendaBookingsByEmployee(bookings, 'all')).not.toBe(bookings);
+    expect(filterAgendaBookingsByEmployee(bookings, 'empleado-1').map(({ id }) => id)).toEqual([
+      'assigned-one',
+    ]);
+    expect(filterAgendaBookingsByEmployee(bookings, 'empleado-desconocido')).toEqual([]);
+    expect(filterAgendaBookingsByEmployee(bookings, 'unassigned').map(({ id }) => id)).toEqual([
+      'unassigned-null',
+      'unassigned-missing',
+    ]);
+  });
+
+  it('resolves employee names and visible fallback labels', () => {
+    const employees = [makeEmpleado()];
+
+    expect(getEmployeeDisplayName('empleado-1', employees)).toBe('Ana García');
+    expect(getEmployeeDisplayName(null, employees)).toBe('Sin terapeuta asignado');
+    expect(getEmployeeDisplayName(undefined, employees)).toBe('Sin terapeuta asignado');
+    expect(getEmployeeDisplayName('empleado-desconocido', employees)).toBe('Terapeuta no encontrado');
   });
 
   it('returns the action matrix for every reservation status', () => {
