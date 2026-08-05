@@ -5,7 +5,49 @@ Estado: transición operativa; las verificaciones de Google Cloud Console perman
 
 ## Alcance
 
-Este runbook cubre el gate de costos y la operación segura de las Functions programadas para recordatorios. No registra como completada ninguna configuración de Google Cloud Console, Firebase, Secret Manager, dominio o despliegue que el operador todavía no haya verificado.
+Este runbook cubre el gate de costos, la operación segura de las Functions programadas para recordatorios y la operación local de empleados/asignación. No registra como completada ninguna configuración de Google Cloud Console, Firebase, Secret Manager, dominio o despliegue que el operador todavía no haya verificado.
+
+## Empleados Y Asignación Local
+
+### Prerrequisitos del emulador
+
+- Node instalado para el cliente y `functions`.
+- JDK 21 para el emulador de Firestore.
+- Iniciar únicamente servicios locales: `npx firebase emulators:start --only auth,firestore,functions`.
+- Puertos esperados: Auth `9099`, Firestore `8080`, Functions `5001`.
+- Para el navegador, configurar `VITE_USE_FIREBASE_EMULATOR=true` y valores dummy de `VITE_FIREBASE_*`; nunca cargar credenciales productivas para esta QA.
+
+### Seed Y Backfill
+
+El seed usa IDs estables y merge writes, por lo que es idempotente:
+
+```bash
+npm run seed:employees -- --emulator
+```
+
+Para normalizar reservas legacy, el modo por defecto es dry-run:
+
+```bash
+node tools/backfill-empleado-id.mjs --emulator
+node tools/backfill-empleado-id.mjs --emulator --apply
+```
+
+El backfill solo agrega `empleadoId: null` cuando falta el campo. No elige empleados ni modifica otros campos. La variante con cuenta de servicio requiere `--service-account /ruta/serviceAccount.json`; antes de una ejecución productiva futura debe existir un respaldo verificado. Esta tarea no ejecuta el backfill productivo.
+
+### Semántica Operativa
+
+- `weeklyShifts` contiene `monday` a `sunday`; `morning` es 08:00–14:00, `afternoon` 14:00–20:00 y `full` 08:00–20:00.
+- Solo empleados `active: true` que incluyen el `serviceId` y tienen turno compatible son candidatos.
+- `onReservaCreated` asigna nuevas reservas con retry y escribe únicamente `empleadoId` dentro de una transacción.
+- `assignPendingReservasForDate` es callable solo para usuarios admin y reintenta reservas `pending` sin asignación al cargar/refrescar la agenda.
+- El primer candidato se ordena por nombre normalizado y luego por ID. Las reservas `pending` y `confirmed` ocupan al empleado si se solapan; `cancelled` y `completed` no bloquean.
+- Si no existe candidato, la reserva conserva `empleadoId: null` y aparece en "Sin terapeuta asignado".
+- `rescheduleReserva` conserva el empleado cuando sigue elegible y libre; si el nuevo slot está ocupado o deja de cumplir el turno/servicio, limpia `empleadoId`. La siguiente carga de agenda puede reintentar la asignación.
+- La asignación de `reservas.empleadoId` pertenece a Functions/Admin SDK. El cliente no puede escribirlo, cambiarlo ni quitarlo.
+
+### Estado De Producción
+
+No se ejecutó backfill productivo, no se desplegaron Functions, no se usaron credenciales productivas y no se modificaron datos productivos como parte de esta tarea.
 
 ## Gate De Costos Y Despliegue
 
@@ -51,13 +93,28 @@ El proveedor recomendado es Resend según ADR-004, pero la integración, el domi
 Estos resultados pertenecen al repositorio local. No autorizan despliegue ni demuestran que los gates externos estén completados.
 
 ```text
+npm run test:client                    30 passed, 0 failed
 npx tsc --noEmit                         PASS
 npm run build                            PASS
-npm run rules:test                       41 passed, 0 failed
-npm --prefix functions test              47 passed, 2 skipped
+npm run rules:test                       47 passed, 0 failed
+npm --prefix functions test              82 passed, 2 skipped
 npm --prefix functions run typecheck     PASS
 npm --prefix functions run build         PASS
+git diff --check                         PASS
 ```
+
+La matriz se ejecutó completa en el worktree de T3.5. Las líneas de denegación que imprime la suite de rules son casos esperados; el proceso terminó con código `0` y reportó cero fallos.
+
+## Browser QA Local — Emuladores
+
+Se intentó QA manual con Auth, Firestore y Functions emulator, datos sembrados localmente y cuentas de prueba creadas en el Auth emulator. Se verificaron: redirección de no-admin, CRUD admin de empleados, persistencia de servicios/turnos tras reload, primer empleado elegible, salto por conflicto, cola sin candidato, filtros todos/empleado/sin terapeuta y scroll horizontal móvil.
+
+Limitaciones observadas:
+
+- La primera recarga posterior a una cancelación conservó temporalmente una reserva en cola; una segunda invocación local de la callable y un reload posterior mostraron la asignación. Repetir este caso antes de release.
+- El reagendado de navegador no pudo completarse de forma reproducible: al reiniciar la corrida limpia, el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED` en Auth/Firestore. Las pruebas de Functions del reagendado sí quedaron verdes, pero eso no sustituye browser QA.
+- Se observó un `404` de `/favicon.ico`, además de un error transitorio causado por un documento de fixture malformado creado y eliminado exclusivamente en el emulador. No se introdujo cambio de source para corregirlos en esta tarea.
+- No se usaron credenciales, cuentas, servicios ni datos de producción.
 
 ## Secuencia De Ejecución Externa
 

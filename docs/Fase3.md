@@ -2,7 +2,7 @@
 
 > **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
 >
-> **Evidencia local al 2026-08-04:** rules `41 passed, 0 failed`; Functions `47 passed, 2 skipped`. Esta evidencia no constituye verificación de producción.
+> **Evidencia local al 2026-08-04:** client `30 passed`; `tsc --noEmit` y build del cliente verdes; rules `47 passed, 0 failed`; Functions `82 passed, 2 skipped`; typecheck y build de Functions verdes. Esta evidencia no constituye verificación de producción.
 >
 > **Pendiente de verificación externa:** rollback, autorización de producción, dominio, `RESEND_API_KEY`, billing, budget alert, despliegue y browser QA.
 
@@ -98,11 +98,20 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** La colección `empleados` ya existe en rules pero sin UI. El spa tiene al menos 3 personas (Harold, Daniela, Alberto en `/equipo`) que pueden ser groomers con agenda.
 
 **AC:**
-- [ ] UI admin: lista, alta, baja, edición de empleados (`/dashboard/empleados`).
-- [ ] Campos: `name`, `role` (groomer/bañador/cuidador), `photoUrl`, `active`, `services[]` (qué servicios puede atender).
-- [ ] Vincular `reservas.empleadoId` (nuevo campo) — agregar al schema y documentar.
-- [ ] Filtro "por terapeuta" en vista agenda (T3.4).
-- [ ] Migración: si hay reservas existentes, asignar `empleadoId=null` por default.
+- [x] UI admin: lista, alta, baja lógica y edición de empleados (`/dashboard/empleados`).
+- [x] Campos: `name`, `role` (groomer/bañador/cuidador), `photoUrl`, `active`, `services[]` y `weeklyShifts`.
+- [x] Vincular `reservas.empleadoId` y documentar que solo Functions/Admin SDK puede asignarlo.
+- [x] Seed idempotente de Harold, Daniela y Alberto mediante `npm run seed:employees -- --emulator`.
+- [x] Turnos recurrentes: siete claves semanales; `morning` 08:00–14:00, `afternoon` 14:00–20:00 y `full` 08:00–20:00.
+- [x] Asignación automática: `onReservaCreated` con retry y `assignPendingReservasForDate` para la cola; selecciona el primer empleado elegible y no pisa asignaciones existentes.
+- [x] Filtrado de solapamientos: solo reservas `pending`/`confirmed` ocupan al empleado; `cancelled`/`completed` no bloquean.
+- [x] Filtro "por terapeuta" en la agenda, incluyendo "Sin terapeuta".
+- [x] Cola "Sin terapeuta asignado" para reservas sin candidato elegible.
+- [ ] Backfill opcional e idempotente de legacy: el comando está documentado, pero esta tarea no lo ejecutó ni contra emulador ni contra producción.
+- [ ] Browser QA completo del reagendado en emulador: la corrida quedó interrumpida cuando el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`.
+- [ ] Despliegue, backfill productivo, configuración productiva y browser QA contra producción.
+
+**Verificación local fechada 2026-08-04:** client `30/30`; rules `47 passed, 0 failed`; Functions `82 passed, 2 skipped`; typecheck y builds verdes. La QA manual contra emuladores verificó autorización no-admin, CRUD admin, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. La primera recarga posterior a una cancelación mantuvo la cola; una segunda invocación local del asignador y posterior reload mostraron la reserva asignada, por lo que este caso queda como concern para repetir antes de release.
 
 **Refs:** `docs/SCHEMA.md` `empleados`, `firestore.rules` `empleados`.
 

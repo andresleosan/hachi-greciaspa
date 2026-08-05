@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-04 (MVP verificado; transición a Fase 3 operativa).
+Última actualización: 2026-08-04 (MVP y T3.5 verificados localmente; transición a Fase 3 operativa).
 
 ## Stack técnico
 
@@ -15,7 +15,7 @@
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
 | Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
-| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 41 passed, 0 failed; evidencia local fechada 2026-08-04; no verificacion de produccion; JDK 21 requerido |
+| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 47 passed, 0 failed; evidencia local fechada 2026-08-04; no verificacion de produccion; JDK 21 requerido |
 
 ## Evaluación de seguridad: React Router
 
@@ -30,15 +30,27 @@ El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relaci
 - La validación de slots está implementada en `src/services/reservas.ts` como best-effort client-side; el tradeoff de concurrencia aceptado está documentado en ADR-001.
 - Los mensajes de contacto persisten en `mensajes`, con creación anónima y lectura/eliminación solo para admin.
 - La galería se sirve mediante seis paths públicos estáticos y no depende de Cloud Storage.
-- `firestore.rules` está cubierta por la suite actual: `41 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, mensajes de contacto y acceso admin. Functions reporta `47 passed, 2 skipped`. Esta es evidencia local fechada 2026-08-04 y no constituye verificación de producción.
+- `firestore.rules` está cubierta por la suite actual: `47 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, asignación y acceso admin. Functions reporta `82 passed, 2 skipped`, incluidos asignación, solapamientos y reagendado. Esta es evidencia local fechada 2026-08-04 y no constituye verificación de producción.
 - La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite en el emulador.
 
 ### Brechas de Fase 3
 
+### T3.5 — Empleados y autoasignación local
+
+- Ruta admin: `/dashboard/empleados`; agenda admin: `/dashboard/agenda`.
+- `empleados/{id}` contiene `name`, `role`, `photoUrl`, `active`, `services[]` y `weeklyShifts`. La baja es lógica (`active: false`); no se borran empleados.
+- `weeklyShifts` usa las claves `monday` a `sunday`. `morning` cubre 08:00–14:00, `afternoon` 14:00–20:00 y `full` 08:00–20:00.
+- Seed local idempotente: `npm run seed:employees -- --emulator`. Requiere Auth/Firestore emulator y no usa cuenta de servicio en ese modo.
+- Backfill dry-run local: `node tools/backfill-empleado-id.mjs --emulator`. Aplicación local: `node tools/backfill-empleado-id.mjs --emulator --apply`. El backfill solo agrega `empleadoId: null` a documentos legacy y nunca asigna empleados.
+- `onReservaCreated` intenta asignar una reserva nueva y está configurada con retry. `assignPendingReservasForDate` permite a un admin reintentar la cola al cargar la agenda. `rescheduleReserva` conserva `empleadoId` si el empleado sigue elegible y libre; lo limpia si el nuevo slot entra en conflicto.
+- La selección usa empleados activos que atienden el servicio, tienen turno compatible y no están ocupados por una reserva `pending` o `confirmed` solapada. `cancelled` y `completed` no bloquean. Sin candidato, `empleadoId` permanece `null` y la agenda muestra "Sin terapeuta asignado".
+- Browser QA local verificó la mayoría de estos flujos contra emuladores. El flujo de reagendado no se pudo completar de forma reproducible porque el proceso de emuladores terminó durante la corrida limpia y el navegador recibió `ERR_CONNECTION_REFUSED`; no se usaron credenciales ni datos productivos.
+- No se ejecutó backfill productivo, no se desplegaron Functions y no se cambió configuración de producción en esta tarea.
+
 - La integración de email transaccional y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
 - Las alertas de presupuesto no están configuradas en Google Cloud Console. Sigue siendo COST-1/T3.10 y no debe considerarse completado.
 - La activación de App Check en consola y la comprobación de rechazo de writes no autorizados en producción siguen pendientes; la suite del emulador de rules no prueba esa configuración de despliegue.
-- La prevención server-side fuerte de doble reserva, la agenda operativa, terapeutas, backups y observabilidad siguen siendo trabajo de Fase 3.
+- La agenda y terapeutas tienen implementación local; permanecen pendientes la repetición estable del browser QA de reagendado, el despliegue y la configuración operativa. Backups y observabilidad siguen siendo trabajo de Fase 3.
 
 ## Servicios de pago: Firebase
 
