@@ -1,5 +1,6 @@
 /* Import design tokens and utility styles */
 @import './maqueta.css';
+@import './luxe.css';
 
 @tailwind base;
 @tailwind components;
