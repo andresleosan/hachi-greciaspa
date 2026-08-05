@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { CallableRequest } from 'firebase-functions/v2/https'
 import type { Firestore } from 'firebase-admin/firestore'
+import type { AssignmentEmployee } from './assignment.js'
 
 import {
   rescheduleReservaHandler,
@@ -10,6 +11,7 @@ import {
 const NOW = new Date('2026-08-04T16:00:00.000Z')
 
 type Reservation = Record<string, unknown>
+type EmployeeDocument = Omit<AssignmentEmployee, 'id'>
 
 class TransactionFirestoreFake {
   readonly documents = new Map<string, Reservation>()
@@ -133,7 +135,7 @@ function reservation(overrides: Reservation = {}): Reservation {
   }
 }
 
-function employee(overrides: Reservation = {}): Reservation {
+function employee(overrides: Partial<EmployeeDocument> = {}): EmployeeDocument {
   return {
     name: 'Ana',
     active: true,
@@ -319,6 +321,95 @@ describe('rescheduleReservaHandler', () => {
     expect(firestore.updates).toEqual([
       { path: 'reservas/reserva-1', data: { date: '2026-08-06', timeSlot: '12:00' } },
     ])
+  })
+
+  it('clears a malformed non-null employee assignment', async () => {
+    const firestore = firestoreWithReservation({ empleadoId: ' ', durationMin: 60 })
+
+    await rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW)
+
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBeNull()
+    expect(firestore.updates).toEqual([
+      {
+        path: 'reservas/reserva-1',
+        data: { date: '2026-08-06', timeSlot: '12:00', empleadoId: null },
+      },
+    ])
+  })
+
+  it('does not treat the reservation being moved as an employee conflict', async () => {
+    const firestore = firestoreWithReservation({
+      empleadoId: 'employee-1',
+      durationMin: 60,
+      date: '2026-08-06',
+      timeSlot: '12:00',
+    })
+    firestore.documents.set('empleados/employee-1', employee())
+
+    await rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW)
+
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBe('employee-1')
+    expect(firestore.updates).toEqual([
+      { path: 'reservas/reserva-1', data: { date: '2026-08-06', timeSlot: '12:00' } },
+    ])
+  })
+
+  it('clears an assigned employee when the new appointment is outside their shift', async () => {
+    const firestore = firestoreWithReservation({
+      empleadoId: 'employee-1',
+      durationMin: 60,
+    })
+    firestore.documents.set(
+      'empleados/employee-1',
+      employee({
+        weeklyShifts: {
+          monday: 'full',
+          tuesday: 'full',
+          wednesday: 'full',
+          thursday: 'morning',
+          friday: 'full',
+          saturday: 'full',
+          sunday: 'full',
+        },
+      }),
+    )
+
+    await rescheduleReservaHandler(
+      request(input({ timeSlot: '13:30' })),
+      firestore as unknown as Firestore,
+      NOW,
+    )
+
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBeNull()
+  })
+
+  it('clears an assigned employee when the appointment duration exceeds their shift', async () => {
+    const firestore = firestoreWithReservation({
+      empleadoId: 'employee-1',
+      durationMin: 120,
+    })
+    firestore.documents.set(
+      'empleados/employee-1',
+      employee({
+        weeklyShifts: {
+          monday: 'full',
+          tuesday: 'full',
+          wednesday: 'full',
+          thursday: 'morning',
+          friday: 'full',
+          saturday: 'full',
+          sunday: 'full',
+        },
+      }),
+    )
+
+    await rescheduleReservaHandler(
+      request(input({ timeSlot: '13:00' })),
+      firestore as unknown as Firestore,
+      NOW,
+    )
+
+    expect(firestore.documents.get('reservas/reserva-1')?.empleadoId).toBeNull()
   })
 
   it('rejects a missing reservation', async () => {

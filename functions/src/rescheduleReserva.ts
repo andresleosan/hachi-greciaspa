@@ -102,38 +102,46 @@ export async function rescheduleReservaHandler(
     }
 
     const currentEmployeeId = reservation.empleadoId
-    if (typeof currentEmployeeId === 'string' && currentEmployeeId.trim()) {
-      const employeeReference = db.collection('empleados').doc(currentEmployeeId)
-      const employeeSnapshot = await transaction.get(employeeReference)
-      const employee = employeeSnapshot.exists
-        ? normalizeEmployee(currentEmployeeId, employeeSnapshot.data())
-        : null
-      const rescheduledReservation = normalizeReservation(input.reservaId, {
-        ...reservation,
-        date: input.date,
-        timeSlot: input.timeSlot,
-      })
+    if (currentEmployeeId !== undefined && currentEmployeeId !== null) {
+      if (
+        typeof currentEmployeeId !== 'string' ||
+        !currentEmployeeId.trim() ||
+        currentEmployeeId.includes('/')
+      ) {
+        update.empleadoId = null
+      } else {
+        const employeeReference = db.collection('empleados').doc(currentEmployeeId)
+        const employeeSnapshot = await transaction.get(employeeReference)
+        const employee = employeeSnapshot.exists
+          ? normalizeEmployee(currentEmployeeId, employeeSnapshot.data())
+          : null
+        const rescheduledReservation = normalizeReservation(input.reservaId, {
+          ...reservation,
+          date: input.date,
+          timeSlot: input.timeSlot,
+        })
 
-      let employeeIsAvailable = Boolean(
-        employee &&
-          rescheduledReservation &&
-          isEmployeeEligible(employee, rescheduledReservation),
-      )
+        let employeeIsAvailable = Boolean(
+          employee &&
+            rescheduledReservation &&
+            isEmployeeEligible(employee, rescheduledReservation),
+        )
 
-      if (employeeIsAvailable && rescheduledReservation) {
-        const reservationsSnapshot = await transaction.get(
-          reservationsForDateQuery(db, input.date),
-        )
-        employeeIsAvailable = !readReservations(reservationsSnapshot).some(
-          (existingReservation) =>
-            existingReservation.id !== input.reservaId &&
-            existingReservation.empleadoId === currentEmployeeId &&
-            (existingReservation.status === 'pending' || existingReservation.status === 'confirmed') &&
-            reservationsOverlap(existingReservation, rescheduledReservation),
-        )
+        if (employeeIsAvailable && rescheduledReservation) {
+          const reservationsSnapshot = await transaction.get(
+            reservationsForDateQuery(db, input.date),
+          )
+          employeeIsAvailable = !readReservations(reservationsSnapshot).some(
+            (existingReservation) =>
+              existingReservation.id !== input.reservaId &&
+              existingReservation.empleadoId === currentEmployeeId &&
+              (existingReservation.status === 'pending' || existingReservation.status === 'confirmed') &&
+              reservationsOverlap(existingReservation, rescheduledReservation),
+          )
+        }
+
+        if (!employeeIsAvailable) update.empleadoId = null
       }
-
-      if (!employeeIsAvailable) update.empleadoId = null
     }
 
     transaction.update(reservationReference, update)
