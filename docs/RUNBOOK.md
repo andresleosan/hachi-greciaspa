@@ -160,6 +160,22 @@ Esta secuencia es una instrucción operativa pendiente; no se ha ejecutado desde
 
 Google Cloud Budgets envía alertas, pero no impone un límite duro de facturación.
 
+## Cuotas De Referencia Y Almacenamiento Futuro
+
+Las siguientes cifras son el baseline operativo actual y deben verificarse en la consola y en la documentación de precios vigente antes de producción:
+
+| Servicio | Cuota de referencia |
+|---|---|
+| Firebase Auth | 50,000 MAU; ~10,000 verificaciones telefónicas/mes |
+| Firebase Firestore | 1 GiB; 50,000 lecturas/día; 20,000 escrituras/día; 20,000 borrados/día |
+| Firebase Realtime Database | 1 GiB; 100 conexiones simultáneas; 10 GB de descarga/mes |
+| Firebase Hosting | 10 GB de almacenamiento; 360 MB/día de transferencia (~10 GB/mes) |
+| Firebase Cloud Functions | Requiere Blaze; ~2 millones de invocaciones gratuitas mensuales estimadas |
+
+Cloudflare R2 es una opción futura, no un servicio activo. La galería actual usa paths estáticos y no requiere bucket. Si se evaluara una migración, el baseline sería 10 GB/mes de almacenamiento, 1,000,000 de operaciones Clase A, 10,000,000 de operaciones Clase B y egress gratuito. Fuera de cuota se documentan `$0.015/GB-mes`, `$4.50/millón` de operaciones Clase A y `$0.36/millón` de operaciones Clase B.
+
+No ejecutar `gcloud`, no habilitar Billing/Blaze, no crear buckets ni configurar lifecycle policies como parte de este runbook sin autorización explícita del operador.
+
 ## Emergencia
 
 Ante gasto inesperado, errores repetidos o exposición de un secreto:

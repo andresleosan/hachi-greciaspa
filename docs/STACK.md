@@ -96,6 +96,32 @@ Si se supera el free tier:
 
 No hay plan de precio fijo wildcard — puro pay-as-you-go.
 
+### Cuotas de referencia
+
+Firebase Spark:
+
+| Servicio | Cuota de referencia |
+|---|---|
+| Auth | 50,000 MAU; ~10,000 verificaciones telefónicas/mes |
+| Firestore | 1 GiB; 50,000 lecturas/día; 20,000 escrituras/día; 20,000 borrados/día |
+| Realtime Database | 1 GiB; 100 conexiones simultáneas; 10 GB de descarga/mes |
+| Hosting | 10 GB de almacenamiento; 360 MB/día de transferencia (~10 GB/mes) |
+
+Cloud Functions requiere Blaze para producción; la cuota gratuita estimada es de ~2 millones de invocaciones/mes y no elimina el requisito de Billing. Estas cuotas son un baseline operativo y deben verificarse contra la consola y precios vigentes antes de producción.
+
+### Cloudflare R2 — opción futura
+
+R2 no está integrado actualmente; la galería usa paths estáticos. Si se migra a almacenamiento de objetos:
+
+| Concepto | Cuota de referencia |
+|---|---:|
+| Almacenamiento | 10 GB/mes |
+| Operaciones Clase A | 1,000,000/mes |
+| Operaciones Clase B | 10,000,000/mes |
+| Egress | $0 |
+
+Fuera de cuota: `$0.015/GB-mes` de storage, `$4.50/millón` de operaciones Clase A y `$0.36/millón` de operaciones Clase B. La migración requiere decisión, configuración de credenciales y revisión de costos antes de implementarse.
+
 ## Email transaccional Fase 3
 
 Proveedor recomendado: **Resend**. Fallback operativo: **Postmark**. Estado: integración implementada en `functions/`; cuenta, secreto, dominio, billing, alertas de presupuesto y despliegue todavía no están configurados/verificados.
