@@ -101,7 +101,7 @@ function getInitials(name: string) {
 }
 
 export default function DashboardEmpleados() {
-  const { user, profile } = useAuth()
+  const { user, profile, loading: authLoading } = useAuth()
   const [showSidebar, setShowSidebar] = useState(false)
   const [employees, setEmployees] = useState<Empleado[]>([])
   const [services, setServices] = useState<Servicio[]>([])
@@ -116,6 +116,12 @@ export default function DashboardEmpleados() {
   const [deactivatingId, setDeactivatingId] = useState<string | null>(null)
 
   useEffect(() => {
+    if (authLoading || !user || profile?.role !== 'admin') {
+      setLoading(authLoading)
+      if (!authLoading) setReadError(null)
+      return
+    }
+
     let mounted = true
 
     async function load() {
@@ -150,7 +156,7 @@ export default function DashboardEmpleados() {
     return () => {
       mounted = false
     }
-  }, [])
+  }, [authLoading, profile, user])
 
   async function refreshEmployees() {
     try {
@@ -222,12 +228,20 @@ export default function DashboardEmpleados() {
     try {
       if (editingId) {
         await updateEmpleado(editingId, input)
-        await refreshEmployees()
+        const refreshed = await refreshEmployees()
+        if (!refreshed) {
+          setActionError('El empleado se guardó, pero no se pudo actualizar la lista. Recarga la página para verificarlo.')
+          return
+        }
         resetForm()
         setNotice('Empleado actualizado.')
       } else {
         await createEmpleado(input)
-        await refreshEmployees()
+        const refreshed = await refreshEmployees()
+        if (!refreshed) {
+          setActionError('El empleado se guardó, pero no se pudo actualizar la lista. Recarga la página para verificarlo.')
+          return
+        }
         resetForm()
         setNotice('Empleado creado.')
       }
@@ -246,7 +260,14 @@ export default function DashboardEmpleados() {
     setNotice(null)
     try {
       await deactivateEmpleado(employee.id)
-      await refreshEmployees()
+      const refreshed = await refreshEmployees()
+      if (!refreshed) {
+        if (editingId === employee.id) {
+          setForm((current) => ({ ...current, active: false }))
+        }
+        setActionError('El empleado se desactivó, pero no se pudo actualizar la lista. Recarga la página para verificarlo.')
+        return
+      }
       if (editingId === employee.id) resetForm()
       setNotice('Empleado desactivado. Sus reservas existentes no fueron modificadas.')
     } catch {
@@ -265,7 +286,7 @@ export default function DashboardEmpleados() {
   return (
     <ProtectedRoute requireRole="admin">
       <div className="dashboard-layout">
-        <aside className={`dashboard-sidebar${showSidebar ? ' is-open' : ''}`}>
+        <aside id="empleados-sidebar" className={`dashboard-sidebar${showSidebar ? ' is-open' : ''}`}>
           <div className="sidebar-brand">
             <div className="sidebar-brand__mark">HG</div>
             <div className="sidebar-brand__copy"><strong>Hachi &amp; Grecia</strong><small>Admin</small></div>
@@ -285,7 +306,13 @@ export default function DashboardEmpleados() {
 
         <main className="dashboard-main">
           <header className="dashboard-topbar">
-            <button className="btn btn-ghost sidebar-toggle" onClick={() => setShowSidebar((current) => !current)} aria-label="Mostrar navegación">☰</button>
+            <button
+              className="btn btn-ghost sidebar-toggle"
+              onClick={() => setShowSidebar((current) => !current)}
+              aria-label="Mostrar navegación"
+              aria-expanded={showSidebar}
+              aria-controls="empleados-sidebar"
+            >☰</button>
             <div className="dashboard-topbar__banner">
               <img src="/dashboard_header_zoom.png" alt="Administración del spa" />
             </div>
@@ -321,7 +348,7 @@ export default function DashboardEmpleados() {
                   <div className="empleados-empty">
                     <strong>Aún no hay empleados registrados</strong>
                     <p>Crea el primer perfil para habilitar la asignación automática.</p>
-                    <button className="btn btn-secondary" type="button" onClick={startCreate}>Crear empleado</button>
+                    <button className="btn btn-secondary" type="button" onClick={startCreate} disabled={isBusy}>Crear empleado</button>
                   </div>
                 )}
                 {!loading && !readError && employees.length > 0 && (
@@ -419,7 +446,11 @@ export default function DashboardEmpleados() {
                     </label>
                   </div>
 
-                  <fieldset className="empleados-form-section empleados-fieldset">
+                  <fieldset
+                    className="empleados-form-section empleados-fieldset"
+                    aria-invalid={Boolean(formErrors.services)}
+                    aria-describedby={formErrors.services ? 'empleado-services-error' : undefined}
+                  >
                     <legend>Servicios que puede atender</legend>
                     {services.length === 0 && <p className="empleados-hint">No hay servicios activos disponibles.</p>}
                     <div className="empleados-service-list">
