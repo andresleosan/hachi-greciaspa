@@ -28,6 +28,21 @@ export interface ReminderRecord {
   updatedAt: Timestamp
 }
 
+export interface ConfirmationRecord {
+  reservaId: string
+  status: 'pending' | 'sent' | 'failed'
+  attempts: number
+  sentAt: Timestamp | null
+  lastAttemptAt: Timestamp | null
+  lastError: string | null
+  processingLockUntil: Timestamp | null
+  processingToken: string | null
+  nextAttemptAt: Timestamp | null
+  providerMessageId: string | null
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
 export interface ReminderEmailInput {
   to: string
   recipientName: string
