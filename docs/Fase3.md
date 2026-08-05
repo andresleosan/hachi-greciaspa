@@ -174,11 +174,13 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** `dist/assets/firebase-P_3knSDz.js = 349 KB` (106 KB gzip). Firebase Auth+Firestore pesan. Code splitting ya está en landings pero no en admin.
 
 **AC:**
-- [ ] Lazy load `firebase.ts` solo cuando se necesita (no en landing estática).
-- [ ] Medir con Lighthouse / WebPageTest antes y después — documentar en `docs/PERFORMANCE.md`.
-- [ ] Objetivo: First Contentful Paint < 1.5s en 3G, Largest Contentful Paint < 2.5s.
-- [ ] Tree-shaking audit: verificar que `firebase/firestore` no esté importando todo el SDK.
+- [x] Lazy load `firebase.ts` solo cuando se necesita: route splitting existente; Firebase no es import estático del entry público.
+- [x] Auditoría de bundle y tree-shaking documentada en `docs/PERFORMANCE.md`.
+- [ ] Medir con Lighthouse / WebPageTest antes y después — pendiente por falta de browser QA habilitado.
+- [x] Verificar que los imports de `firebase/auth`, `firebase/firestore` y `firebase/functions` son modulares.
 - [ ] Considerar migrar de `moduleResolution=node10` a `bundler` (warning TS 7.0).
+
+**Verificación local:** el baseline muestra `index` en 233.49 kB (75.05 kB gzip) y `firebase` en 359.01 kB (109.95 kB gzip). No se dividió adicionalmente `firebase.ts` porque la landing ya evita descargarlo y no existe medición de red por ruta que justifique mayor complejidad. FCP/LCP siguen pendientes de Lighthouse/WebPageTest.
 
 **Refs:** `vite.config.ts`, `docs/STACK.md` línea 10, build output actual.
 
