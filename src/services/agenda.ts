@@ -4,6 +4,14 @@ export const AGENDA_START_MINUTES = 480;
 export const AGENDA_END_MINUTES = 1200;
 export const AGENDA_SLOT_MINUTES = 30;
 
+export function isAgendaDateReady(selectedDate: string): boolean {
+  return selectedDate.trim().length > 0;
+}
+
+export function canDisplayAgendaData(loading: boolean, error: string | null): boolean {
+  return !loading && !error;
+}
+
 export type AgendaAction = 'confirm' | 'cancel' | 'complete';
 
 export type AgendaPlacement = {

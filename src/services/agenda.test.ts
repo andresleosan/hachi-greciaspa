@@ -4,12 +4,14 @@ import {
   AGENDA_END_MINUTES,
   AGENDA_SLOT_MINUTES,
   AGENDA_START_MINUTES,
+  canDisplayAgendaData,
   filterAgendaBookings,
   filterAgendaBookingsByEmployee,
   getAgendaActions,
   getEmployeeDisplayName,
   getAgendaPlacement,
   getAgendaStatusLabel,
+  isAgendaDateReady,
   parseTimeSlot,
 } from './agenda';
 
@@ -44,6 +46,18 @@ const makeEmpleado = (overrides: Partial<Empleado> = {}): Empleado =>
   }) as Empleado;
 
 describe('agenda domain helpers', () => {
+  it('accepts only a non-empty selected date for agenda loading', () => {
+    expect(isAgendaDateReady('2026-08-04')).toBe(true);
+    expect(isAgendaDateReady('')).toBe(false);
+    expect(isAgendaDateReady('   ')).toBe(false);
+  });
+
+  it('only displays agenda data after loading succeeds', () => {
+    expect(canDisplayAgendaData(false, null)).toBe(true);
+    expect(canDisplayAgendaData(true, null)).toBe(false);
+    expect(canDisplayAgendaData(false, 'No se pudo cargar la agenda.')).toBe(false);
+  });
+
   it('parses only strict HH:mm time slots', () => {
     expect(parseTimeSlot('08:00')).toBe(AGENDA_START_MINUTES);
     expect(parseTimeSlot('23:59')).toBe(1439);

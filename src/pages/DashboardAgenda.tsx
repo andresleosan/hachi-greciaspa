@@ -14,6 +14,8 @@ import {
   getEmployeeDisplayName,
   getAgendaPlacement,
   getAgendaStatusLabel,
+  canDisplayAgendaData,
+  isAgendaDateReady,
   type AgendaAction,
 } from '../services/agenda'
 import type { Empleado, Reserva, ReservaStatus } from '../types'
@@ -112,9 +114,21 @@ export default function DashboardAgenda() {
         return
       }
 
+      if (!isAgendaDateReady(selectedDate)) {
+        setLoading(false)
+        setError(null)
+        setAssignmentError(null)
+        setBookings([])
+        setEmployees([])
+        closeDrawer()
+        return
+      }
+
       setLoading(true)
       setError(null)
       setAssignmentError(null)
+      setBookings([])
+      setEmployees([])
       closeDrawer()
 
       try {
@@ -211,21 +225,24 @@ export default function DashboardAgenda() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [selectedBookingId])
 
+  const showAgendaData = canDisplayAgendaData(loading, error) && isAgendaDateReady(selectedDate)
+  const visibleBookings = showAgendaData ? bookings : []
+  const visibleEmployees = showAgendaData ? employees : []
   const serviceOptions = Array.from(
-    bookings.reduce((options, booking) => {
+    visibleBookings.reduce((options, booking) => {
       const serviceId = booking.serviceId || booking.serviceName
       if (serviceId && !options.has(serviceId)) options.set(serviceId, booking.serviceName || serviceId)
       return options
     }, new Map<string, string>()),
   ).sort((left, right) => left[1].localeCompare(right[1]))
 
-  const serviceFilteredBookings = filterAgendaBookings(bookings, serviceFilter)
+  const serviceFilteredBookings = filterAgendaBookings(visibleBookings, serviceFilter)
   const filteredBookings = filterAgendaBookingsByEmployee(serviceFilteredBookings, employeeFilter)
   const timelineBookings = filteredBookings.filter((booking) => getTimelinePlacement(booking))
   const incidentBookings = filteredBookings.filter((booking) => !getTimelinePlacement(booking))
-  const unassignedBookings = bookings.filter((booking) => booking.empleadoId == null)
-  const employeeOptions = [...employees].sort((left, right) => left.name.localeCompare(right.name))
-  const selectedBooking = bookings.find((booking) => booking.id === selectedBookingId) || null
+  const unassignedBookings = visibleBookings.filter((booking) => booking.empleadoId == null)
+  const employeeOptions = [...visibleEmployees].sort((left, right) => left.name.localeCompare(right.name))
+  const selectedBooking = visibleBookings.find((booking) => booking.id === selectedBookingId) || null
   const selectedBusy = selectedBooking?.id ? Boolean(busyById[selectedBooking.id]) : false
 
   async function handleAction(action: AgendaAction) {
@@ -274,7 +291,10 @@ export default function DashboardAgenda() {
                 id="agenda-date"
                 type="date"
                 value={selectedDate}
-                onChange={(event) => setSelectedDate(event.target.value)}
+                onChange={(event) => {
+                  setLoading(true)
+                  setSelectedDate(event.target.value)
+                }}
               />
             </div>
           </header>
@@ -322,14 +342,20 @@ export default function DashboardAgenda() {
           )}
           {loading && <p className="agenda-state" role="status">Cargando agenda...</p>}
           {!loading && error && <p className="agenda-error" role="alert">{error}</p>}
-          {!loading && !error && filteredBookings.length === 0 && (
+          {!loading && !isAgendaDateReady(selectedDate) && (
+            <div className="agenda-empty">
+              <strong>Seleccioná una fecha para cargar la agenda.</strong>
+              <span>Elegí una fecha válida para ver las reservas del día.</span>
+            </div>
+          )}
+          {showAgendaData && filteredBookings.length === 0 && (
             <div className="agenda-empty">
               <strong>No hay reservas para esta selección.</strong>
               <span>Probá otra fecha o servicio para ver la agenda.</span>
             </div>
           )}
 
-          {!loading && unassignedBookings.length > 0 && (
+          {showAgendaData && unassignedBookings.length > 0 && (
             <section className="agenda-unassigned" aria-labelledby="agenda-unassigned-title">
               <div className="agenda-unassigned__head">
                 <div>
@@ -357,7 +383,7 @@ export default function DashboardAgenda() {
             </section>
           )}
 
-          {!loading && !error && filteredBookings.length > 0 && (
+          {showAgendaData && filteredBookings.length > 0 && (
             <section className="agenda-panel" aria-labelledby="agenda-timeline-title">
               <div className="agenda-panel__head">
                 <div>
@@ -385,12 +411,12 @@ export default function DashboardAgenda() {
                             type="button"
                             className={`agenda-event ${STATUS_CLASS[booking.status]} agenda-event--start-${placement.startSlot} agenda-event--span-${placement.span}`}
                             onClick={(event) => openDrawer(bookingId, event.currentTarget)}
-                            aria-label={`Ver ${getBookingLabel(booking)} a las ${booking.timeSlot}. ${getEmployeeDisplayName(booking.empleadoId, employees)}`}
+                            aria-label={`Ver ${getBookingLabel(booking)} a las ${booking.timeSlot}. ${getEmployeeDisplayName(booking.empleadoId, visibleEmployees)}`}
                           >
                             <strong>{getBookingLabel(booking)}</strong>
                             <span>{getCustomerLabel(booking)}</span>
                             <span className={booking.empleadoId == null ? 'agenda-event__employee agenda-event__employee--unassigned' : 'agenda-event__employee'}>
-                              {getEmployeeDisplayName(booking.empleadoId, employees)}
+                              {getEmployeeDisplayName(booking.empleadoId, visibleEmployees)}
                             </span>
                             <small>{booking.timeSlot} · {getStatusLabel(booking.status)}</small>
                           </button>
@@ -424,7 +450,7 @@ export default function DashboardAgenda() {
                           <strong>{getBookingLabel(booking)}</strong>
                           <span>{getCustomerLabel(booking)} · {booking.timeSlot || 'Horario inválido'}</span>
                           <small className={booking.empleadoId == null ? 'agenda-event__employee agenda-event__employee--unassigned' : 'agenda-event__employee'}>
-                            {getEmployeeDisplayName(booking.empleadoId, employees)}
+                            {getEmployeeDisplayName(booking.empleadoId, visibleEmployees)}
                           </small>
                         </button>
                       </li>
@@ -474,7 +500,7 @@ export default function DashboardAgenda() {
                 <div><dt>Fecha</dt><dd>{selectedBooking.date}</dd></div>
                 <div><dt>Horario</dt><dd>{selectedBooking.timeSlot || 'No informado'}</dd></div>
                 <div><dt>Duración</dt><dd>{selectedBooking.durationMin || 0} minutos</dd></div>
-                <div><dt>Terapeuta</dt><dd className={selectedBooking.empleadoId == null ? 'agenda-drawer__employee--unassigned' : undefined}>{getEmployeeDisplayName(selectedBooking.empleadoId, employees)}</dd></div>
+                <div><dt>Terapeuta</dt><dd className={selectedBooking.empleadoId == null ? 'agenda-drawer__employee--unassigned' : undefined}>{getEmployeeDisplayName(selectedBooking.empleadoId, visibleEmployees)}</dd></div>
                 <div><dt>Estado</dt><dd><span className={`agenda-status agenda-status--${selectedBooking.status}`}>{getStatusLabel(selectedBooking.status)}</span></dd></div>
               </dl>
 
