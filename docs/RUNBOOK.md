@@ -146,6 +146,57 @@ Limitaciones observadas:
 - Se observó un `404` de `/favicon.ico`, además de un error transitorio causado por un documento de fixture malformado creado y eliminado exclusivamente en el emulador. No se introdujo cambio de source para corregirlos en esta tarea.
 - No se usaron credenciales, cuentas, servicios ni datos de producción.
 
+## Backup Y Restauración Total De Firestore
+
+### Alcance
+
+El backup cubre toda la base Firestore del proyecto, no una colección aislada. Incluye `users`, `servicios`, `precios`, `reservas`, `mascotas`, `recordatorios`, `confirmaciones`, `empleados`, `mensajes` y cualquier colección futura que exista en la base al momento del export. No incluye Firebase Auth, Storage, secretos de Functions ni Cloudflare R2.
+
+Bucket operativo previsto: `gs://hachi-greciaspa-backups/`. Debe tener lifecycle de 90 días, acceso restringido al proyecto y versionado/retención conforme a la política operativa aprobada.
+
+### Export manual controlado
+
+Ejecutar solo después de confirmar proyecto, cuenta y permisos. No usar credenciales del repositorio:
+
+```bash
+gcloud config set project hachi-greciaspa
+gcloud firestore export gs://hachi-greciaspa-backups/firestore/YYYY-MM-DDTHH-mm-ssZ --project=hachi-greciaspa
+gcloud storage ls gs://hachi-greciaspa-backups/firestore/YYYY-MM-DDTHH-mm-ssZ/
+```
+
+La carpeta debe conservar el `export_metadata` y los archivos generados por Firestore. Registrar fecha, operador, proyecto, ruta exacta y resultado. Un export no se considera verificado solo porque el comando terminó: hay que comprobar que existen los metadatos y que la ruta pertenece al proyecto correcto.
+
+### Programación diaria
+
+La automatización diaria debe ejecutar el mismo export total mediante un componente controlado por Cloud Scheduler, con una cuenta de servicio de mínimo privilegio y sin exponer credenciales en el repositorio. Antes de habilitarla se deben verificar Billing/Blaze, permisos IAM, lifecycle de 90 días, alertas de presupuesto y una ejecución manual exitosa. Esta automatización no está configurada en el entorno actual.
+
+### Restauración total
+
+1. Declarar mantenimiento y detener temporalmente las escrituras de la aplicación para evitar divergencias.
+2. Confirmar dos veces el proyecto destino, la base `(default)` y la ruta exacta del export verificado.
+3. Restaurar el export completo:
+
+```bash
+gcloud config set project hachi-greciaspa
+gcloud firestore import gs://hachi-greciaspa-backups/firestore/YYYY-MM-DDTHH-mm-ssZ --project=hachi-greciaspa
+```
+
+4. Esperar a que termine la operación y revisar los logs de importación.
+5. Verificar documentos representativos en `users`, `reservas`, `mascotas`, `recordatorios` y `confirmaciones`, además del conteo esperado por colección.
+6. Reabrir escrituras solo después de confirmar que las reglas, índices y Functions son compatibles con el estado restaurado.
+
+La importación restaura los documentos incluidos en el export y no debe asumirse como una operación de borrado total: documentos creados fuera del backup pueden permanecer. Borrar datos adicionales para forzar una réplica exacta requiere un procedimiento destructivo separado, backup verificado y autorización explícita.
+
+### Rollback Y Contención
+
+- Si el export falla, no se considera backup válido; conservar el último export verificado.
+- Si la importación falla, mantener la aplicación en mantenimiento y preservar los logs de la operación.
+- No borrar ni sobrescribir el bucket de backups durante una incidencia.
+- Para revertir una restauración incorrecta, importar el último export conocido como bueno en un proyecto/base controlado y comparar antes de cambiar el destino operativo.
+- Registrar operador, timestamps, rutas de export, comandos ejecutados y evidencia de verificación.
+
+Estado actual: el procedimiento está documentado, pero no hay bucket, export diario, Scheduler ni primer export verificado configurados.
+
 ## Secuencia De Ejecución Externa
 
 Esta secuencia es una instrucción operativa pendiente; no se ha ejecutado desde este repositorio:

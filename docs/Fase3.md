@@ -204,8 +204,10 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **AC:**
 - [ ] Configurar export programado a Cloud Storage (GCS): `gcloud firestore export` diario vía Cloud Scheduler.
 - [ ] Bucket `gs://hachi-greciaspa-backups/` con lifecycle de 90 días.
-- [ ] Documentar en `docs/RUNBOOK.md` cómo restaurar desde un backup (procedimiento, no script automático).
+- [x] Documentar en `docs/RUNBOOK.md` cómo restaurar toda la base Firestore desde un backup (procedimiento, no script automático).
 - [ ] Verificar primer export manual después de configurar.
+
+**Verificación local:** el runbook documenta exportación y restauración total de Firestore, alcance, IAM/lifecycle, contención y rollback no destructivo. Bucket, Scheduler, Billing/Blaze y primer export siguen pendientes de configuración y evidencia externa.
 
 **Refs:** operación, no código.
 
