@@ -2,8 +2,8 @@
 
 ## Baseline
 
-Fecha de medición: 2026-08-05  
-Herramientas: `npm run build`, `npx vite build --manifest`  
+Fecha de medición: 2026-08-05
+Herramientas: `npm run build`, `npx vite build --manifest`
 Versión: Vite 8.2.0
 
 | Asset | Tamaño | Gzip |
