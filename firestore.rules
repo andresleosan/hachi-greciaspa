@@ -82,6 +82,11 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /confirmaciones/{confirmationId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
     // Employees / staff data - admin only
     match /empleados/{empId} {
       allow read, write: if isAdmin();

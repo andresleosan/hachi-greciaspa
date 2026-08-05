@@ -195,6 +195,12 @@ async function main() {
       return assertSucceeds(bobAdminDb.collection('recordatorios').doc('reminder-admin').get())
     })
 
+    // --- Booking confirmations: Functions-only delivery state ---
+    await test('guest cannot read confirmaciones', () => assertFails(guestDb.collection('confirmaciones').doc('confirmation-r1').get()))
+    await test('client cannot read confirmaciones', () => assertFails(aliceDb.collection('confirmaciones').doc('confirmation-r1').get()))
+    await test('client cannot write confirmaciones', () => assertFails(aliceDb.collection('confirmaciones').doc('confirmation-r1').set({ status: 'sent' })))
+    await test('admin can read confirmaciones', () => assertSucceeds(bobAdminDb.collection('confirmaciones').doc('confirmation-r1').get()))
+
     // --- Admin-only collections (empleados, config) ---
     await test('guest cannot read empleados', () => assertFails(guestDb.collection('empleados').doc('e1').get()))
     await test('client cannot read empleados', () => assertFails(aliceDb.collection('empleados').doc('e1').get()))

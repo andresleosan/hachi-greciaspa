@@ -56,7 +56,7 @@ El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relaci
 - Browser QA local verificó la mayoría de estos flujos contra emuladores. La repetición de reagendado y retry post-cancelación quedó incompleta porque el proceso de emuladores terminó durante la corrida y el navegador recibió `ERR_CONNECTION_REFUSED`; no se usaron credenciales ni datos productivos. El gate de browser QA permanece pendiente.
 - No se ejecutó backfill productivo, no se desplegaron Functions y no se cambió configuración de producción en esta tarea.
 
-- La integración de email transaccional y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
+- La integración de email transaccional, confirmación inmediata y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
 - Las alertas de presupuesto no están configuradas en Google Cloud Console. Sigue siendo COST-1/T3.10 y no debe considerarse completado.
 - La activación de App Check en consola y la comprobación de rechazo de writes no autorizados en producción siguen pendientes; la suite del emulador de rules no prueba esa configuración de despliegue.
 - La agenda y terapeutas tienen implementación local; permanecen pendientes la repetición estable del browser QA de reagendado, el despliegue y la configuración operativa. Backups y observabilidad siguen siendo trabajo de Fase 3.
@@ -110,7 +110,7 @@ Baseline de planificación: **900 recordatorios/mes**. El costo del proveedor de
 
 Para 900 ejecuciones mensuales, Functions queda dentro de las cuotas sin costo publicadas en Blaze. Blaze es obligatorio para desplegar Functions aunque el uso medido estimado sea $0. **Budget alert: not verified** hasta que el operador confirme Google Cloud Console.
 
-El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Secret Manager, caller exclusivo en Firebase Functions, máximo tres retries con backoff acotado y registro sanitizado de fallas permanentes. El código de integración está implementado; todavía no hay credenciales, dominio ni despliegue configurados.
+El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Secret Manager, caller exclusivo en Firebase Functions, máximo tres retries con backoff acotado y registro sanitizado de fallas permanentes. Recordatorios y confirmaciones usan estados separados (`recordatorios` y `confirmaciones`) y no modifican reservas cuando el proveedor falla. El código de integración está implementado; todavía no hay credenciales, dominio ni despliegue configurados.
 
 ## Hallazgo de costo
 
@@ -126,7 +126,7 @@ El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Se
 
 | Servicio | Estado | Cuándo se consideraría |
 |---|---|---|
-| Email transaccional (Resend; Postmark fallback) | Código implementado en `functions/`; no configurado/desplegado | Verificación de dominio, secreto y despliegue de recordatorios |
+| Email transaccional (Resend; Postmark fallback) | Código implementado en `functions/`; no configurado/desplegado | Verificación de dominio, secreto y despliegue de recordatorios/confirmaciones |
 | reCAPTCHA v3 | Código integrado; activación de producción pendiente | Habilitar y verificar en Firebase Console |
 
 ## Limpieza de servicios sin uso

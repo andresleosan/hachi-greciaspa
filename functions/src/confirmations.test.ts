@@ -180,7 +180,7 @@ describe('booking confirmation orchestration', () => {
     })
 
     expect(first.status).toBe('retry')
-    expect(second.status).toBe('skipped')
+    expect(second.status).toBe('retry')
     expect(sends).toBe(0)
   })
 

@@ -142,6 +142,10 @@ async function markInvalidReservation(
   now: Date,
 ): Promise<ConfirmationRunResult> {
   const lockResult = await store.acquireConfirmationLock(lockInput(reservaId, now))
+  if (lockResult.status === 'backoff') {
+    return { status: 'retry', nextAttemptAt: lockResult.nextAttemptAt.toDate() }
+  }
+  if (lockResult.status === 'exhausted') return { status: 'failed' }
   if (lockResult.status !== 'acquired') return { status: 'skipped' }
 
   const nowTimestamp = timestamp(now)
@@ -180,6 +184,10 @@ export async function runConfirmationOrchestration({
   }
 
   const lockResult = await store.acquireConfirmationLock(lockInput(reservaId, now))
+  if (lockResult.status === 'backoff') {
+    return { status: 'retry', nextAttemptAt: lockResult.nextAttemptAt.toDate() }
+  }
+  if (lockResult.status === 'exhausted') return { status: 'failed' }
   if (lockResult.status !== 'acquired') return { status: 'skipped' }
 
   const nowTimestamp = timestamp(now)

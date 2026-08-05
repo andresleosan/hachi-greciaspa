@@ -167,7 +167,7 @@ Ante gasto inesperado, errores repetidos o exposición de un secreto:
 1. Deshabilitar la Function programada para detener nuevas ejecuciones.
 2. Inspeccionar el uso y los logs para identificar el alcance y la causa.
 3. Si el secreto del proveedor pudo quedar expuesto, revocarlo o rotarlo siguiendo el procedimiento del proveedor.
-4. Preservar los documentos de `recordatorios` para auditoría; no borrarlos como parte de la contención.
+4. Preservar los documentos de `recordatorios` y `confirmaciones` para auditoría; no borrarlos como parte de la contención.
 5. Registrar la hora, el operador, las acciones tomadas y la evidencia revisada.
 
 ## Rollback
@@ -175,6 +175,6 @@ Ante gasto inesperado, errores repetidos o exposición de un secreto:
 El rollback debe ser reversible y no destructivo:
 
 1. Deshabilitar o retirar la Function programada.
-2. Mantener los documentos de `recordatorios` para auditoría y eventual reprocesamiento controlado.
+2. Mantener los documentos de `recordatorios` y `confirmaciones` para auditoría y eventual reprocesamiento controlado.
 3. No aplicar migraciones destructivas ni borrar datos para resolver una incidencia.
 4. Confirmar el estado de la Function y documentar la autorización para cualquier reactivación.
