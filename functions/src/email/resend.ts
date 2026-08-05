@@ -1,6 +1,11 @@
 import { Resend } from 'resend'
 
-import type { EmailProvider, ReminderEmailInput } from '../types.js'
+import type {
+  ConfirmationEmailInput,
+  ReminderEmailInput,
+  TransactionalEmailProvider,
+} from '../types.js'
+import { renderConfirmationHtml } from '../templates/confirmation.js'
 import { renderReminderHtml } from '../templates/reminder.js'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -111,7 +116,7 @@ function suppressResendErrorLogging(resend: Resend): void {
   })
 }
 
-export function createResendProvider(secret: string): EmailProvider {
+export function createResendProvider(secret: string): TransactionalEmailProvider {
   if (typeof secret !== 'string' || !secret.trim()) {
     throw new EmailProviderError('Email provider secret is required', false)
   }
@@ -119,35 +124,52 @@ export function createResendProvider(secret: string): EmailProvider {
   const resend = new Resend(secret)
   suppressResendErrorLogging(resend)
 
-  return {
-    async sendReminderEmail(input: ReminderEmailInput) {
-      validateInput(input)
+  async function sendEmail(
+    input: ReminderEmailInput,
+    subject: string,
+    render: (value: ReminderEmailInput) => string,
+  ): Promise<{ providerMessageId?: string }> {
+    validateInput(input)
 
-      try {
-        const result = await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL ?? 'reservas@hachi-greciaspa.com',
-          to: input.to,
-          subject: 'Recordatorio de tu cita en Hachi & Grecia Spa',
-          html: renderReminderHtml(input),
-          headers: {
-            'Idempotency-Key': input.idempotencyKey,
-          },
-        })
+    try {
+      const result = await resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL ?? 'reservas@hachi-greciaspa.com',
+        to: input.to,
+        subject,
+        html: render(input),
+        headers: {
+          'Idempotency-Key': input.idempotencyKey,
+        },
+      })
 
-        if (result.error) {
-          throw providerFailure(statusCodeOf(result.error), result.error)
-        }
-
-        return result.data?.id
-          ? { providerMessageId: result.data.id }
-          : {}
-      } catch (error) {
-        if (error instanceof EmailProviderError) {
-          throw error
-        }
-
-        throw providerFailure(statusCodeOf(error), error)
+      if (result.error) {
+        throw providerFailure(statusCodeOf(result.error), result.error)
       }
-    },
+
+      return result.data?.id
+        ? { providerMessageId: result.data.id }
+        : {}
+    } catch (error) {
+      if (error instanceof EmailProviderError) {
+        throw error
+      }
+
+      throw providerFailure(statusCodeOf(error), error)
+    }
+  }
+
+  return {
+    sendReminderEmail: (input: ReminderEmailInput) =>
+      sendEmail(
+        input,
+        'Recordatorio de tu cita en Hachi & Grecia Spa',
+        renderReminderHtml,
+      ),
+    sendConfirmationEmail: (input: ConfirmationEmailInput) =>
+      sendEmail(
+        input,
+        'Confirmación de tu cita en Hachi & Grecia Spa',
+        renderConfirmationHtml,
+      ),
   }
 }

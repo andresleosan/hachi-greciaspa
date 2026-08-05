@@ -37,8 +37,18 @@ export interface ReminderEmailInput {
   idempotencyKey: string
 }
 
+export interface ConfirmationEmailInput extends ReminderEmailInput {}
+
 export interface EmailProvider {
   sendReminderEmail(
     input: ReminderEmailInput,
   ): Promise<{ providerMessageId?: string }>
 }
+
+export interface ConfirmationEmailProvider {
+  sendConfirmationEmail(
+    input: ConfirmationEmailInput,
+  ): Promise<{ providerMessageId?: string }>
+}
+
+export type TransactionalEmailProvider = EmailProvider & ConfirmationEmailProvider

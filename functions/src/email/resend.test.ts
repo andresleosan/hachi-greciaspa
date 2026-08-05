@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { ReminderEmailInput } from '../types.js'
+import type { ConfirmationEmailInput, ReminderEmailInput } from '../types.js'
 
 const resendMocks = vi.hoisted(() => ({
   constructor: vi.fn(),
@@ -16,6 +16,7 @@ import {
   createResendProvider,
   EmailProviderError,
 } from './resend.js'
+import { renderConfirmationHtml } from '../templates/confirmation.js'
 import { renderReminderHtml } from '../templates/reminder.js'
 
 let resendClient: {
@@ -32,6 +33,15 @@ const input: ReminderEmailInput = {
   date: '15 de enero de 2026',
   timeSlot: '10:30',
   idempotencyKey: 'reminder-reservation-123',
+}
+
+const confirmationInput: ConfirmationEmailInput = {
+  to: 'cliente@example.com',
+  recipientName: 'Ana',
+  serviceName: 'Baño y corte',
+  date: '15 de enero de 2026',
+  timeSlot: '10:30',
+  idempotencyKey: 'confirmation-reservation-123',
 }
 
 describe('reminder email rendering', () => {
@@ -64,6 +74,30 @@ describe('reminder email rendering', () => {
     expect(html).toContain('10:30 &amp; &#39;especial&#39;')
     expect(html).not.toContain('<script>')
     expect(html).not.toContain('<img')
+  })
+})
+
+describe('confirmation email rendering', () => {
+  it('renders confirmation details and the dashboard destination', () => {
+    const html = renderConfirmationHtml(confirmationInput)
+
+    expect(html).toContain('Ana')
+    expect(html).toContain('Baño y corte')
+    expect(html).toContain('15 de enero de 2026')
+    expect(html).toContain('10:30')
+    expect(html).toContain('https://hachi-greciaspa.web.app/dashboard')
+  })
+
+  it('escapes confirmation values before rendering HTML', () => {
+    const html = renderConfirmationHtml({
+      ...confirmationInput,
+      recipientName: '<img src=x onerror="alert(1)">',
+      serviceName: '<script>alert(1)</script>',
+    })
+
+    expect(html).not.toContain('<script>')
+    expect(html).not.toContain('<img')
+    expect(html).toContain('&lt;script&gt;alert(1)&lt;/script&gt;')
   })
 })
 
@@ -226,6 +260,31 @@ describe('Resend reminder provider', () => {
 
     const error = await provider
       .sendReminderEmail({ ...input, idempotencyKey: ' ' })
+      .catch((caught: unknown) => caught) as EmailProviderError
+
+    expect(error).toBeInstanceOf(EmailProviderError)
+    expect(error.retryable).toBe(false)
+    expect(resendMocks.send).not.toHaveBeenCalled()
+  })
+
+  it('sends confirmation email with the deterministic idempotency key', async () => {
+    resendMocks.send.mockResolvedValue({ data: { id: 'confirmation-msg-1' }, error: null })
+    const provider = createResendProvider('resend_test_secret')
+
+    await expect(provider.sendConfirmationEmail(confirmationInput)).resolves.toEqual({
+      providerMessageId: 'confirmation-msg-1',
+    })
+    expect(resendMocks.send).toHaveBeenCalledWith(expect.objectContaining({
+      subject: 'Confirmación de tu cita en Hachi & Grecia Spa',
+      headers: { 'Idempotency-Key': confirmationInput.idempotencyKey },
+    }))
+  })
+
+  it('rejects malformed confirmation input without calling Resend', async () => {
+    const provider = createResendProvider('resend_test_secret')
+
+    const error = await provider
+      .sendConfirmationEmail({ ...confirmationInput, to: 'not-an-email' })
       .catch((caught: unknown) => caught) as EmailProviderError
 
     expect(error).toBeInstanceOf(EmailProviderError)
