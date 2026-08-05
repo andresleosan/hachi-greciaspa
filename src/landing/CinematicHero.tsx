@@ -107,9 +107,6 @@ export default function CinematicHero() {
             tl.from(next.querySelector('.sl-hero-meta'), { opacity: 0, duration: 0.6 }, '<0.3')
           }
 
-          const last = scenes[scenes.length - 1]
-          tl.to(last.querySelector('.sl-scene-inner'), { opacity: 0, yPercent: -4, duration: 0.55, ease: 'power2.in' }, '>-0.35')
-          tl.to(last, { clipPath: 'inset(0 0 100% 0)', duration: 0.65, ease: 'power2.inOut' }, '<0.02')
         }, root)
       })
       .catch(() => {
