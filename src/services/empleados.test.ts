@@ -81,6 +81,14 @@ describe('empleados service', () => {
     expect(mocks.collection).toHaveBeenCalledWith(mocks.db, 'empleados')
   })
 
+  it('does not let a stored id field overwrite the document id', async () => {
+    mocks.getDocs.mockResolvedValue({
+      docs: [{ id: 'employee-1', data: () => ({ ...employeeInput, id: 'stored-id' }) }],
+    })
+
+    await expect(listEmpleados()).resolves.toEqual([{ id: 'employee-1', ...employeeInput }])
+  })
+
   it('creates an employee with the input fields unchanged', async () => {
     mocks.addDoc.mockResolvedValue({ id: 'employee-3' })
 

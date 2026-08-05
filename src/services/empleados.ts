@@ -49,7 +49,7 @@ function mapCallableError(error: unknown): string {
 
 export async function listEmpleados(): Promise<Empleado[]> {
   const snapshot = await getDocs(collection(firebaseDb, 'empleados'))
-  return snapshot.docs.map((employee) => ({ id: employee.id, ...employee.data() }) as Empleado)
+  return snapshot.docs.map((employee) => ({ ...employee.data(), id: employee.id }) as Empleado)
 }
 
 export async function createEmpleado(input: EmpleadoInput): Promise<string> {
