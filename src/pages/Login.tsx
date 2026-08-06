@@ -44,13 +44,13 @@ export default function Login() {
           </div>
           <div className="card contact-card">
             <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="field">
-                <label>Correo</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              </div>
-              <div className="field">
-                <label>Contraseña</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <div className="field">
+                  <label htmlFor="login-email">Correo</label>
+                  <input id="login-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="field">
+                  <label htmlFor="login-password">Contraseña</label>
+                  <input id="login-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               {error && <div className="field field-error">{error}</div>}
               <div className="field">

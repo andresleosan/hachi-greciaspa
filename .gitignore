@@ -71,3 +71,4 @@ backfill-empleado-id-manifest*.json
 
 # Worktrees locales de desarrollo aislado
 .worktrees/
+.vercel
