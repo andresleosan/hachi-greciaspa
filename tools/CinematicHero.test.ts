@@ -8,4 +8,8 @@ describe('cinematic hero timeline', () => {
     expect(source).not.toMatch(/tl\.to\(last,\s*\{\s*clipPath:\s*'inset\(0 0 100% 0\)'/)
     expect(source).not.toMatch(/tl\.to\(last\.querySelector\('\.sl-scene-inner'\)/)
   })
+
+  it('uses the shortened pin distance for scene transitions', () => {
+    expect(source).toMatch(/end:\s*'\+=260%'/)
+  })
 })
