@@ -67,6 +67,7 @@ export default function CinematicHero() {
       .then(({ gsap, ScrollTrigger }) => {
         if (cancelled || !root.current) return
 
+        root.current.classList.add('sl-hero--animated')
         ctx = gsap.context(() => {
           const scenes = gsap.utils.toArray<HTMLElement>('.sl-scene')
 
@@ -115,6 +116,7 @@ export default function CinematicHero() {
 
     return () => {
       cancelled = true
+      root.current?.classList.remove('sl-hero--animated')
       ctx?.revert()
     }
   }, [])
