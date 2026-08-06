@@ -5,7 +5,6 @@ import { onSchedule } from 'firebase-functions/v2/scheduler'
 import { randomUUID } from 'node:crypto'
 
 import { createResendProvider } from './email/resend.js'
-import { captureFunctionException } from './observability/sentry.js'
 import {
   canRetry,
   getAppointmentInstant,
@@ -220,7 +219,6 @@ export async function runReminderOrchestration({
       const delivery = await provider.sendReminderEmail(emailInput)
       providerMessageId = delivery.providerMessageId ?? null
     } catch (error) {
-      captureFunctionException(error, { operation: 'send-scheduled-reminder' })
       const retryable = isRecord(error) && error.retryable === true
       const patch: Partial<ReminderRecord> = {
         status: 'failed',

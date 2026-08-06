@@ -51,7 +51,15 @@ async function main() {
     // --- Precios (C1): public read, admin write ---
     await test('guest can read precios (C1)', () => assertSucceeds(guestDb.collection('precios').doc('p1').get()))
     await test('client cannot write precios (C1)', () => assertFails(aliceDb.collection('precios').doc('p1').set({ price: 100 })))
-    await test('admin (claim) can write precios (C1)', () => assertSucceeds(bobAdminDb.collection('precios').doc('p1').set({ price: 100 })))
+    await test('admin (claim) can write valid precios (C1)', () => assertSucceeds(bobAdminDb.collection('precios').doc('p1').set({
+      name: 'Baño premium', price: 100, priceHigh: 150, unit: 'por servicio', note: null, category: 'Spa'
+    })))
+    await test('admin cannot write invalid precio schema', () => assertFails(bobAdminDb.collection('precios').doc('p-invalid').set({
+      name: 'Baño premium', price: '100', priceHigh: 150
+    })))
+    await test('admin cannot write a maximum price below the base price', () => assertFails(bobAdminDb.collection('precios').doc('p-invalid-range').set({
+      name: 'Baño premium', price: 200, priceHigh: 150
+    })))
 
     // --- Users (own profile) ---
     // create uses the auth uid; rule enforces 'role == client' default

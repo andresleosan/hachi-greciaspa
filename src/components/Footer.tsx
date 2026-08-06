@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
@@ -9,16 +10,16 @@ export default function Footer() {
           <p className="footer-note">Contacto: contacto@hachigreciasp.com — +52 55 1234 5678</p>
         </div>
         <div className="footer-links">
-          <a href="#">Términos</a>
-          <a href="#">Privacidad</a>
+          <span className="footer-link footer-link--pending" aria-disabled="true">Términos <small>próximamente</small></span>
+          <span className="footer-link footer-link--pending" aria-disabled="true">Privacidad <small>próximamente</small></span>
         </div>
         <div className="footer-links">
-          <a href="#">Servicios</a>
-          <a href="#">Equipo</a>
+          <Link className="footer-link" to="/servicios">Servicios</Link>
+          <Link className="footer-link" to="/equipo">Equipo</Link>
         </div>
         <div className="footer-links">
-          <a href="#">Ubicación</a>
-          <a href="#">Horario</a>
+          <Link className="footer-link" to="/contacto#ubicacion">Ubicación</Link>
+          <Link className="footer-link" to="/contacto#horarios">Horario</Link>
         </div>
       </div>
     </footer>

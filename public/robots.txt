@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /login
+Disallow: /register
+Disallow: /reservar
+
+Sitemap: https://hachi-greciaspa.vercel.app/sitemap.xml

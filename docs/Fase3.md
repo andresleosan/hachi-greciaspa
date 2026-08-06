@@ -2,7 +2,7 @@
 
 > **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
 >
-> **Evidencia local al 2026-08-04:** client `31 passed`; `tsc --noEmit` y build del cliente verdes; rules `48 passed, 0 failed`; Functions `84 passed, 2 skipped`; typecheck y build de Functions verdes. Esta evidencia no constituye verificación de producción.
+> **Evidencia local al 2026-08-06:** client `81 passed`; `tsc --noEmit` y build del cliente verdes; rules `62 passed, 0 failed`; Functions `99 passed, 2 skipped`; typecheck y build de Functions verdes. Esta evidencia no constituye verificación de producción.
 >
 > **Pendiente de verificación externa:** rollback, autorización de producción, dominio, `RESEND_API_KEY`, billing, budget alert, despliegue y browser QA.
 
@@ -70,7 +70,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Hardening de `firestore.rules`: el dueño solo puede cancelar con el cambio exacto `status -> 'cancelled'`; las escrituras directas del cliente sobre `date`/`timeSlot` están denegadas y no son una vía de reagendado.
 - [x] Controles en `DashboardPage`: cancelar reservas propias `pending`/`confirmed` y mostrar reagendado solo para reservas propias `pending` con fecha futura.
 - [x] Validación server-side en la callable `rescheduleReserva`: usa Admin SDK, autentica y valida ownership/estado, fecha y hora futuras en `America/Mexico_City`, y es la autoridad para rechazar slots activos ocupados dentro de una transacción.
-- [x] Tests (evidencia local fechada 2026-08-04; no verificación de producción): reglas (`48 passed, 0 failed`), Functions (`84 passed, 2 skipped`) y cliente (`31 passed`) para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
+- [x] Tests (evidencia local fechada 2026-08-06; no verificación de producción): reglas (`62 passed, 0 failed`), Functions (`99 passed, 2 skipped`) y cliente (`81 passed`) para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
 
 **Operación separada, no completada por esta tarea:** desplegar la callable, configurar producción y verificar el comportamiento en el entorno desplegado.
 
@@ -114,7 +114,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [ ] Browser QA completo del retry posterior a cancelación: la repetición no alcanzó el flujo porque el mismo proceso de emuladores terminó; el gate permanece pendiente.
 - [ ] Despliegue, backfill productivo, configuración productiva y browser QA contra producción.
 
-**Verificación local fechada 2026-08-04:** client `31/31`; rules `48 passed, 0 failed`; Functions `84 passed, 2 skipped`; typecheck y builds verdes. La QA previa contra emuladores verificó autorización no-admin, CRUD admin, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. La repetición de esta ola para retry post-cancelación y reagendado no pudo ejecutarse hasta completar porque el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`; ambos gates quedan pendientes.
+**Verificación local fechada 2026-08-06:** client `81/81`; rules `62 passed, 0 failed`; Functions `99 passed, 2 skipped`; typecheck y builds verdes. La QA previa contra emuladores verificó autorización no-admin, CRUD admin, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. La repetición de esta ola para retry post-cancelación y reagendado no pudo ejecutarse hasta completar porque el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`; ambos gates quedan pendientes.
 
 **Refs:** `docs/SCHEMA.md` `empleados`, `firestore.rules` `empleados`.
 
@@ -162,7 +162,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar; usa `confirmaciones/{reservaId}` y clave determinística de Resend.
 - [x] Variables de plantilla: nombre del cliente, servicio, fecha, hora y enlace al dashboard.
 
-**Verificación local:** 60 casos de rules, 99 tests de Functions (2 skips existentes), typecheck y build pasan. La configuración de Resend, dominio, Secret Manager, Billing/Blaze, despliegue y browser QA permanecen pendientes como gates operativos.
+**Verificación local:** 62 casos de rules, 99 tests de Functions (2 skips existentes), 81 tests de cliente, typecheck y build pasan. La configuración de Resend, dominio, Secret Manager, Billing/Blaze, despliegue y browser QA permanecen pendientes como gates operativos.
 
 **Refs:** T3.1 (mismo proveedor), T3.3 (link cancelación).
 
@@ -180,7 +180,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Verificar que los imports de `firebase/auth`, `firebase/firestore` y `firebase/functions` son modulares.
 - [ ] Considerar migrar de `moduleResolution=node10` a `bundler` (warning TS 7.0).
 
-**Verificación local:** el baseline muestra `index` en 233.49 kB (75.05 kB gzip) y `firebase` en 359.01 kB (109.95 kB gzip). No se dividió adicionalmente `firebase.ts` porque la landing ya evita descargarlo y no existe medición de red por ruta que justifique mayor complejidad. FCP/LCP siguen pendientes de Lighthouse/WebPageTest.
+**Verificación local:** el baseline muestra `index` en 235.91 kB (75.88 kB gzip), CSS global en 82.10 kB (15.93 kB gzip) y `firebase` en 359.01 kB (109.95 kB gzip). No se dividió adicionalmente `firebase.ts` porque la landing ya evita descargarlo y no existe medición de red por ruta que justifique mayor complejidad. FCP/LCP siguen pendientes de Lighthouse/WebPageTest.
 
 **Refs:** `vite.config.ts`, `docs/STACK.md` línea 10, build output actual.
 
@@ -213,21 +213,16 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 
 ---
 
-#### T3.12 — Observabilidad: error tracking + logs
-**Por qué:** Hoy no hay forma de saber si algo falla en producción más allá de que el cliente reporte. Crítico cuando hay Cloud Functions (T3.1, T3.8).
+#### T3.12 — Observabilidad: logs de plataforma, sin proveedor externo
+**Por qué:** Cloud Functions necesita diagnóstico operativo cuando se habilite en producción, pero el proyecto no debe incorporar un SDK de monitoreo externo sin aprobación de privacidad, costo y proveedor.
 
 **AC:**
-- [x] Integrar Sentry en frontend: captura de errores JS no manejados, rejections y errores de renderizado React cuando existe DSN.
-- [x] Cloud Functions: conservar logs estructurados a Cloud Logging e instrumentar excepciones relevantes de forma opcional.
+- [x] Decidir no integrar Sentry ni otro SDK externo en el frontend.
+- [ ] Cloud Functions: revisar y normalizar logs estructurados a Cloud Logging antes del despliegue.
 - [ ] Configurar alerta en Cloud Monitoring para errores de Functions > 5/min.
-- [x] Variable `VITE_SENTRY_DSN` en `.env.example`.
-- [x] Privacy: Sentry no captura emails, passwords, tokens de Auth, cookies, headers de autorización ni payloads Firestore.
+- [ ] Definir política de datos para logs sin emails, passwords, tokens ni payloads sensibles.
 
-**Verificación local:** tests frontend y Functions cubren activación por DSN, sanitización, aislamiento de fallos y preservación de comportamiento. La cuenta Sentry, el DSN, la recepción de un evento controlado y la alerta de Cloud Monitoring siguen pendientes de configuración externa.
-
-**Evidencia local 2026-08-05:** cliente `81 passed`; rules `60 passed, 0 failed`; Functions `103 passed, 2 skipped`; typecheck y builds de cliente y Functions verdes; `release:preflight` terminó en `PASS_WITH_WARNINGS` por advisories de dependencias y gates externos.
-
-**Refs:** `docs/adr/ADR-007-observabilidad.md`, `src/observability/sentry.ts`, `functions/src/observability/sentry.ts`.
+**Estado:** no hay observabilidad externa integrada ni credenciales nuevas. La configuración de Cloud Logging/Monitoring sigue siendo un gate operativo de producción.
 
 ---
 
@@ -291,7 +286,6 @@ Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
 - `ADR-004-proveedor-email.md` — T3.2.
 - `ADR-005-cron-recordatorios.md` — T3.1 (frecuencia del job).
 - `ADR-006-backups-firestore.md` — T3.11 (frecuencia y retención).
-- `ADR-007-observabilidad.md` — T3.12 (Sentry vs alternatives).
 
 ## Estimación de costo incremental
 
@@ -299,7 +293,7 @@ Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
 |---|---|
 | A (Resend + Functions) | $0 de email en el baseline de Resend; Functions requiere Blaze y su costo operativo sigue pendiente de verificación |
 | B (sin nuevos servicios) | $0 |
-| C (Sentry free tier) | $0 (5k eventos/mes); backups < 1 GB = $0 |
+| C (sin proveedor externo) | $0 incremental; backups < 1 GB = $0 |
 | D | $0 |
 
 **Si se migra a Blaze por uso de Cloud Functions**: budget de $10/mes configurado vía T3.10.

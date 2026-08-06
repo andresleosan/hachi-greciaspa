@@ -87,13 +87,13 @@ export default function Contacto() {
               </div>
             </form>
 
-            <aside className="map-card card">
+            <aside className="map-card card" id="ubicacion">
               <div className="map-canvas">
                 <div className="map-pin"></div>
               </div>
               <p className="map-caption">Estamos en Roma Norte, CDMX</p>
 
-              <div className="contact-info">
+              <div className="contact-info" id="horarios">
                 <h4>Horarios</h4>
                 <ul>
                   <li>Apertura: 08:00 — 19:00</li>

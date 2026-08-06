@@ -56,19 +56,44 @@ export default function Register() {
           <div className="card contact-card">
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="field">
-                <label>Nombre</label>
-                <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} minLength={2} required />
-                {displayName && !nameValid && <small style={{ color: 'var(--color-danger, #c0392b)' }}>Mínimo 2 caracteres.</small>}
-              </div>
-              <div className="field">
-                <label>Correo</label>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                {email && !emailValid && <small style={{ color: 'var(--color-danger, #c0392b)' }}>Correo no válido.</small>}
-              </div>
-              <div className="field">
-                <label>Contraseña</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} required />
-                {password && !passwordValid && <small style={{ color: 'var(--color-danger, #c0392b)' }}>Mínimo 8 caracteres.</small>}
+                  <label htmlFor="register-name">Nombre</label>
+                  <input
+                    id="register-name"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    minLength={2}
+                    aria-invalid={Boolean(displayName) && !nameValid}
+                    aria-describedby={displayName && !nameValid ? 'register-name-error' : undefined}
+                    required
+                  />
+                  {displayName && !nameValid && <small className="field-error field-hint" id="register-name-error">Mínimo 2 caracteres.</small>}
+                </div>
+                <div className="field">
+                  <label htmlFor="register-email">Correo</label>
+                  <input
+                    id="register-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    aria-invalid={Boolean(email) && !emailValid}
+                    aria-describedby={email && !emailValid ? 'register-email-error' : undefined}
+                    required
+                  />
+                  {email && !emailValid && <small className="field-error field-hint" id="register-email-error">Correo no válido.</small>}
+                </div>
+                <div className="field">
+                  <label htmlFor="register-password">Contraseña</label>
+                  <input
+                    id="register-password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    minLength={8}
+                    aria-invalid={Boolean(password) && !passwordValid}
+                    aria-describedby={password && !passwordValid ? 'register-password-error' : undefined}
+                    required
+                  />
+                  {password && !passwordValid && <small className="field-error field-hint" id="register-password-error">Mínimo 8 caracteres.</small>}
               </div>
               {error && <div className="field field-error">{error}</div>}
               <div className="field"><button className="btn btn-primary" disabled={blocked || !formValid}>Crear cuenta</button></div>

@@ -5,9 +5,10 @@ import { useAuth } from '../hooks/useAuth'
 import AdminPrices from '../components/AdminPrices'
 import { firebaseDb } from '../services/firebase'
 import { collection, query, where, getDocs, getCountFromServer, orderBy, limit } from 'firebase/firestore'
-import { format, startOfDay, endOfDay } from 'date-fns'
+import { format } from 'date-fns'
 import type { Reserva, ReservaStatus } from '../types'
 import { RESERVA_STATUS_LABELS } from '../types'
+import { calculateDashboardMetrics, type DashboardMetricBooking } from '../services/dashboardMetrics'
 import { cancelMyReserva, rescheduleMyReserva } from '../services/reservas'
 import {
   canShowReschedule,
@@ -122,11 +123,8 @@ export default function DashboardPage() {
       setLoading(true)
 
       const isAdmin = profile?.role === 'admin'
-      const now = new Date()
-      const todayStart = startOfDay(now)
-      const todayEnd = endOfDay(now)
 
-      // Fetch today's bookings
+      // Fetch recent bookings for the activity list.
       const reservasRef = collection(firebaseDb, 'reservas')
       let bookingsQuery
       if (isAdmin) {
@@ -138,22 +136,26 @@ export default function DashboardPage() {
       try {
         const snap = await getDocs(bookingsQuery)
         const items: Reserva[] = []
-        const todayServices = new Set<string>()
-        let todayCount = 0
 
         snap.forEach((d) => {
           const data = d.data() as Omit<Reserva, 'id'>
           items.push({ id: d.id, ...data })
-
-          // Count today's bookings
-          const createdAt = data.createdAt?.toDate?.()
-          if (createdAt && createdAt >= todayStart && createdAt <= todayEnd) {
-            todayCount++
-            if (data.serviceName) todayServices.add(data.serviceName)
-          }
         })
 
         setBookings(items)
+
+        const todayBookingsQuery = isAdmin
+          ? query(reservasRef, where('date', '==', currentLocalDate))
+          : query(
+              reservasRef,
+              where('userId', '==', user.uid),
+              where('date', '==', currentLocalDate),
+            )
+        const todayBookingsSnap = await getDocs(todayBookingsQuery)
+        const dailyMetrics = calculateDashboardMetrics(
+          todayBookingsSnap.docs.map((doc) => doc.data() as DashboardMetricBooking),
+          currentLocalDate,
+        )
 
         // Fetch total users count (admin only)
         let clientesTotales = 0
@@ -167,8 +169,7 @@ export default function DashboardPage() {
         }
 
         setMetrics({
-          citasHoy: todayCount,
-          serviciosHoy: todayServices.size,
+          ...dailyMetrics,
           clientesTotales,
         })
       } catch (e) {
@@ -225,7 +226,7 @@ export default function DashboardPage() {
                 <div className="metric-card__delta">Servicios distintos</div>
               </div>
               <div className="metric-card metric-card--lilac">
-                <div className="metric-card__label">Reservas Totales</div>
+                  <div className="metric-card__label">Reservas Recientes</div>
                 <div className="metric-card__value">{bookings.length}</div>
                 <div className="metric-card__delta">Últimas 20</div>
               </div>

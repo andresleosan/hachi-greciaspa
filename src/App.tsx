@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import SeoManager from './seo/SeoManager'
 
 const LandingNueva = lazy(() => import('./pages/LandingNueva'))
 const Servicios = lazy(() => import('./pages/Servicios'))
@@ -17,12 +18,13 @@ const Register = lazy(() => import('./pages/Register'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 function Loader() {
-  return <div className="container section" style={{ textAlign: 'center', paddingTop: '4rem' }}>Cargando…</div>
+  return <div className="container section app-loader">Cargando…</div>
 }
 
 export default function App() {
   return (
     <BrowserRouter>
+      <SeoManager />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<LandingNueva />} />

@@ -119,9 +119,9 @@ No hay rate limiting client-side ni server-side (Firebase Auth tiene límites b�
 
 ---
 
-### M2 — Dashboard con datos hardcodeados
-**Archivo:** `src/pages/dashboard/...` (HTML mockup) y `DashboardPage.tsx:80-98`
-Los valores "Citas Hoy: 12", "Ingresos Hoy: $8,450", etc., son strings estáticos. No se conectan a datos reales de Firestore.
+### M2 — Métricas del dashboard calculadas con fecha incorrecta ✅ CORREGIDO
+**Archivo:** `src/pages/DashboardPage.tsx`
+Las métricas ya se leen desde Firestore, pero `Citas Hoy` y `Servicios Hoy` se estaban calculando sobre las últimas 20 reservas y comparando `createdAt` con el día actual. Ahora usan una consulta diaria por `date`, con índice `userId + date` para clientes.
 
 ---
 
@@ -137,8 +137,8 @@ Rutas indefinidas muestran solo "Cargando..." (el Suspense fallback) sin error v
 
 ---
 
-### M5 — Sin `firestore.indexes.json`
-Queries con `orderBy` + `where` (como la de reservas en DashboardPage) requieren índices compuestos. Sin el archivo de índices, estas queries fallarán en producción.
+### M5 — Índices compuestos de Firestore ✅ CORREGIDO
+`firestore.indexes.json` existe y contiene los índices de reservas requeridos, incluyendo `userId + date` para las métricas diarias del dashboard.
 
 ---
 
@@ -166,8 +166,8 @@ Placeholders no funcionales.
 ### L3 — Sin validación de inputs en Register
 No hay mínimo de longitud de contraseña ni validación de email más allá de HTML5 `type="email"`.
 
-### L4 — `ProtectedRoute` solo verifica autenticación, no rol
-Cualquier usuario autenticado accede a `/dashboard`. El contenido admin se renderiza condicionalmente, pero la ruta no está protegida por rol.
+### L4 — Acceso base al dashboard ✅ RECLASIFICADO
+`/dashboard` es compartido intencionalmente por clientes y administradores. Las rutas administrativas `/dashboard/agenda` y `/dashboard/empleados` usan `ProtectedRoute requireRole="admin"`; no se requiere un guard de admin sobre el dashboard base.
 
 ### L5 — `useAuth` sin error boundary
 Si `getUserProfile` falla, `profile` queda en `null` silenciosamente. No hay feedback al usuario.

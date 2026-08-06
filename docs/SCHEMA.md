@@ -48,17 +48,18 @@ Catálogo de servicios del spa. Leído públicamente por `Servicios.tsx`.
 
 ### `precios/{docId}`
 
-Tarifario. Schema `PriceItem` (definido localmente en `PricesList.tsx:5` y `AdminPrices.tsx:14` — T2.1 debe mover el tipo a `src/types/`).
+Tarifario. Schema `PriceItem` definido en `src/types/precios.ts`.
 
 | Campo | Tipo | Notas |
 |---|---|---|
-| `serviceName` | string | |
-| `price` | number | MXN |
-| `duration` | string | label legible ("60 min") |
-| `description` | string \| null | |
-| `category` | string | |
+| `name` | string | obligatorio, 1–120 caracteres |
+| `price` | number \| null | MXN, mayor o igual a cero |
+| `priceHigh` | number \| null | MXN, mayor o igual a `price` cuando ambos existen |
+| `unit` | string \| null | máximo 80 caracteres |
+| `note` | string \| null | máximo 240 caracteres |
+| `category` | string \| null | máximo 80 caracteres |
 
-**Reglas:** lectura pública, escritura admin-only (C1 de AUDITORIA.md).
+**Reglas:** lectura pública; creación y actualización admin-only con allowlist de campos y validación de tipos/rangos; eliminación admin-only (C1 de AUDITORIA.md).
 
 ---
 
@@ -84,7 +85,9 @@ Citas reservadas. Es la colección central de Fase 2.
 | `createdAt` | Timestamp | client | `serverTimestamp()` |
 | `createdBy` | 'client' \| 'admin' | client | qué flujo originó la reserva |
 
-**Índices:** compuestos `userId ASC + createdAt DESC` ("mis reservas"), `userId ASC + mascotaId ASC` (historial por mascota) y `serviceId ASC + date ASC + timeSlot ASC` (detección de doble-booking) están en `firestore.indexes.json`.
+**Índices:** compuestos `userId ASC + createdAt DESC` ("mis reservas"), `userId ASC + mascotaId ASC` (historial por mascota), `userId ASC + date ASC` (métricas diarias por cliente) y `serviceId ASC + date ASC + timeSlot ASC` (detección de doble-booking) están en `firestore.indexes.json`.
+
+**Rollback de índice:** el índice `userId ASC + date ASC` es aditivo y no modifica documentos. Para revertirlo, retirar únicamente ese bloque de `firestore.indexes.json` y aplicar la configuración de índices autorizada; no borrar reservas ni ejecutar una migración destructiva.
 
 **Reglas:** ver `firestore.rules:37-62` y ADR-002. El cliente solo puede crear una reserva propia con `empleadoId` ausente o `null`; no puede agregar, cambiar ni quitar ese campo después. El propietario solo puede cancelar con el cambio exacto `status -> 'cancelled'` cuando la reserva está `pending` o `confirmed`; las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas y no puede cambiar campos adicionales. `rescheduleMyReserva` llama exclusivamente a la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad para validar fecha/hora futura y disponibilidad del slot en una transacción server-side. Admin conserva la edición completa y la asignación automática también usa Admin SDK.
 

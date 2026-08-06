@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-05 (T3.12 implementado localmente; cuenta Sentry, DSN y alertas externas pendientes).
+Última actualización: 2026-08-04 (MVP y código/tests de T3.5 verificados localmente; browser QA de T3.5 incompleto).
 
 ## Stack técnico
 
@@ -15,7 +15,7 @@
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
 | Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
-| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 48 passed, 0 failed; evidencia local fechada 2026-08-04; no verificacion de produccion; JDK 21 requerido |
+| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 62 passed, 0 failed; evidencia local fechada 2026-08-06; no verificacion de produccion; JDK 21 requerido |
 
 ## Identidad visual — Rediseño luxe
 
@@ -39,7 +39,7 @@ El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relaci
 - La validación de slots está implementada en `src/services/reservas.ts` como best-effort client-side; el tradeoff de concurrencia aceptado está documentado en ADR-001.
 - Los mensajes de contacto persisten en `mensajes`, con creación anónima y lectura/eliminación solo para admin.
 - La galería se sirve mediante seis paths públicos estáticos y no depende de Cloud Storage.
-- `firestore.rules` está cubierta por la suite actual: `48 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, protección de precios, asignación y acceso admin. Functions reporta `84 passed, 2 skipped`, incluidos asignación, solapamientos y reagendado. Esta es evidencia local fechada 2026-08-04 y no constituye verificación de producción.
+- `firestore.rules` está cubierta por la suite actual: `62 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, validación del schema de precios, asignación y acceso admin. Functions reporta `99 passed, 2 skipped`, incluidos asignación, solapamientos y reagendado. Esta es evidencia local fechada 2026-08-06 y no constituye verificación de producción.
 - La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite en el emulador.
 
 ### Brechas de Fase 3
@@ -154,22 +154,6 @@ El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Se
 |---|---|---|
 | Email transaccional (Resend; Postmark fallback) | Código implementado en `functions/`; no configurado/desplegado | Verificación de dominio, secreto y despliegue de recordatorios/confirmaciones |
 | reCAPTCHA v3 | Código integrado; activación de producción pendiente | Habilitar y verificar en Firebase Console |
-| Sentry | SDK frontend y Functions implementado; DSN no configurado | Crear proyecto, configurar DSN, verificar evento controlado y revisar PII |
-
-## Sentry — observabilidad
-
-El código usa `VITE_SENTRY_DSN` en frontend y `SENTRY_DSN` en Functions. Ambas variables vacías desactivan el transporte. Cloud Logging continúa siendo el destino principal de logs de Functions.
-
-La implementación establece `sendDefaultPii: false`, no identifica usuarios y elimina emails, passwords, tokens, cookies, headers de autorización, payloads Firestore y query strings antes del transporte. Session Replay, tracing y profiling están desactivados.
-
-### Estimación de costo
-
-| Plan | Cuota de referencia | Costo mensual |
-|---|---|---:|
-| Developer | 5.000 errores, 5 GB de logs y 5 millones de spans | $0 |
-| Team | 50.000 errores incluidos; facturación anual | desde $26 |
-
-Baseline operativo inicial: `$0/mes` dentro del plan Developer. No hay alerta de presupuesto Sentry ni alerta de Cloud Monitoring configuradas todavía. La recepción de un evento controlado requiere que el operador cree la cuenta y proporcione el DSN.
 
 ## Limpieza de servicios sin uso
 

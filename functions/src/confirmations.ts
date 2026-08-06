@@ -2,7 +2,6 @@ import { Timestamp } from 'firebase-admin/firestore'
 
 import { createResendProvider } from './email/resend.js'
 import { canRetry, getRetryDelayMs } from './reminders.js'
-import { captureFunctionException } from './observability/sentry.js'
 import type {
   ConfirmationEmailProvider,
   ConfirmationEmailInput,
@@ -221,7 +220,6 @@ export async function runConfirmationOrchestration({
     )
     return { status: 'sent' }
   } catch (error) {
-    captureFunctionException(error, { operation: 'send-confirmation-email' })
     const retryable = isRecord(error) && error.retryable === true
     const shouldRetry = retryable && canRetry(lockResult.attempts)
     const nextAttemptAt = shouldRetry

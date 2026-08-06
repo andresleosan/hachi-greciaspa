@@ -156,6 +156,30 @@ main {
   line-height: 1.75;
 }
 
+.app-loader {
+  padding-top: 4rem;
+  text-align: center;
+}
+
+.not-found {
+  padding-block: 4rem;
+  text-align: center;
+}
+
+.not-found__title {
+  margin-bottom: 0.5rem;
+  font-size: 4rem;
+}
+
+.not-found__copy {
+  margin-bottom: 1.5rem;
+  margin-inline: auto;
+}
+
+.page-header__actions {
+  margin-top: 0.75rem;
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -1216,9 +1240,67 @@ main {
   margin-top: 0.25rem;
 }
 
+.field-hint {
+  display: block;
+}
+
 .field-success {
   color: #166534;
   font-weight: 600;
+}
+
+.admin-prices__header,
+.admin-prices__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admin-prices__hint,
+.admin-prices__summary,
+.admin-prices__state {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.admin-prices__count {
+  color: var(--color-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.admin-prices__feedback,
+.admin-prices__state {
+  margin-top: 0.75rem;
+}
+
+.admin-prices__list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.admin-prices__item {
+  padding: 1rem;
+}
+
+.admin-prices__fields {
+  margin-bottom: 1rem;
+}
+
+.admin-prices__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.admin-prices__new {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.25rem;
 }
 
 .sidebar-link__badge {
@@ -1511,6 +1593,34 @@ main {
   display: grid;
   gap: 0.55rem;
   color: var(--color-muted);
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  transition: color 180ms ease, opacity 180ms ease;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--color-primary);
+}
+
+.footer-link--pending {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.footer-link--pending small {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#ubicacion,
+#horarios {
+  scroll-margin-top: 2rem;
 }
 
 .footer-note {
@@ -3437,5 +3547,21 @@ metric-card {
 @media (prefers-reduced-motion: reduce) {
   .mascota-item {
     transition: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-prices__header,
+  .admin-prices__row {
+    flex-direction: column;
+  }
+
+  .admin-prices__actions {
+    justify-content: stretch;
+    width: 100%;
+  }
+
+  .admin-prices__actions .btn {
+    flex: 1 1 0;
   }
 }

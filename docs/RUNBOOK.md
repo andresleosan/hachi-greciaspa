@@ -122,11 +122,11 @@ Costos de planificación: Vercel Free `$0`, Firebase Spark `$0`, Blaze/Functions
 Estos resultados pertenecen al repositorio local. No autorizan despliegue ni demuestran que los gates externos estén completados.
 
 ```text
-npm run test:client                    31 passed, 0 failed
+npm run test:client                    81 passed, 0 failed
 npx tsc --noEmit                         PASS
 npm run build                            PASS
-npm run rules:test                       48 passed, 0 failed
-npm --prefix functions test              84 passed, 2 skipped
+npm run rules:test                       62 passed, 0 failed
+npm --prefix functions test              99 passed, 2 skipped
 npm --prefix functions run typecheck     PASS
 npm --prefix functions run build         PASS
 git diff --check                         PASS
@@ -196,33 +196,6 @@ La importación restaura los documentos incluidos en el export y no debe asumirs
 - Registrar operador, timestamps, rutas de export, comandos ejecutados y evidencia de verificación.
 
 Estado actual: el procedimiento está documentado, pero no hay bucket, export diario, Scheduler ni primer export verificado configurados.
-
-## Observabilidad Con Sentry
-
-La instrumentación local está preparada pero desactivada sin DSN:
-
-- Frontend: `VITE_SENTRY_DSN`.
-- Functions: `SENTRY_DSN`, administrado por el entorno de Functions y nunca commiteado.
-- Cloud Logging continúa siendo el destino principal de logs operativos.
-- No se usa `Sentry.setUser`; `sendDefaultPii` permanece en `false`.
-- No se envían emails, passwords, tokens, cookies, headers de autorización, payloads Firestore ni query strings.
-
-Activación controlada cuando exista la cuenta:
-
-1. Crear un proyecto Sentry para el frontend y obtener su DSN.
-2. Configurar `VITE_SENTRY_DSN` en el entorno de build y `SENTRY_DSN` en Functions sin escribir los valores en el repositorio.
-3. Ejecutar una prueba controlada en un entorno no productivo y confirmar la recepción de un evento sin PII.
-4. Configurar destinatarios y límites del plan en Sentry.
-5. Crear en Cloud Monitoring una alerta para más de 5 errores de Functions por minuto.
-6. Registrar fecha, operador, proyecto, alerta y resultado en este runbook.
-
-Rollback no destructivo:
-
-1. Vaciar o retirar el DSN del entorno afectado.
-2. Mantener Cloud Logging y los logs sanitizados locales como fallback.
-3. No modificar reservas, documentos de confirmación ni estados de retry para resolver una falla de Sentry.
-
-Estado actual: cuenta, DSN, evento controlado y alerta de Cloud Monitoring no verificados.
 
 ## Secuencia De Ejecución Externa
 

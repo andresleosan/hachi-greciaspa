@@ -32,6 +32,14 @@
         { "fieldPath": "userId", "order": "ASCENDING" },
         { "fieldPath": "mascotaId", "order": "ASCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "reservas",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "date", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

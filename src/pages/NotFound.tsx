@@ -8,9 +8,9 @@ export default function NotFound() {
     <div>
       <Header />
       <main>
-        <section className="section container" style={{ textAlign: 'center', paddingTop: '4rem', paddingBottom: '4rem' }}>
-          <h1 style={{ fontSize: '4rem', marginBottom: '0.5rem' }}>404</h1>
-          <p className="section-copy" style={{ marginBottom: '1.5rem' }}>La página que buscas no existe o fue movida.</p>
+        <section className="section container not-found">
+          <h1 className="not-found__title">404</h1>
+          <p className="section-copy not-found__copy">La página que buscas no existe o fue movida.</p>
           <Link to="/" className="btn btn-primary">Volver al inicio</Link>
         </section>
       </main>
