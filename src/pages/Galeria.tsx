@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import HeaderGlass from '../landing/HeaderGlass'
-import FooterGlass from '../landing/FooterGlass'
-import AuroraBackground from '../landing/AuroraBackground'
+import PublicLuxeShell from '../components/PublicLuxeShell'
 import { loadMotion } from '../landing/motionRuntime'
 
 const GALERIA_ITEMS = [
@@ -65,11 +63,8 @@ export default function Galeria() {
   }, [])
 
   return (
-    <div className="luxe sl-page-shell">
-      <AuroraBackground />
-      <HeaderGlass />
-      <main className="sl-page-main">
-        <section ref={rootRef} className="sl-gallery sl-gallery-page" aria-labelledby="galeria-title">
+    <PublicLuxeShell>
+      <section ref={rootRef} className="sl-gallery sl-gallery-page" aria-labelledby="galeria-title">
           <div className="sl-gallery-head">
             <div>
               <p className="sl-eyebrow">Galería</p>
@@ -95,9 +90,7 @@ export default function Galeria() {
               Reservar una cita
             </Link>
           </div>
-        </section>
-      </main>
-      <FooterGlass />
-    </div>
+      </section>
+    </PublicLuxeShell>
   )
 }

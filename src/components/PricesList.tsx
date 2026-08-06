@@ -41,9 +41,10 @@ export default function PricesList() {
   })
 
   return (
-    <div className="prices-list">
-      <div className="prices-toolbar">
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+    <div className="sl-catalog-list">
+      <div className="sl-catalog-toolbar">
+        <label className="sr-only" htmlFor="price-category">Filtrar por categoría</label>
+        <select id="price-category" className="sl-catalog-select" value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="Todos">Todos</option>
           {categories.map((c) => (
             <option key={c} value={c}>{c}</option>
@@ -51,23 +52,25 @@ export default function PricesList() {
         </select>
 
         <input
+          className="sl-catalog-search"
+          aria-label="Buscar precio o nota"
           placeholder="Buscar precio o nota..."
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
       </div>
 
-      <ul className="list">
+      <ul className="sl-catalog-items">
         {filtered.map((it) => (
-          <li key={it.id} className="card">
-            <div className="price-row">
-              <div className="price-name"><strong>{it.name}</strong>{it.unit ? ` · ${it.unit}` : ''}</div>
-              <div className="price-values">
-                {it.price != null && <span className="price">${it.price}</span>}
-                {it.priceHigh != null && <span className="price-high"> / ${it.priceHigh}</span>}
+          <li key={it.id} className="sl-catalog-item">
+            <div className="sl-catalog-item__row">
+              <div className="sl-catalog-item__name"><strong>{it.name}</strong>{it.unit ? ` · ${it.unit}` : ''}</div>
+              <div className="sl-catalog-item__price">
+                {it.price != null && <span>${it.price}</span>}
+                {it.priceHigh != null && <span> / ${it.priceHigh}</span>}
               </div>
             </div>
-            {it.note && <div className="price-note">{it.note}</div>}
+            {it.note && <div className="sl-catalog-item__note">{it.note}</div>}
           </li>
         ))}
       </ul>

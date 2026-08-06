@@ -180,7 +180,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Verificar que los imports de `firebase/auth`, `firebase/firestore` y `firebase/functions` son modulares.
 - [ ] Considerar migrar de `moduleResolution=node10` a `bundler` (warning TS 7.0).
 
-**Verificación local:** el baseline muestra `index` en 235.91 kB (75.88 kB gzip), CSS global en 82.10 kB (15.93 kB gzip) y `firebase` en 359.01 kB (109.95 kB gzip). No se dividió adicionalmente `firebase.ts` porque la landing ya evita descargarlo y no existe medición de red por ruta que justifique mayor complejidad. FCP/LCP siguen pendientes de Lighthouse/WebPageTest.
+**Verificación local:** el baseline muestra `index` en 235.99 kB (75.91 kB gzip), CSS global en 86.64 kB (16.71 kB gzip) y `firebase` en 359.01 kB (109.95 kB gzip). No se dividió adicionalmente `firebase.ts` porque la landing ya evita descargarlo y no existe medición de red por ruta que justifique mayor complejidad. FCP/LCP siguen pendientes de Lighthouse/WebPageTest.
 
 **Refs:** `vite.config.ts`, `docs/STACK.md` línea 10, build output actual.
 

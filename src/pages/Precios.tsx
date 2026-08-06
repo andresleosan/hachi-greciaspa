@@ -1,30 +1,23 @@
 import React from 'react'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import PublicLuxeShell from '../components/PublicLuxeShell'
 import PricesList from '../components/PricesList'
 
 export default function Precios() {
   return (
-    <>
-      <Header />
-
-      <main className="container page-content">
-        <header className="page-header">
-          <h1>Lista de Precios</h1>
-          <p>Precios actualizados. Si eres administrador, edítalos desde el dashboard.</p>
-          <div className="page-header__actions">
-            <button className="btn btn-primary" onClick={() => window.print()}>Imprimir / Exportar PDF</button>
+    <PublicLuxeShell>
+      <section className="sl-catalog sl-page-section" aria-labelledby="precios-title">
+        <header className="sl-catalog-head">
+          <div>
+            <p className="sl-eyebrow">Tarifario</p>
+            <h1 id="precios-title">El ritual, a tu medida.</h1>
+            <p>Precios actualizados para baños, grooming, guardería, pensión y spa.</p>
           </div>
+          <button className="sl-btn sl-btn--primary" type="button" onClick={() => window.print()}>
+            Imprimir / Exportar PDF
+          </button>
         </header>
-
-        <section>
-          <div className="card-grid">
-            <PricesList />
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </>
+        <PricesList />
+      </section>
+    </PublicLuxeShell>
   )
 }

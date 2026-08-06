@@ -8,9 +8,9 @@ Versión: Vite 8.2.0
 
 | Asset | Tamaño | Gzip |
 |---|---:|---:|
-| Entry `index` | 235.91 kB | 75.88 kB |
+| Entry `index` | 235.99 kB | 75.91 kB |
 | `firebase` | 359.01 kB | 109.95 kB |
-| CSS global | 82.10 kB | 15.93 kB |
+| CSS global | 86.64 kB | 16.71 kB |
 | `LandingNueva` | 23.79 kB | 7.35 kB |
 
 ## Code Splitting
@@ -27,7 +27,7 @@ No se dividió adicionalmente `firebase.ts`: el objetivo de primer render públi
 
 ## Decisión de optimización — 2026-08-06
 
-No se aplica una optimización de código en esta iteración. Firebase ya está fuera del entry público, GSAP y Lenis se cargan dinámicamente, y las imágenes de contenido usan `loading="lazy"` y `decoding="async"`. El CSS global de 82.10 kB es el principal candidato restante, pero dividirlo o eliminar selectores sin cobertura de navegador podría aumentar requests o romper páginas; no se hará de forma especulativa.
+No se aplica una optimización de código en esta iteración. Firebase ya está fuera del entry público, GSAP y Lenis se cargan dinámicamente, y las imágenes de contenido usan `loading="lazy"` y `decoding="async"`. El CSS global de 86.64 kB es el principal candidato restante, pero dividirlo o eliminar selectores sin cobertura de navegador podría aumentar requests o romper páginas; no se hará de forma especulativa.
 
 La siguiente medición necesaria es Lighthouse o WebPageTest sobre una URL accesible, con FCP/LCP y waterfall por ruta. El baseline se conserva para comparar cualquier cambio posterior.
 
