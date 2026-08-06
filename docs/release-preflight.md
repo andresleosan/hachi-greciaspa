@@ -1,7 +1,7 @@
 # Release Preflight
 
-Fecha: 2026-08-05T20:29:28.859Z
-Commit: d31b4fdb64cb91d78408426494c1b1252d51348f
+Fecha: 2026-08-05T21:26:01.199Z
+Commit: e8023b773ff4d3266a82f37cdc1d89fa1e7092df
 Resultado local: PASS_WITH_WARNINGS
 
 ## Checks locales

@@ -19,6 +19,7 @@ import {
   readReservations,
   reservationsForDateQuery,
 } from './employeeRepository.js'
+import { captureFunctionException } from './observability/sentry.js'
 
 export { AssignmentDataOverflowError } from './employeeRepository.js'
 
@@ -167,6 +168,7 @@ export async function onReservaCreatedHandler(
       })
     }
   } catch (error) {
+    captureFunctionException(error, { operation: 'assign-reserva' })
     console.error('Reservation assignment failed', {
       reservaId: sanitizedReservationId(reservaId),
       reason: sanitizedReason(error),

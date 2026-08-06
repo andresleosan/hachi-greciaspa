@@ -7,6 +7,7 @@ import type {
 } from '../types.js'
 import { renderConfirmationHtml } from '../templates/confirmation.js'
 import { renderReminderHtml } from '../templates/reminder.js'
+import { captureFunctionException } from '../observability/sentry.js'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -150,6 +151,7 @@ export function createResendProvider(secret: string): TransactionalEmailProvider
         ? { providerMessageId: result.data.id }
         : {}
     } catch (error) {
+      captureFunctionException(error, { operation: 'resend-provider-request' })
       if (error instanceof EmailProviderError) {
         throw error
       }

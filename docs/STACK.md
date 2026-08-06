@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-04 (MVP y código/tests de T3.5 verificados localmente; browser QA de T3.5 incompleto).
+Última actualización: 2026-08-05 (T3.12 implementado localmente; cuenta Sentry, DSN y alertas externas pendientes).
 
 ## Stack técnico
 
@@ -154,6 +154,22 @@ El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Se
 |---|---|---|
 | Email transaccional (Resend; Postmark fallback) | Código implementado en `functions/`; no configurado/desplegado | Verificación de dominio, secreto y despliegue de recordatorios/confirmaciones |
 | reCAPTCHA v3 | Código integrado; activación de producción pendiente | Habilitar y verificar en Firebase Console |
+| Sentry | SDK frontend y Functions implementado; DSN no configurado | Crear proyecto, configurar DSN, verificar evento controlado y revisar PII |
+
+## Sentry — observabilidad
+
+El código usa `VITE_SENTRY_DSN` en frontend y `SENTRY_DSN` en Functions. Ambas variables vacías desactivan el transporte. Cloud Logging continúa siendo el destino principal de logs de Functions.
+
+La implementación establece `sendDefaultPii: false`, no identifica usuarios y elimina emails, passwords, tokens, cookies, headers de autorización, payloads Firestore y query strings antes del transporte. Session Replay, tracing y profiling están desactivados.
+
+### Estimación de costo
+
+| Plan | Cuota de referencia | Costo mensual |
+|---|---|---:|
+| Developer | 5.000 errores, 5 GB de logs y 5 millones de spans | $0 |
+| Team | 50.000 errores incluidos; facturación anual | desde $26 |
+
+Baseline operativo inicial: `$0/mes` dentro del plan Developer. No hay alerta de presupuesto Sentry ni alerta de Cloud Monitoring configuradas todavía. La recepción de un evento controlado requiere que el operador cree la cuenta y proporcione el DSN.
 
 ## Limpieza de servicios sin uso
 

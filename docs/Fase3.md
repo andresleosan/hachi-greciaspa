@@ -217,13 +217,17 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** Hoy no hay forma de saber si algo falla en producción más allá de que el cliente reporte. Crítico cuando hay Cloud Functions (T3.1, T3.8).
 
 **AC:**
-- [ ] Integrar Sentry (o similar) en frontend: capturar errores JS no manejados + rejections.
-- [ ] Cloud Functions: logs estructurados a Cloud Logging (ya viene por default).
+- [x] Integrar Sentry en frontend: captura de errores JS no manejados, rejections y errores de renderizado React cuando existe DSN.
+- [x] Cloud Functions: conservar logs estructurados a Cloud Logging e instrumentar excepciones relevantes de forma opcional.
 - [ ] Configurar alerta en Cloud Monitoring para errores de Functions > 5/min.
-- [ ] Variable `VITE_SENTRY_DSN` en `.env.example`.
-- [ ] Privacy: Sentry NO debe capturar emails, passwords, ni tokens de Auth.
+- [x] Variable `VITE_SENTRY_DSN` en `.env.example`.
+- [x] Privacy: Sentry no captura emails, passwords, tokens de Auth, cookies, headers de autorización ni payloads Firestore.
 
-**Refs:** nuevo — definir ADR si hay dudas sobre Sentry vs alternatives.
+**Verificación local:** tests frontend y Functions cubren activación por DSN, sanitización, aislamiento de fallos y preservación de comportamiento. La cuenta Sentry, el DSN, la recepción de un evento controlado y la alerta de Cloud Monitoring siguen pendientes de configuración externa.
+
+**Evidencia local 2026-08-05:** cliente `81 passed`; rules `60 passed, 0 failed`; Functions `103 passed, 2 skipped`; typecheck y builds de cliente y Functions verdes; `release:preflight` terminó en `PASS_WITH_WARNINGS` por advisories de dependencias y gates externos.
+
+**Refs:** `docs/adr/ADR-007-observabilidad.md`, `src/observability/sentry.ts`, `functions/src/observability/sentry.ts`.
 
 ---
 
