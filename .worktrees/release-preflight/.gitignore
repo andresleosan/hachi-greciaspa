@@ -1,0 +1,73 @@
+# Base de 1 Titán — Cronos la completa con lo específico del stack elegido (STACK.md).
+
+# Secretos y credenciales — nunca deben llegar al repo
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.cer
+secrets/
+credentials/
+
+# Google Cloud / Firebase / Apps Script
+*-firebase-adminsdk-*.json
+serviceAccountKey.json
+.clasprc.json
+.firebase/
+firebase-debug.log
+firestore-debug.log
+emul.err
+emul.out
+emul.pid
+
+# Dependencias e instalación
+node_modules/
+vendor/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Builds y artefactos
+dist/
+build/
+out/
+functions/lib/
+functions/.firebase/
+functions/.runtimeconfig.json
+*.log
+coverage/
+
+# Reportes de QA (browser-qa-e2e, v3.3.0) — se regeneran en cada corrida, no se versionan
+qa/reports/
+playwright-report/
+test-results/
+
+# Editor / sistema operativo
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db
+
+# Bases de datos locales
+*.sqlite3
+*.db
+
+# Graphify output
+graphify-out/
+
+# Playwright MCP temp
+.playwright-mcp/
+
+# QA visual screenshots (temporales, regenerables)
+qa-*.jpeg
+qa-*.png
+
+# Backups que dejan los scripts de la agencia al actualizar
+*.bak-*
+backfill-empleado-id-manifest*.json
+
+# Worktrees locales de desarrollo aislado
+.worktrees/

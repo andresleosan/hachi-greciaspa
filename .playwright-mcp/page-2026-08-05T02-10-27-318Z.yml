@@ -1,0 +1,73 @@
+- generic [ref=f10e4]:
+  - banner [ref=f10e5]:
+    - generic [ref=f10e6]:
+      - generic [ref=f10e7]:
+        - generic [ref=f10e8]: HG
+        - generic [ref=f10e9]:
+          - strong [ref=f10e10]: Hachi & Grecia
+          - generic [ref=f10e11]: Spa Canino
+      - navigation "Main navigation" [ref=f10e12]:
+        - link "Inicio" [ref=f10e13] [cursor=pointer]:
+          - /url: /
+        - link "Servicios" [ref=f10e14] [cursor=pointer]:
+          - /url: /servicios
+        - link "Precios" [ref=f10e15] [cursor=pointer]:
+          - /url: /precios
+        - link "Equipo" [ref=f10e16] [cursor=pointer]:
+          - /url: /equipo
+        - link "Galería" [ref=f10e17] [cursor=pointer]:
+          - /url: /galeria
+        - link "Contacto" [ref=f10e18] [cursor=pointer]:
+          - /url: /contacto
+      - generic [ref=f10e19]:
+        - link "Iniciar sesión" [ref=f10e20] [cursor=pointer]:
+          - /url: /login
+        - link "Agendar cita" [ref=f10e21] [cursor=pointer]:
+          - /url: /reservar
+  - main [ref=f10e22]:
+    - generic [ref=f10e23]:
+      - generic [ref=f10e24]:
+        - heading "Reservar cita" [level=2] [ref=f10e25]
+        - paragraph [ref=f10e26]: Elegí el servicio para tu peludo y un horario disponible. Te pediremos confirmación por correo.
+      - generic [ref=f10e28]:
+        - generic [ref=f10e29]:
+          - generic [ref=f10e30]: Servicio
+          - combobox "Servicio" [ref=f10e31]:
+            - option "Spa Day · 90 min" [selected]
+            - option "Grooming · 120 min"
+            - option "Guardería · 600 min"
+            - option "Pensión · 1440 min"
+        - generic [ref=f10e32]:
+          - generic [ref=f10e33]:
+            - generic [ref=f10e34]: Fecha
+            - textbox "Fecha" [ref=f10e35]: 2026-08-06
+          - generic [ref=f10e36]:
+            - generic [ref=f10e37]: Horario
+            - textbox "Horario" [ref=f10e38]: 08:00
+        - generic [ref=f10e39]:
+          - generic [ref=f10e40]: Notas (opcional)
+          - textbox "Notas (opcional)" [ref=f10e41]:
+            - /placeholder: Tamaño de tu perrito, alergias, observaciones…
+            - text: Browser reschedule QA
+        - generic [ref=f10e58]: Property userId is undefined on object. for 'list' @ L43, false for 'list' @ L82, Property userId is undefined on object. for 'list' @ L43, false for 'list' @ L82
+        - button "Reservar cita" [ref=f10e43] [cursor=pointer]
+  - contentinfo [ref=f10e44]:
+    - generic [ref=f10e45]:
+      - generic [ref=f10e46]:
+        - strong [ref=f10e47]: Hachi & Grecia Spa
+        - paragraph [ref=f10e48]: "Contacto: contacto@hachigreciasp.com — +52 55 1234 5678"
+      - generic [ref=f10e49]:
+        - link "Términos" [ref=f10e50] [cursor=pointer]:
+          - /url: "#"
+        - link "Privacidad" [ref=f10e51] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f10e52]:
+        - link "Servicios" [ref=f10e53] [cursor=pointer]:
+          - /url: "#"
+        - link "Equipo" [ref=f10e54] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f10e55]:
+        - link "Ubicación" [ref=f10e56] [cursor=pointer]:
+          - /url: "#"
+        - link "Horario" [ref=f10e57] [cursor=pointer]:
+          - /url: "#"

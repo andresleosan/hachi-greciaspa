@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public read-only collections (marketing content)
+    match /servicios/{doc} {
+      allow read: if true;
+    }
+
+    match /equipo/{doc} {
+      allow read: if true;
+    }
+
+    // Pricing: public read, admin write
+    match /precios/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // User profiles: users can create their own profile and read/update it; admins can manage all.
+    // N1 fix: a user may NOT change their own role or email — only an admin can. This prevents
+    // privilege escalation via `users/{uid}.update({role:'admin'})`.
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.role == 'client';
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow update: if request.auth != null && (
+        isAdmin()
+        || (request.auth.uid == userId
+            && !request.resource.data.diff(resource.data).affectedKeys()
+                .hasAny(['role', 'email']))
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Bookings / reservations
+    match /reservas/{resId} {
+      // Authenticated users may create a booking for themselves
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.get('empleadoId', null) == null;
+      // Owner or admin can read
+      allow read: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
+      // Update: admin can edit anything; owners may only cancel within the
+      // exact status-only mutation contract. Rescheduling uses the callable.
+      allow update: if isAdmin()
+        || (
+          request.auth != null
+          && resource.data.userId == request.auth.uid
+          && (resource.data.status == 'pending' || resource.data.status == 'confirmed')
+          && request.resource.data.status == 'cancelled'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        );
+      // Only admin may delete (cancelled reservations stay for audit)
+      allow delete: if isAdmin();
+    }
+
+    match /recordatorios/{reminderId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // Employees / staff data - admin only
+    match /empleados/{empId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Contact form messages: anyone can create (guest or authenticated), only admin can read/delete
+    match /mensajes/{msgId} {
+      allow create: if true;
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    // Admin-only config or sensitive data
+    match /config/{doc} {
+      allow read, write: if isAdmin();
+    }
+
+    // Fallback: deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isAdmin() {
+      return request.auth != null && (
+        // Prefer custom claim 'admin' if set on the user's token
+        request.auth.token.admin == true
+        // or fallback to a role stored in the user's Firestore document
+        || (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+  }
+}

@@ -123,6 +123,7 @@ describe('Resend reminder provider', () => {
 
     expect(resendMocks.constructor).not.toHaveBeenCalled()
     const provider = createResendProvider('resend_test_secret')
+    expect(resendMocks.constructor).not.toHaveBeenCalled()
 
     await expect(provider.sendReminderEmail(input)).resolves.toEqual({
       providerMessageId: 'msg_123',
@@ -132,10 +133,8 @@ describe('Resend reminder provider', () => {
       expect.objectContaining({
         to: input.to,
         html: expect.stringContaining('Ana'),
-        headers: {
-          'Idempotency-Key': input.idempotencyKey,
-        },
       }),
+      { idempotencyKey: input.idempotencyKey },
     )
   })
 
@@ -187,6 +186,67 @@ describe('Resend reminder provider', () => {
     expect(error).toBeInstanceOf(EmailProviderError)
     expect(error.retryable).toBe(true)
     expect(resendMocks.send).toHaveBeenCalledTimes(1)
+  })
+
+  it('passes a bounded idempotency key through the SDK request options', async () => {
+    resendMocks.send.mockResolvedValue({ data: { id: 'msg-long-key' }, error: null })
+    const provider = createResendProvider('resend_test_secret')
+
+    await provider.sendReminderEmail({ ...input, idempotencyKey: 'x'.repeat(300) })
+
+    expect(resendMocks.send).toHaveBeenCalledWith(
+      expect.anything(),
+      { idempotencyKey: expect.stringMatching(/^[a-f0-9]{64}$/) },
+    )
+  })
+
+  it('marks concurrent idempotent requests as retryable', async () => {
+    resendMocks.send.mockResolvedValue({
+      data: null,
+      error: {
+        name: 'concurrent_idempotent_requests',
+        statusCode: 409,
+        message: 'request is still processing',
+      },
+    })
+    const provider = createResendProvider('resend_test_secret')
+
+    const error = await provider.sendReminderEmail(input).catch(
+      (caught: unknown) => caught,
+    ) as EmailProviderError
+
+    expect(error.retryable).toBe(true)
+  })
+
+  it('does not accept a successful provider response without a message id', async () => {
+    resendMocks.send.mockResolvedValue({ data: null, error: null })
+    const provider = createResendProvider('resend_test_secret')
+
+    const error = await provider.sendReminderEmail(input).catch(
+      (caught: unknown) => caught,
+    ) as EmailProviderError
+
+    expect(error).toBeInstanceOf(EmailProviderError)
+    expect(error.retryable).toBe(true)
+  })
+
+  it('turns a provider request that never settles into a retryable failure', async () => {
+    vi.useFakeTimers()
+    try {
+      resendMocks.send.mockImplementation(() => new Promise(() => undefined))
+      const provider = createResendProvider('resend_test_secret')
+      const pending = provider.sendReminderEmail(input).then(
+        () => 'sent',
+        () => 'error',
+      )
+
+      await vi.advanceTimersByTimeAsync(15_000)
+
+      const result = await Promise.race([pending, Promise.resolve('still-pending')])
+      expect(result).toBe('error')
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('suppresses SDK error logging at the Resend instance boundary', async () => {
@@ -274,10 +334,10 @@ describe('Resend reminder provider', () => {
     await expect(provider.sendConfirmationEmail(confirmationInput)).resolves.toEqual({
       providerMessageId: 'confirmation-msg-1',
     })
-    expect(resendMocks.send).toHaveBeenCalledWith(expect.objectContaining({
-      subject: 'Confirmación de tu cita en Hachi & Grecia Spa',
-      headers: { 'Idempotency-Key': confirmationInput.idempotencyKey },
-    }))
+    expect(resendMocks.send).toHaveBeenCalledWith(
+      expect.objectContaining({ subject: 'Confirmación de tu cita en Hachi & Grecia Spa' }),
+      { idempotencyKey: confirmationInput.idempotencyKey },
+    )
   })
 
   it('rejects malformed confirmation input without calling Resend', async () => {

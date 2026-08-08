@@ -1,0 +1,257 @@
+- generic [ref=f3e51]:
+  - complementary [ref=f3e52]:
+    - generic [ref=f3e53]:
+      - generic [ref=f3e54]: HG
+      - generic [ref=f3e55]:
+        - strong [ref=f3e56]: Hachi & Grecia
+        - generic [ref=f3e57]: Admin
+    - navigation [ref=f3e58]:
+      - link "D Dashboard" [ref=f3e59] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=f3e60]: D
+        - text: Dashboard
+      - link "C Citas" [ref=f3e61] [cursor=pointer]:
+        - /url: /dashboard/agenda
+        - generic [ref=f3e62]: C
+        - text: Citas
+      - link "E Empleados" [ref=f3e63] [cursor=pointer]:
+        - /url: /dashboard/empleados
+        - generic [ref=f3e64]: E
+        - text: Empleados
+      - generic [ref=f3e65]:
+        - generic [ref=f3e66]: U
+        - text: Clientes
+        - generic [ref=f3e67]: próxim.
+      - link "S Servicios" [ref=f3e68] [cursor=pointer]:
+        - /url: /servicios
+        - generic [ref=f3e69]: S
+        - text: Servicios
+      - generic [ref=f3e70]:
+        - generic [ref=f3e71]: R
+        - text: Reportes
+        - generic [ref=f3e72]: próxim.
+    - generic [ref=f3e73]: QA Admin T3.5Administrador
+  - main [ref=f3e75]:
+    - generic [ref=f3e76]:
+      - img "Dashboard" [ref=f3e78]
+      - generic [ref=f3e79]:
+        - strong [ref=f3e80]: Dashboard
+        - text: Resumen y actividad
+    - generic [ref=f3e81]:
+      - generic [ref=f3e82]:
+        - generic [ref=f3e83]:
+          - generic [ref=f3e84]: Citas Hoy
+          - generic [ref=f3e85]: "0"
+          - generic [ref=f3e86]: Reservas del día
+        - generic [ref=f3e87]:
+          - generic [ref=f3e88]: Servicios Hoy
+          - generic [ref=f3e89]: "0"
+          - generic [ref=f3e90]: Servicios distintos
+        - generic [ref=f3e91]:
+          - generic [ref=f3e92]: Reservas Totales
+          - generic [ref=f3e93]: "0"
+          - generic [ref=f3e94]: Últimas 20
+        - generic [ref=f3e95]:
+          - generic [ref=f3e96]: Clientes Totales
+          - generic [ref=f3e97]: "0"
+          - generic [ref=f3e98]: Registrados
+      - heading "Reservas recientes" [level=3] [ref=f3e99]
+      - paragraph [ref=f3e100]: No hay reservas visibles.
+      - list
+      - generic [ref=f3e102]:
+        - heading "Administrar tarifas" [level=4] [ref=f3e103]
+        - generic [ref=f3e104]:
+          - list [ref=f3e105]:
+            - listitem [ref=f3e106]:
+              - generic [ref=f3e107]:
+                - textbox [ref=f3e109]: Aromaterapia (aceites esenciales)
+                - spinbutton "Precio" [ref=f3e111]: "140"
+                - spinbutton "Precio alto" [ref=f3e113]
+                - textbox "unidad" [ref=f3e115]: extra
+                - textbox "nota" [ref=f3e117]
+                - button "Eliminar" [ref=f3e119] [cursor=pointer]
+            - listitem [ref=f3e120]:
+              - generic [ref=f3e121]:
+                - textbox [ref=f3e123]: Baño Prevención Bichos (Antipulgas)
+                - spinbutton "Precio" [ref=f3e125]: "140"
+                - spinbutton "Precio alto" [ref=f3e127]
+                - textbox "unidad" [ref=f3e129]: extra
+                - textbox "nota" [ref=f3e131]
+                - button "Eliminar" [ref=f3e133] [cursor=pointer]
+            - listitem [ref=f3e134]:
+              - generic [ref=f3e135]:
+                - textbox [ref=f3e137]: Corte de uñas
+                - spinbutton "Precio" [ref=f3e139]: "70"
+                - spinbutton "Precio alto" [ref=f3e141]
+                - textbox "unidad" [ref=f3e143]: extra
+                - textbox "nota" [ref=f3e145]
+                - button "Eliminar" [ref=f3e147] [cursor=pointer]
+            - listitem [ref=f3e148]:
+              - generic [ref=f3e149]:
+                - textbox [ref=f3e151]: Deslanado / Desanudar
+                - spinbutton "Precio" [ref=f3e153]
+                - spinbutton "Precio alto" [ref=f3e155]
+                - textbox "unidad" [ref=f3e157]: variable
+                - textbox "nota" [ref=f3e159]: Precio según condición del pelaje
+                - button "Eliminar" [ref=f3e161] [cursor=pointer]
+            - listitem [ref=f3e162]:
+              - generic [ref=f3e163]:
+                - textbox [ref=f3e165]: Grooming (Spa + corte)
+                - spinbutton "Precio" [ref=f3e167]
+                - spinbutton "Precio alto" [ref=f3e169]
+                - textbox "unidad" [ref=f3e171]: variable
+                - textbox "nota" [ref=f3e173]: Precio según tamaño y tipo de pelo
+                - button "Eliminar" [ref=f3e175] [cursor=pointer]
+            - listitem [ref=f3e176]:
+              - generic [ref=f3e177]:
+                - textbox [ref=f3e179]: Guardería · Eventual
+                - spinbutton "Precio" [ref=f3e181]: "250"
+                - spinbutton "Precio alto" [ref=f3e183]
+                - textbox "unidad" [ref=f3e185]: /día
+                - textbox "nota" [ref=f3e187]: Lun – Vie · 08:00 – 18:00
+                - button "Eliminar" [ref=f3e189] [cursor=pointer]
+            - listitem [ref=f3e190]:
+              - generic [ref=f3e191]:
+                - textbox [ref=f3e193]: Guardería · Plan mensual
+                - spinbutton "Precio" [ref=f3e195]: "3500"
+                - spinbutton "Precio alto" [ref=f3e197]
+                - textbox "unidad" [ref=f3e199]: /mes
+                - textbox "nota" [ref=f3e201]: Lun – Vie · 08:00 – 18:00
+                - button "Eliminar" [ref=f3e203] [cursor=pointer]
+            - listitem [ref=f3e204]:
+              - generic [ref=f3e205]:
+                - textbox [ref=f3e207]: Limpieza de dientes
+                - spinbutton "Precio" [ref=f3e209]: "100"
+                - spinbutton "Precio alto" [ref=f3e211]
+                - textbox "unidad" [ref=f3e213]: extra
+                - textbox "nota" [ref=f3e215]
+                - button "Eliminar" [ref=f3e217] [cursor=pointer]
+            - listitem [ref=f3e218]:
+              - generic [ref=f3e219]:
+                - textbox [ref=f3e221]: Mascarilla hidratación/brillo
+                - spinbutton "Precio" [ref=f3e223]: "180"
+                - spinbutton "Precio alto" [ref=f3e225]
+                - textbox "unidad" [ref=f3e227]: extra
+                - textbox "nota" [ref=f3e229]
+                - button "Eliminar" [ref=f3e231] [cursor=pointer]
+            - listitem [ref=f3e232]:
+              - generic [ref=f3e233]:
+                - textbox [ref=f3e235]: Mascarilla restauración/nutrición
+                - spinbutton "Precio" [ref=f3e237]: "180"
+                - spinbutton "Precio alto" [ref=f3e239]
+                - textbox "unidad" [ref=f3e241]: extra
+                - textbox "nota" [ref=f3e243]
+                - button "Eliminar" [ref=f3e245] [cursor=pointer]
+            - listitem [ref=f3e246]:
+              - generic [ref=f3e247]:
+                - textbox [ref=f3e249]: Pensión · Temporada alta
+                - spinbutton "Precio" [ref=f3e251]: "380"
+                - spinbutton "Precio alto" [ref=f3e253]
+                - textbox "unidad" [ref=f3e255]: /noche
+                - textbox "nota" [ref=f3e257]: Alojamiento nocturno
+                - button "Eliminar" [ref=f3e259] [cursor=pointer]
+            - listitem [ref=f3e260]:
+              - generic [ref=f3e261]:
+                - textbox [ref=f3e263]: Pensión · Temporada baja
+                - spinbutton "Precio" [ref=f3e265]: "300"
+                - spinbutton "Precio alto" [ref=f3e267]
+                - textbox "unidad" [ref=f3e269]: /noche
+                - textbox "nota" [ref=f3e271]: Alojamiento nocturno
+                - button "Eliminar" [ref=f3e273] [cursor=pointer]
+            - listitem [ref=f3e274]:
+              - generic [ref=f3e275]:
+                - textbox [ref=f3e277]: Pipeta Antipulgas
+                - spinbutton "Precio" [ref=f3e279]
+                - spinbutton "Precio alto" [ref=f3e281]
+                - textbox "unidad" [ref=f3e283]: variable
+                - textbox "nota" [ref=f3e285]: Precio según peso
+                - button "Eliminar" [ref=f3e287] [cursor=pointer]
+            - listitem [ref=f3e288]:
+              - generic [ref=f3e289]:
+                - textbox [ref=f3e291]: Spa Day Chica · Pelo corto
+                - spinbutton "Precio" [ref=f3e293]: "280"
+                - spinbutton "Precio alto" [ref=f3e295]
+                - textbox "unidad" [ref=f3e297]: ≤10 kg
+                - textbox "nota" [ref=f3e299]: Pelo corto
+                - button "Eliminar" [ref=f3e301] [cursor=pointer]
+            - listitem [ref=f3e302]:
+              - generic [ref=f3e303]:
+                - textbox [ref=f3e305]: Spa Day Chica · Pelo largo
+                - spinbutton "Precio" [ref=f3e307]: "300"
+                - spinbutton "Precio alto" [ref=f3e309]
+                - textbox "unidad" [ref=f3e311]: ≤10 kg
+                - textbox "nota" [ref=f3e313]: Pelo largo sin nudos
+                - button "Eliminar" [ref=f3e315] [cursor=pointer]
+            - listitem [ref=f3e316]:
+              - generic [ref=f3e317]:
+                - textbox [ref=f3e319]: Spa Day Grande · Pelo corto
+                - spinbutton "Precio" [ref=f3e321]: "550"
+                - spinbutton "Precio alto" [ref=f3e323]
+                - textbox "unidad" [ref=f3e325]: ≤30 kg
+                - textbox "nota" [ref=f3e327]: Pelo corto
+                - button "Eliminar" [ref=f3e329] [cursor=pointer]
+            - listitem [ref=f3e330]:
+              - generic [ref=f3e331]:
+                - textbox [ref=f3e333]: Spa Day Grande · Pelo largo
+                - spinbutton "Precio" [ref=f3e335]: "690"
+                - spinbutton "Precio alto" [ref=f3e337]
+                - textbox "unidad" [ref=f3e339]: ≤30 kg
+                - textbox "nota" [ref=f3e341]: Pelo largo sin nudos
+                - button "Eliminar" [ref=f3e343] [cursor=pointer]
+            - listitem [ref=f3e344]:
+              - generic [ref=f3e345]:
+                - textbox [ref=f3e347]: Spa Day Mediana · Pelo corto
+                - spinbutton "Precio" [ref=f3e349]: "340"
+                - spinbutton "Precio alto" [ref=f3e351]
+                - textbox "unidad" [ref=f3e353]: ≤15 kg
+                - textbox "nota" [ref=f3e355]: Pelo corto
+                - button "Eliminar" [ref=f3e357] [cursor=pointer]
+            - listitem [ref=f3e358]:
+              - generic [ref=f3e359]:
+                - textbox [ref=f3e361]: Spa Day Mediana · Pelo largo
+                - spinbutton "Precio" [ref=f3e363]: "390"
+                - spinbutton "Precio alto" [ref=f3e365]
+                - textbox "unidad" [ref=f3e367]: ≤15 kg
+                - textbox "nota" [ref=f3e369]: Pelo largo sin nudos
+                - button "Eliminar" [ref=f3e371] [cursor=pointer]
+            - listitem [ref=f3e372]:
+              - generic [ref=f3e373]:
+                - textbox [ref=f3e375]: Spa Day Mediana/Grande · Pelo corto
+                - spinbutton "Precio" [ref=f3e377]: "420"
+                - spinbutton "Precio alto" [ref=f3e379]
+                - textbox "unidad" [ref=f3e381]: ≤20 kg
+                - textbox "nota" [ref=f3e383]: Pelo corto
+                - button "Eliminar" [ref=f3e385] [cursor=pointer]
+            - listitem [ref=f3e386]:
+              - generic [ref=f3e387]:
+                - textbox [ref=f3e389]: Spa Day Mediana/Grande · Pelo largo
+                - spinbutton "Precio" [ref=f3e391]: "490"
+                - spinbutton "Precio alto" [ref=f3e393]
+                - textbox "unidad" [ref=f3e395]: ≤20 kg
+                - textbox "nota" [ref=f3e397]: Pelo largo sin nudos
+                - button "Eliminar" [ref=f3e399] [cursor=pointer]
+            - listitem [ref=f3e400]:
+              - generic [ref=f3e401]:
+                - textbox [ref=f3e403]: Spa Day Mini · Pelo corto
+                - spinbutton "Precio" [ref=f3e405]: "240"
+                - spinbutton "Precio alto" [ref=f3e407]
+                - textbox "unidad" [ref=f3e409]: ≤5 kg
+                - textbox "nota" [ref=f3e411]: Pelo corto
+                - button "Eliminar" [ref=f3e413] [cursor=pointer]
+            - listitem [ref=f3e414]:
+              - generic [ref=f3e415]:
+                - textbox [ref=f3e417]: Spa Day Mini · Pelo largo
+                - spinbutton "Precio" [ref=f3e419]: "280"
+                - spinbutton "Precio alto" [ref=f3e421]
+                - textbox "unidad" [ref=f3e423]: ≤5 kg
+                - textbox "nota" [ref=f3e425]: Pelo largo sin nudos
+                - button "Eliminar" [ref=f3e427] [cursor=pointer]
+          - generic [ref=f3e428]:
+            - heading "Agregar tarifa" [level=5] [ref=f3e429]
+            - generic [ref=f3e430]:
+              - textbox "Nombre del servicio" [ref=f3e432]
+              - spinbutton "Precio" [ref=f3e434]: "0"
+              - spinbutton "Precio alto" [ref=f3e436]
+              - textbox "unidad" [ref=f3e438]
+            - textbox "nota" [ref=f3e440]
+            - button "Agregar" [ref=f3e442] [cursor=pointer]

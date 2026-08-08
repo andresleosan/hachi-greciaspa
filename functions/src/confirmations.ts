@@ -15,7 +15,9 @@ const LOCK_DURATION_MS = 10 * 60 * 1000
 
 export interface ReservationForConfirmation {
   id: string
+  userId: string
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  createdBy: 'client' | 'admin'
   userEmail: string | null
   userName: string | null
   serviceName: string
@@ -94,6 +96,10 @@ function isValidReservation(value: unknown): value is ValidReservation {
   return (
     typeof value.id === 'string' &&
     Boolean(value.id.trim()) &&
+    typeof value.userId === 'string' &&
+    Boolean(value.userId.trim()) &&
+    value.status === 'pending' &&
+    value.createdBy === 'client' &&
     typeof value.userEmail === 'string' &&
     EMAIL_PATTERN.test(value.userEmail) &&
     typeof value.userName === 'string' &&

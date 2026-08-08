@@ -1,0 +1,463 @@
+{
+  "communities": {
+    "0": [
+      "src_components_adminprices",
+      "src_components_adminprices_adminprices",
+      "src_components_protectedroute",
+      "src_components_protectedroute_props",
+      "src_components_protectedroute_protectedroute",
+      "src_hooks_useauth",
+      "src_hooks_useauth_useauth",
+      "src_pages_dashboardpage",
+      "src_pages_dashboardpage_dashboardpage",
+      "src_pages_dashboardpage_metrics",
+      "src_pages_reservar",
+      "src_pages_reservar_reservar",
+      "src_pages_reservar_servicio",
+      "src_pages_reservar_status_labels",
+      "src_services_auth",
+      "src_services_auth_getuserprofile",
+      "src_services_auth_register",
+      "src_services_auth_signin",
+      "src_services_auth_signout",
+      "src_services_firebase",
+      "src_services_firebase_firebaseapp",
+      "src_services_firebase_firebaseauth",
+      "src_services_firebase_firebaseconfig",
+      "src_services_firebase_firebasedb",
+      "src_services_reservas",
+      "src_services_reservas_assertslotfree",
+      "src_services_reservas_cancelmyreserva",
+      "src_services_reservas_createreserva",
+      "src_services_reservas_newreservainput",
+      "src_services_reservas_reservaerror",
+      "src_services_reservas_reservaerror_constructor",
+      "src_services_reservas_slottakenerror",
+      "src_services_reservas_slottakenerror_constructor",
+      "src_services_reservas_ts_docref_adr_0001",
+      "src_services_reservas_ts_docref_adr_0002"
+    ],
+    "1": [
+      "autoprefixer",
+      "firebase_admin",
+      "firebase_rules_unit_testing",
+      "firebase_tools",
+      "package_devdependencies",
+      "package_devdependencies_autoprefixer",
+      "package_devdependencies_firebase_admin",
+      "package_devdependencies_firebase_rules_unit_testing",
+      "package_devdependencies_firebase_tools",
+      "package_devdependencies_postcss",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_tailwindcss_postcss",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitejs_plugin_react",
+      "postcss",
+      "tailwindcss",
+      "tailwindcss_postcss",
+      "types_react",
+      "types_react_dom",
+      "typescript",
+      "vite",
+      "vitejs_plugin_react"
+    ],
+    "2": [
+      "package",
+      "package_author",
+      "package_bugs",
+      "package_bugs_url",
+      "package_description",
+      "package_directories",
+      "package_directories_doc",
+      "package_homepage",
+      "package_keywords",
+      "package_license",
+      "package_main",
+      "package_name",
+      "package_repository",
+      "package_repository_type",
+      "package_repository_url",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_preview",
+      "package_scripts_rules_test",
+      "package_scripts_seed_services",
+      "package_scripts_set_admin",
+      "package_scripts_test",
+      "package_type",
+      "package_version"
+    ],
+    "3": [
+      "src_pages_landingnueva",
+      "src_pages_landingnueva_adminaccesssection",
+      "src_pages_landingnueva_ctasection",
+      "src_pages_landingnueva_extras_list",
+      "src_pages_landingnueva_faqitem",
+      "src_pages_landingnueva_faqs",
+      "src_pages_landingnueva_faqsection",
+      "src_pages_landingnueva_herosection",
+      "src_pages_landingnueva_landingnueva",
+      "src_pages_landingnueva_pill",
+      "src_pages_landingnueva_pricing_spa",
+      "src_pages_landingnueva_pricingtable",
+      "src_pages_landingnueva_schedule",
+      "src_pages_landingnueva_schedulerow",
+      "src_pages_landingnueva_schedulesection",
+      "src_pages_landingnueva_sectiontitle",
+      "src_pages_landingnueva_service",
+      "src_pages_landingnueva_servicecard",
+      "src_pages_landingnueva_services",
+      "src_pages_landingnueva_servicessection",
+      "src_pages_landingnueva_stat",
+      "src_pages_landingnueva_team",
+      "src_pages_landingnueva_teamcard",
+      "src_pages_landingnueva_teamsection",
+      "src_pages_landingnueva_topbar"
+    ],
+    "4": [
+      "opencode",
+      "opencode_bash_cat_credential",
+      "opencode_bash_cat_env",
+      "opencode_bash_cat_secret",
+      "opencode_bash_env",
+      "opencode_bash_git_push_force",
+      "opencode_bash_history",
+      "opencode_bash_migrate",
+      "opencode_bash_printenv",
+      "opencode_bash_prod",
+      "opencode_bash_rm_rf",
+      "opencode_bash_sudo",
+      "opencode_mcp",
+      "opencode_mcp_playwright",
+      "opencode_model",
+      "opencode_permission",
+      "opencode_permission_bash",
+      "opencode_playwright_command",
+      "opencode_playwright_enabled",
+      "opencode_playwright_type",
+      "opencode_schema",
+      "ref_npx",
+      "ref_playwright_mcp_latest"
+    ],
+    "5": [
+      "src_components_footer",
+      "src_components_footer_footer",
+      "src_components_header",
+      "src_components_header_header",
+      "src_pages_contacto",
+      "src_pages_contacto_contacto",
+      "src_pages_equipo",
+      "src_pages_equipo_equipo",
+      "src_pages_galeria",
+      "src_pages_galeria_galeria",
+      "src_pages_galeria_galeria_items",
+      "src_pages_login",
+      "src_pages_login_login",
+      "src_pages_notfound",
+      "src_pages_notfound_notfound",
+      "src_pages_precios",
+      "src_pages_precios_precios",
+      "src_pages_register",
+      "src_pages_register_register",
+      "src_utils_ratelimit",
+      "src_utils_ratelimit_attempts",
+      "src_utils_ratelimit_canattempt",
+      "src_utils_ratelimit_getremainingms"
+    ],
+    "6": [
+      "ref_dom",
+      "ref_esnext",
+      "ref_src",
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_allowjs",
+      "tsconfig_compileroptions_esmoduleinterop",
+      "tsconfig_compileroptions_forceconsistentcasinginfilenames",
+      "tsconfig_compileroptions_ignoredeprecations",
+      "tsconfig_compileroptions_isolatedmodules",
+      "tsconfig_compileroptions_jsx",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_resolvejsonmodule",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target",
+      "tsconfig_compileroptions_usedefineforclassfields",
+      "tsconfig_include"
+    ],
+    "7": [
+      "src_components_priceslist",
+      "src_components_priceslist_priceslist",
+      "src_components_servicecard",
+      "src_components_servicecard_props",
+      "src_components_servicecard_servicecard",
+      "src_pages_servicios",
+      "src_pages_servicios_icon_by_category",
+      "src_pages_servicios_img_by_slug",
+      "src_pages_servicios_servicios",
+      "src_types_index",
+      "src_types_precios",
+      "src_types_precios_priceitem",
+      "src_types_reserva",
+      "src_types_reserva_reserva",
+      "src_types_reserva_reserva_status_labels",
+      "src_types_reserva_reservacreatedby",
+      "src_types_reserva_reservastatus",
+      "src_types_servicios",
+      "src_types_servicios_servicio"
+    ],
+    "8": [
+      "src_app",
+      "src_app_app",
+      "src_app_contacto",
+      "src_app_dashboardpage",
+      "src_app_equipo",
+      "src_app_galeria",
+      "src_app_landingnueva",
+      "src_app_loader",
+      "src_app_login",
+      "src_app_notfound",
+      "src_app_precios",
+      "src_app_register",
+      "src_app_reservar",
+      "src_app_servicios",
+      "src_main"
+    ],
+    "9": [
+      "tools_firestore_tests_e2e_reserva",
+      "tools_firestore_tests_e2e_reserva_app",
+      "tools_firestore_tests_e2e_reserva_auth",
+      "tools_firestore_tests_e2e_reserva_counter",
+      "tools_firestore_tests_e2e_reserva_counter_constructor",
+      "tools_firestore_tests_e2e_reserva_counter_run",
+      "tools_firestore_tests_e2e_reserva_db",
+      "tools_firestore_tests_e2e_reserva_fshost_fsport",
+      "tools_firestore_tests_e2e_reserva_main",
+      "tools_firestore_tests_e2e_reserva_makereservacaller",
+      "tools_firestore_tests_e2e_reserva_mjs_docref_adr_0001",
+      "tools_firestore_tests_e2e_reserva_seedprofilefor",
+      "tools_firestore_tests_e2e_reserva_uniqemail"
+    ],
+    "10": [
+      "date_fns",
+      "firebase",
+      "package_dependencies",
+      "package_dependencies_date_fns",
+      "package_dependencies_firebase",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_react_router_dom",
+      "react",
+      "react_dom",
+      "react_router_dom"
+    ],
+    "11": [
+      "opencode_agent",
+      "opencode_agent_cronos",
+      "opencode_cronos_description",
+      "opencode_cronos_mode",
+      "opencode_cronos_model",
+      "opencode_cronos_tools",
+      "opencode_tools_bash",
+      "opencode_tools_edit",
+      "opencode_tools_write"
+    ],
+    "12": [
+      "tools_seed_services",
+      "tools_seed_services_loadadmin",
+      "tools_seed_services_main",
+      "tools_seed_services_precios",
+      "tools_seed_services_servicios"
+    ],
+    "13": [
+      "tools_set_admin",
+      "tools_set_admin_fullpath",
+      "tools_set_admin_key",
+      "tools_set_admin_usage"
+    ],
+    "14": [
+      "tools_firestore_tests_run_rules_tests",
+      "tools_firestore_tests_run_rules_tests_main",
+      "tools_firestore_tests_run_rules_tests_mjs_docref_adr_0002"
+    ],
+    "15": [
+      "vercel",
+      "vercel_rewrites"
+    ],
+    "16": [
+      "postcss_config"
+    ],
+    "17": [
+      "src_vite_env_d"
+    ],
+    "18": [
+      "tailwind_config"
+    ],
+    "19": [
+      "vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.1092436974789916,
+    "1": 0.08,
+    "2": 0.08,
+    "3": 0.08,
+    "4": 0.08695652173913043,
+    "5": 0.1857707509881423,
+    "6": 0.09523809523809523,
+    "7": 0.1695906432748538,
+    "8": 0.14285714285714285,
+    "9": 0.20512820512820512,
+    "10": 0.18181818181818182,
+    "11": 0.2222222222222222,
+    "12": 0.5,
+    "13": 0.5,
+    "14": 0.6666666666666666,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0
+  },
+  "gods": [
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 16
+    },
+    {
+      "id": "opencode_permission_bash",
+      "label": "bash",
+      "degree": 12
+    },
+    {
+      "id": "src_components_footer_footer",
+      "label": "Footer()",
+      "degree": 11
+    },
+    {
+      "id": "src_components_header_header",
+      "label": "Header()",
+      "degree": 11
+    },
+    {
+      "id": "src_services_firebase_firebasedb",
+      "label": "firebaseDb",
+      "degree": 9
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 8
+    },
+    {
+      "id": "src_hooks_useauth_useauth",
+      "label": "useAuth()",
+      "degree": 8
+    },
+    {
+      "id": "opencode_agent_cronos",
+      "label": "cronos",
+      "degree": 5
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_main",
+      "label": "main()",
+      "degree": 5
+    },
+    {
+      "id": "opencode_cronos_tools",
+      "label": "tools",
+      "degree": 4
+    }
+  ],
+  "surprises": [
+    {
+      "source": "DashboardPage()",
+      "target": "useAuth()",
+      "source_files": [
+        "src/pages/DashboardPage.tsx",
+        "src/hooks/useAuth.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `DashboardPage()` unexpectedly reaches hub `useAuth()`"
+    },
+    {
+      "source": "Reservar()",
+      "target": "useAuth()",
+      "source_files": [
+        "src/pages/Reservar.tsx",
+        "src/hooks/useAuth.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `Reservar()` unexpectedly reaches hub `useAuth()`"
+    },
+    {
+      "source": "ProtectedRoute()",
+      "target": "useAuth()",
+      "source_files": [
+        "src/components/ProtectedRoute.tsx",
+        "src/hooks/useAuth.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "useAuth()",
+      "target": "getUserProfile()",
+      "source_files": [
+        "src/hooks/useAuth.tsx",
+        "src/services/auth.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `devDependencies` connect `devDependencies` to `package.json`?",
+      "why": "High betweenness centrality (0.033) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Footer()` connect `Footer.tsx` to `Reservar.tsx`, `LandingNueva.tsx`, `Servicios.tsx`?",
+      "why": "High betweenness centrality (0.020) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Header()` connect `Footer.tsx` to `Reservar.tsx`, `LandingNueva.tsx`, `Servicios.tsx`?",
+      "why": "High betweenness centrality (0.020) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `$schema`, `model`, `rm -rf *` to the rest of the system?",
+      "why": "120 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Reservar.tsx` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1092436974789916 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `devDependencies` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.08 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `package.json` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.08 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

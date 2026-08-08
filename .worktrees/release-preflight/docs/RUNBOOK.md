@@ -1,0 +1,151 @@
+# Runbook Operativo — Fase 3
+
+Proyecto: `hachi-greciaspa`
+Estado: transición operativa; las verificaciones de Google Cloud Console permanecen pendientes.
+
+## Alcance
+
+Este runbook cubre el gate de costos, la operación segura de las Functions programadas para recordatorios y la operación local de empleados/asignación. No registra como completada ninguna configuración de Google Cloud Console, Firebase, Secret Manager, dominio o despliegue que el operador todavía no haya verificado.
+
+## Empleados Y Asignación Local
+
+### Prerrequisitos del emulador
+
+- Node instalado para el cliente y `functions`.
+- JDK 21 para el emulador de Firestore.
+- Iniciar únicamente servicios locales: `npx firebase emulators:start --only auth,firestore,functions`.
+- Puertos esperados: Auth `9099`, Firestore `8080`, Functions `5001`.
+- Para el navegador, configurar `VITE_USE_FIREBASE_EMULATOR=true` y valores dummy de `VITE_FIREBASE_*`; nunca cargar credenciales productivas para esta QA.
+
+### Seed Y Backfill
+
+El seed usa IDs estables y merge writes, por lo que es idempotente:
+
+```bash
+npm run seed:employees -- --emulator
+```
+
+Para normalizar reservas legacy, el modo por defecto es dry-run:
+
+```bash
+node tools/backfill-empleado-id.mjs --emulator --manifest /tmp/backfill-empleado-id-dry-run.json
+node tools/backfill-empleado-id.mjs --emulator --apply --manifest /tmp/backfill-empleado-id-apply.json
+```
+
+El backfill solo agrega `empleadoId: null` cuando falta el campo. No elige empleados ni modifica otros campos. Cada corrida escribe un manifiesto JSON con los IDs que serían o fueron afectados; el modo apply incluye únicamente los IDs confirmados por la transacción. Conserva ese archivo para localizar exactamente los documentos si se autoriza un rollback posterior. La variante con cuenta de servicio requiere `--service-account /ruta/serviceAccount.json`; antes de una ejecución productiva futura debe existir un respaldo verificado. Esta tarea no ejecuta el backfill productivo.
+
+### Semántica Operativa
+
+- `weeklyShifts` contiene `monday` a `sunday`; `morning` es 08:00–14:00, `afternoon` 14:00–20:00 y `full` 08:00–20:00.
+- Solo empleados `active: true` que incluyen el `serviceId` y tienen turno compatible son candidatos.
+- `onReservaCreated` asigna nuevas reservas con retry y escribe únicamente `empleadoId` dentro de una transacción.
+- `assignPendingReservasForDate` es callable solo para usuarios admin y reintenta reservas `pending` sin asignación al cargar/refrescar la agenda.
+- El primer candidato se ordena por nombre normalizado y luego por ID. Las reservas `pending` y `confirmed` ocupan al empleado si se solapan; `cancelled` y `completed` no bloquean.
+- Si no existe candidato, la reserva conserva `empleadoId: null` y aparece en "Sin terapeuta asignado".
+- `rescheduleReserva` conserva el empleado cuando sigue elegible y libre; si el nuevo slot está ocupado o deja de cumplir el turno/servicio, limpia `empleadoId`. La siguiente carga de agenda puede reintentar la asignación.
+- La asignación de `reservas.empleadoId` pertenece a Functions/Admin SDK. El cliente no puede escribirlo, cambiarlo ni quitarlo.
+
+### Estado De Producción
+
+No se ejecutó backfill productivo, no se desplegaron Functions, no se usaron credenciales productivas y no se modificaron datos productivos como parte de esta tarea.
+
+## Gate De Costos Y Despliegue
+
+Completar en el orden indicado antes de habilitar o desplegar una Function programada:
+
+- [ ] **Cuenta de facturación:** confirmar que el proyecto `hachi-greciaspa` está asociado a la cuenta de facturación correcta. Estado actual: **no verificado**.
+- [ ] **Plan Blaze:** confirmar y registrar la activación del plan Blaze antes de desplegar Functions programadas. Estado actual: **no verificado**.
+- [ ] **Budget:** crear un presupuesto de `$10/mes`, con alcance limitado al proyecto y a la cuenta de facturación correctos. Estado actual: **no verificado**.
+- [ ] **Notificaciones:** configurar alertas de gasto real y gasto pronosticado en `$1`, `$5` y `$10`. Estado actual: **no verificado**.
+- **Registro operativo:** después de completar los pasos anteriores en consola, registrar los destinatarios de las notificaciones y la fecha de verificación. No completar esos campos de forma anticipada.
+
+Google Cloud Budgets envía alertas, pero no impone un límite duro de facturación. La alerta de `$10` no evita cargos adicionales. Ante un gasto inesperado, ejecutar el procedimiento de emergencia de este documento.
+
+Registro posterior a la verificación:
+
+```text
+Cuenta de facturación confirmada: [completar después de verificar]
+Plan Blaze confirmado: [completar después de verificar]
+Budget de $10 creado y alcance confirmado: [completar después de verificar]
+Alertas real/pronosticado en $1, $5 y $10: [completar después de verificar]
+Destinatarios: [completar después de verificar]
+Fecha de verificación: [completar después de verificar]
+Operador: [completar después de verificar]
+```
+
+## Gate De Release
+
+Autorizar producción solo cuando cada punto tenga evidencia y autorización explícita:
+
+- [ ] Dominio propio del spa verificado en Resend, con SPF, DKIM y DMARC configurados según las instrucciones del proveedor; no usar un dominio compartido, personal o de prueba en producción.
+- [ ] Secret Manager configurado con el secreto exacto `RESEND_API_KEY`; no colocar su valor en el repositorio, logs o frontend.
+- [x] Evidencia local de build y typecheck registrada abajo.
+- [x] Evidencia local de las pruebas de reglas registrada abajo.
+- [ ] Revisión de seguridad completada.
+- [ ] QA de navegador completado.
+- [ ] Procedimiento de rollback revisado.
+- [ ] Autorización explícita para producción registrada por el responsable.
+
+El proveedor recomendado es Resend según ADR-004, pero la integración, el dominio, el secreto y el despliegue no están verificados en este runbook.
+
+## Evidencia Local — 2026-08-04
+
+Estos resultados pertenecen al repositorio local. No autorizan despliegue ni demuestran que los gates externos estén completados.
+
+```text
+npm run test:client                    31 passed, 0 failed
+npx tsc --noEmit                         PASS
+npm run build                            PASS
+npm run rules:test                       48 passed, 0 failed
+npm --prefix functions test              84 passed, 2 skipped
+npm --prefix functions run typecheck     PASS
+npm --prefix functions run build         PASS
+git diff --check                         PASS
+```
+
+La matriz se ejecutó completa en el worktree de T3.5. Las líneas de denegación que imprime la suite de rules son casos esperados; el proceso terminó con código `0` y reportó cero fallos.
+
+## Browser QA Local — Emuladores
+
+Se intentó QA manual con Auth, Firestore y Functions emulator, datos sembrados localmente y cuentas de prueba creadas en el Auth emulator. Se verificaron: redirección de no-admin, CRUD admin de empleados, persistencia de servicios/turnos tras reload, primer empleado elegible, salto por conflicto, cola sin candidato, filtros todos/empleado/sin terapeuta y scroll horizontal móvil.
+
+Limitaciones observadas:
+
+- La primera recarga posterior a una cancelación conservó temporalmente una reserva en cola; una segunda invocación local de la callable y un reload posterior mostraron la asignación. Repetir este caso antes de release.
+- El reagendado de navegador no pudo completarse de forma reproducible: en la repetición de preservación y limpieza por conflicto, el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED` en Auth/Firestore. Las pruebas de Functions del reagendado sí quedaron verdes, pero eso no sustituye browser QA.
+- La repetición del retry posterior a cancelación tampoco alcanzó el flujo: el mismo proceso de emuladores terminó antes de la verificación. Ambos gates de browser QA quedan explícitamente pendientes.
+- Se observó un `404` de `/favicon.ico`, además de un error transitorio causado por un documento de fixture malformado creado y eliminado exclusivamente en el emulador. No se introdujo cambio de source para corregirlos en esta tarea.
+- No se usaron credenciales, cuentas, servicios ni datos de producción.
+
+## Secuencia De Ejecución Externa
+
+Esta secuencia es una instrucción operativa pendiente; no se ha ejecutado desde este repositorio:
+
+1. Verificar el dominio propio del spa en Resend y sus registros SPF, DKIM y DMARC.
+2. Crear `RESEND_API_KEY` en Firebase Secret Manager sin exponer su valor en el repositorio, logs o frontend.
+3. Confirmar billing/Blaze y configurar el presupuesto de `$10/mes` con alertas de gasto real y pronosticado en `$1`, `$5` y `$10`.
+4. Obtener autorización explícita para producción.
+5. Desplegar solo después de que todos los gates de release estén en verde.
+6. Ejecutar una prueba controlada y verificar la idempotencia.
+7. Verificar el rollback deshabilitando la Function programada.
+
+Google Cloud Budgets envía alertas, pero no impone un límite duro de facturación.
+
+## Emergencia
+
+Ante gasto inesperado, errores repetidos o exposición de un secreto:
+
+1. Deshabilitar la Function programada para detener nuevas ejecuciones.
+2. Inspeccionar el uso y los logs para identificar el alcance y la causa.
+3. Si el secreto del proveedor pudo quedar expuesto, revocarlo o rotarlo siguiendo el procedimiento del proveedor.
+4. Preservar los documentos de `recordatorios` para auditoría; no borrarlos como parte de la contención.
+5. Registrar la hora, el operador, las acciones tomadas y la evidencia revisada.
+
+## Rollback
+
+El rollback debe ser reversible y no destructivo:
+
+1. Deshabilitar o retirar la Function programada.
+2. Mantener los documentos de `recordatorios` para auditoría y eventual reprocesamiento controlado.
+3. No aplicar migraciones destructivas ni borrar datos para resolver una incidencia.
+4. Confirmar el estado de la Function y documentar la autorización para cualquier reactivación.

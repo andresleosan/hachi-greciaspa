@@ -6,6 +6,7 @@ import ServiceCard from '../components/ServiceCard'
 import { firebaseDb } from '../services/firebase'
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
 import type { Servicio } from '../types'
+import { SERVICE_PRICE_LABELS } from '../landing/data'
 
 const ICON_BY_CATEGORY: Record<string, string> = {
   Spa: '🛁',
@@ -73,8 +74,7 @@ export default function Servicios() {
                   key={s.id}
                   title={`${ICON_BY_CATEGORY[s.category] || '🐶'} ${s.name}`}
                   description={s.description}
-                  price={s.durationMin ? `${s.durationMin} min` : undefined}
-                  unit={s.category}
+                  price={SERVICE_PRICE_LABELS[s.id ?? '']}
                   img={s.id ? IMG_BY_SLUG[s.id] : undefined}
                   serviceId={s.id}
                 />

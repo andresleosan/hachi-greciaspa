@@ -1,0 +1,55 @@
+{
+  "name": "hachi-greciaspa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:client": "vitest run src/services/reservaErrors.test.ts src/services/agenda.test.ts src/services/empleados.test.ts src/types/empleado.test.ts",
+    "test": "npm run rules:test && npm --prefix functions test",
+    "set-admin": "node tools/set-admin.js",
+    "seed:employees": "node tools/seed-employees.mjs",
+    "seed:services": "node tools/seed-services.mjs",
+    "release:preflight": "node tools/release-preflight.mjs",
+    "rules:test": "firebase emulators:exec --only firestore \"node tools/firestore-tests/run-rules-tests.mjs\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andresleosan/hachi-greciaspa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/andresleosan/hachi-greciaspa/issues"
+  },
+  "homepage": "https://github.com/andresleosan/hachi-greciaspa#readme",
+  "dependencies": {
+    "date-fns": "^4.3.0",
+    "firebase": "^12.13.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "7.18.2"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.1",
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "autoprefixer": "^10.5.0",
+    "firebase-admin": "^14.2.0",
+    "firebase-tools": "^15.18.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14",
+    "vitest": "^4.1.10"
+  }
+}

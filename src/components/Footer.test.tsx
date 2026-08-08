@@ -19,4 +19,17 @@ describe('Footer navigation', () => {
     expect(markup).toContain('href="/contacto#horarios"')
     expect(markup).toContain('aria-disabled="true"')
   })
+
+  it('renders the real WhatsApp contact link and number', () => {
+    const markup = renderToStaticMarkup(
+      <MemoryRouter>
+        <Footer />
+      </MemoryRouter>,
+    )
+
+    expect(markup).toContain('href="https://wa.me/525578875525?src=qr"')
+    expect(markup).toContain('target="_blank"')
+    expect(markup).toContain('rel="noreferrer"')
+    expect(markup).toContain('+52 55 7887 5525')
+  })
 })

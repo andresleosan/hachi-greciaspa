@@ -15,7 +15,9 @@ function reservation(
 ): ReservationForConfirmation {
   return {
     id: 'reservation-1',
+    userId: 'client-1',
     status: 'pending',
+    createdBy: 'client',
     userEmail: 'cliente@example.com',
     userName: 'Ana',
     serviceName: 'Baño y corte',

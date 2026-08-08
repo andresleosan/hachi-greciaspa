@@ -1,0 +1,174 @@
+- generic [ref=e6]:
+  - link "Ir al contenido principal" [ref=e7] [cursor=pointer]:
+    - /url: "#main"
+  - banner:
+    - heading [level=1] [ref=e10]:
+      - link "Firebase console" [ref=e11] [cursor=pointer]:
+        - /url: "#"
+        - img "Logotipo de Firebase" [ref=e14]
+  - main [ref=e16]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]: Hola Andres
+        - heading "Te damos nuevamente la bienvenida a Firebase" [level=2] [ref=e22]
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - heading "Comenzar" [level=3] [ref=e25]
+          - button "Crear un proyecto de Firebase nuevo" [ref=e29] [cursor=pointer]:
+            - generic [ref=e32]: Integra productos de Firebase para potenciar tu app
+        - generic [ref=e33]:
+          - heading "Prueba una app de ejemplo" [level=3] [ref=e34]
+          - generic [ref=e35]:
+            - button "Prueba una app de planificación de viajes potenciada por IA" [ref=e39] [cursor=pointer]:
+              - generic [ref=e42]: Implementa una app de ejemplo que use Firestore, Authentication y una entrada multimodal con Firebase AI Logic.
+            - button "Prueba una app de agente de barista" [ref=e46] [cursor=pointer]:
+              - generic [ref=e49]: Implementa una app de ejemplo que use Firestore, Authentication y la llamada a funciones en Firebase AI Logic.
+        - generic [ref=e51]:
+          - generic [ref=e53]:
+            - img [ref=e54]: search
+            - searchbox "Buscar en todos los proyectos" [ref=e55]
+          - generic [ref=e56]:
+            - button "Proyectos" [ref=e59] [cursor=pointer]:
+              - text: Proyectos
+              - img [ref=e60]: arrow_drop_down
+            - list [ref=e62]:
+              - listitem [ref=e102]:
+                - generic [ref=e103]:
+                  - link "Abrir hachi-greciaspa" [ref=e105] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e106]:
+                      - generic [ref=e107]: hachi-greciaspa
+                      - generic [ref=e109]: hachi-greciaspa
+                  - button "Destacar" [ref=e111] [cursor=pointer]:
+                    - img [ref=e112]: star
+              - listitem [ref=e180]:
+                - generic [ref=e181]:
+                  - link "Abrir SurtiFacil" [ref=e183] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e184]:
+                      - generic [ref=e185]: SurtiFacil
+                      - generic [ref=e187]: smartmarket-b37ce
+                  - button "Destacar" [ref=e189] [cursor=pointer]:
+                    - img [ref=e190]: star
+              - listitem [ref=e141]:
+                - generic [ref=e142]:
+                  - link "Abrir MundoCelular" [ref=e144] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e145]:
+                      - generic [ref=e146]: MundoCelular
+                      - generic [ref=e148]: mundocelular-id
+                  - button "Destacar" [ref=e150] [cursor=pointer]:
+                    - img [ref=e151]: star
+              - listitem [ref=e115]:
+                - generic [ref=e116]:
+                  - link "Abrir la-parada" [ref=e118] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e119]:
+                      - generic [ref=e120]: la-parada
+                      - generic [ref=e122]: la-parada-ecb37
+                  - button "Destacar" [ref=e124] [cursor=pointer]:
+                    - img [ref=e125]: star
+              - listitem [ref=e128]:
+                - generic [ref=e129]:
+                  - link "Abrir mercadointeligente" [ref=e131] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e132]:
+                      - generic [ref=e133]: mercadointeligente
+                      - generic [ref=e135]: mercado-inteligente-90094
+                  - button "Destacar" [ref=e137] [cursor=pointer]:
+                    - img [ref=e138]: star
+              - listitem [ref=e63]:
+                - generic [ref=e64]:
+                  - link "Abrir COCTELS-OPS" [ref=e66] [cursor=pointer]:
+                    - /url: /project/studio-6073503308-82036/overview
+                    - generic [ref=e67]:
+                      - generic [ref=e68]: COCTELS-OPS
+                      - generic [ref=e70]: studio-6073503308-82036
+                    - 'tooltip "Facturación: Spark (Sin costo) Apps: Web" [ref=e291]':
+                      - generic:
+                        - generic [ref=e292]: "Facturación: Spark (Sin costo)"
+                        - generic [ref=e293]: "Apps: Web"
+                  - button "Destacar" [ref=e72] [cursor=pointer]:
+                    - img [ref=e73]: star
+              - listitem [ref=e89]:
+                - generic [ref=e90]:
+                  - link "Abrir fullstack-challenge-e-commerce" [ref=e92] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e93]:
+                      - generic [ref=e94]: fullstack-challenge-e-commerce
+                      - generic [ref=e96]: fullstack-challenge-e-commerce
+                  - button "Destacar" [ref=e98] [cursor=pointer]:
+                    - img [ref=e99]: star
+              - listitem [ref=e76]:
+                - generic [ref=e77]:
+                  - link "Abrir Firebase app" [ref=e79] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e80]:
+                      - generic [ref=e81]: Firebase app
+                      - generic [ref=e83]: studio-8626571925-8f15c
+                  - button "Destacar" [ref=e85] [cursor=pointer]:
+                    - img [ref=e86]: star
+              - listitem [ref=e154]:
+                - generic [ref=e155]:
+                  - link "Abrir performai" [ref=e157] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e158]:
+                      - generic [ref=e159]: performai
+                      - generic [ref=e161]: performai-bb68f
+                  - button "Destacar" [ref=e163] [cursor=pointer]:
+                    - img [ref=e164]: star
+              - listitem [ref=e167]:
+                - generic [ref=e168]:
+                  - link "Abrir Pintu-Master" [ref=e170] [cursor=pointer]:
+                    - /url: "#"
+                    - generic [ref=e171]:
+                      - generic [ref=e172]: Pintu-Master
+                      - generic [ref=e174]: pintu-master
+                  - button "Destacar" [ref=e176] [cursor=pointer]:
+                    - img [ref=e177]: star
+            - group [ref=e194]:
+              - generic [ref=e197]:
+                - status [ref=e198]: 1-10 de 11
+                - button "Página anterior" [disabled] [ref=e199]
+                - button "Página siguiente" [ref=e204] [cursor=pointer]
+      - generic [ref=e210]:
+        - generic [ref=e211]:
+          - generic [ref=e212]: Idioma
+          - combobox "Idioma español (Latinoamérica)" [ref=e213]:
+            - generic [ref=e214] [cursor=pointer]: español (Latinoamérica)
+        - list [ref=e221]:
+          - listitem [ref=e222]:
+            - link "Ver asistencia de Firebase (se abre en pestaña nueva)" [ref=e223] [cursor=pointer]:
+              - /url: https://firebase.google.com/support?hl=es-419&authuser=0
+              - text: Asistencia
+          - listitem [ref=e224]:
+            - link "Ver las condiciones y los servicios de Firebase (se abre en una pestaña nueva)" [ref=e225] [cursor=pointer]:
+              - /url: https://firebase.google.com/terms?hl=es-419&authuser=0
+              - text: Condiciones
+          - listitem [ref=e226]:
+            - link "Ver la política de privacidad de Google (se abre en una pestaña nueva)" [ref=e227] [cursor=pointer]:
+              - /url: https://www.google.com/policies/privacy/
+              - text: Política de Privacidad
+  - iframe [ref=e298]:
+    
+  - generic "Gemini en Firebase" [ref=e228]:
+    - generic [ref=e229]:
+      - generic [ref=e230]:
+        - 'button "Cuenta de Google: Andres Santiago (andres.san1404@gmail.com)" [ref=e238] [cursor=pointer]'
+        - button "Alertas abiertas" [ref=e248] [cursor=pointer]:
+          - img [ref=e249]: notifications
+        - button "Chatea con Gemini (Alt + G)" [disabled] [ref=e258]:
+          - img [ref=e260]: spark
+          - tooltip "Gemini en Firebase Selecciona un proyecto para usar Gemini en Firebase" [ref=e263]:
+            - generic:
+              - text: Gemini en Firebase
+              - generic [ref=e264]: Selecciona un proyecto para usar Gemini en Firebase
+        - button "Ayuda" [ref=e267] [cursor=pointer]:
+          - img [ref=e268]: contact_support
+        - separator [ref=e271]
+        - button "Activar Cloud Shell" [disabled]:
+          - tooltip "Potencia tu desarrollo. Prueba Cloud Shell para acceder a Firebase CLI integrado y ejecutar los emuladores de Firebase directamente en una máquina virtual." [ref=e278]
+        - button "Activar o desactivar el panel de aprendizaje" [disabled]:
+          - img: school
+      - 'button "Tema actual: claro, ajustar tema" [ref=e282] [cursor=pointer]':
+        - img [ref=e283]: dark_mode

@@ -1,0 +1,228 @@
+- generic [ref=f4e4]:
+  - complementary [ref=f4e5]:
+    - generic [ref=f4e6]:
+      - generic [ref=f4e7]: HG
+      - generic [ref=f4e8]:
+        - strong [ref=f4e9]: Hachi & Grecia
+        - generic [ref=f4e10]: Admin
+    - navigation "Navegación del panel" [ref=f4e11]:
+      - link "D Dashboard" [ref=f4e12] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=f4e13]: D
+        - text: Dashboard
+      - link "C Citas" [ref=f4e14] [cursor=pointer]:
+        - /url: /dashboard/agenda
+        - generic [ref=f4e15]: C
+        - text: Citas
+      - link "E Empleados" [ref=f4e16] [cursor=pointer]:
+        - /url: /dashboard/empleados
+        - generic [ref=f4e17]: E
+        - text: Empleados
+      - link "S Servicios" [ref=f4e18] [cursor=pointer]:
+        - /url: /servicios
+        - generic [ref=f4e19]: S
+        - text: Servicios
+      - generic [ref=f4e20]:
+        - generic [ref=f4e21]: U
+        - text: Clientes
+        - generic [ref=f4e22]: próxim.
+      - generic [ref=f4e23]:
+        - generic [ref=f4e24]: R
+        - text: Reportes
+        - generic [ref=f4e25]: próxim.
+    - generic [ref=f4e26]: QA Admin T3.5Administrador
+  - main [ref=f4e28]:
+    - generic [ref=f4e29]:
+      - img "Administración del spa" [ref=f4e31]
+      - generic [ref=f4e32]:
+        - strong [ref=f4e33]: Empleados
+        - text: Equipo, servicios y horarios
+    - generic [ref=f4e34]:
+      - generic [ref=f4e35]:
+        - generic [ref=f4e36]:
+          - generic [ref=f4e37]: Operación del spa
+          - heading "Administrar empleados" [level=1] [ref=f4e38]
+          - paragraph [ref=f4e39]: Define quién puede atender cada servicio y en qué turnos está disponible para la asignación automática.
+        - button "Nuevo empleado" [ref=f4e40] [cursor=pointer]
+      - status [ref=f4e205]: Empleado actualizado.
+      - generic [ref=f4e41]:
+        - region [ref=f4e42]:
+          - generic [ref=f4e43]:
+            - generic [ref=f4e44]:
+              - heading "Equipo registrado" [level=2] [ref=f4e45]
+              - paragraph [ref=f4e46]: Los empleados inactivos no se ofrecen para nuevas asignaciones.
+            - generic [ref=f4e47]: 4 personas
+          - table [ref=f4e49]:
+            - rowgroup [ref=f4e50]:
+              - row [ref=f4e51]:
+                - columnheader "Empleado" [ref=f4e52]
+                - columnheader "Rol" [ref=f4e53]
+                - columnheader "Servicios" [ref=f4e54]
+                - columnheader "Estado" [ref=f4e55]
+                - columnheader "Acciones" [ref=f4e56]
+            - rowgroup [ref=f4e57]:
+              - row [ref=f4e58]:
+                - cell "Alberto González Sin foto" [ref=f4e59]:
+                  - generic [ref=f4e60]:
+                    - generic [ref=f4e61]: AG
+                    - generic [ref=f4e62]:
+                      - strong [ref=f4e63]: Alberto González
+                      - generic [ref=f4e64]: Sin foto
+                - cell "Bañador" [ref=f4e65]
+                - cell "Spa Day Guardería Pensión" [ref=f4e66]:
+                  - generic [ref=f4e67]:
+                    - generic [ref=f4e68]: Spa Day
+                    - generic [ref=f4e69]: Guardería
+                    - generic [ref=f4e70]: Pensión
+                - cell "Activo" [ref=f4e71]
+                - cell [ref=f4e73]:
+                  - generic [ref=f4e74]:
+                    - button "Editar" [ref=f4e75] [cursor=pointer]
+                    - button "Desactivar" [ref=f4e76] [cursor=pointer]
+              - row [ref=f4e77]:
+                - cell "Daniela Padilla Sin foto" [ref=f4e78]:
+                  - generic [ref=f4e79]:
+                    - generic [ref=f4e80]: DP
+                    - generic [ref=f4e81]:
+                      - strong [ref=f4e82]: Daniela Padilla
+                      - generic [ref=f4e83]: Sin foto
+                - cell "Groomer" [ref=f4e84]
+                - cell "Spa Day Grooming Guardería Pensión" [ref=f4e85]:
+                  - generic [ref=f4e86]:
+                    - generic [ref=f4e87]: Spa Day
+                    - generic [ref=f4e88]: Grooming
+                    - generic [ref=f4e89]: Guardería
+                    - generic [ref=f4e90]: Pensión
+                - cell "Activo" [ref=f4e91]
+                - cell [ref=f4e93]:
+                  - generic [ref=f4e94]:
+                    - button "Editar" [ref=f4e95] [cursor=pointer]
+                    - button "Desactivar" [ref=f4e96] [cursor=pointer]
+              - row [ref=f4e97]:
+                - cell "Harold Salcedo Sin foto" [ref=f4e98]:
+                  - generic [ref=f4e99]:
+                    - generic [ref=f4e100]: HS
+                    - generic [ref=f4e101]:
+                      - strong [ref=f4e102]: Harold Salcedo
+                      - generic [ref=f4e103]: Sin foto
+                - cell "Groomer" [ref=f4e104]
+                - cell "Spa Day Grooming Guardería Pensión" [ref=f4e105]:
+                  - generic [ref=f4e106]:
+                    - generic [ref=f4e107]: Spa Day
+                    - generic [ref=f4e108]: Grooming
+                    - generic [ref=f4e109]: Guardería
+                    - generic [ref=f4e110]: Pensión
+                - cell "Activo" [ref=f4e111]
+                - cell [ref=f4e113]:
+                  - generic [ref=f4e114]:
+                    - button "Editar" [ref=f4e115] [cursor=pointer]
+                    - button "Desactivar" [ref=f4e116] [cursor=pointer]
+              - row [ref=f4e206]:
+                - cell "QA Empleado T3.5 Editado Sin foto" [ref=f4e207]:
+                  - generic [ref=f4e186]:
+                    - generic [ref=f4e187]: QE
+                    - generic [ref=f4e188]:
+                      - strong [ref=f4e189]: QA Empleado T3.5 Editado
+                      - generic [ref=f4e190]: Sin foto
+                - cell "Groomer" [ref=f4e191]
+                - cell "Spa Day" [ref=f4e192]
+                - cell "Activo" [ref=f4e195]
+                - cell [ref=f4e197]:
+                  - generic [ref=f4e198]:
+                    - button "Editar" [ref=f4e199] [cursor=pointer]
+                    - button "Desactivar" [ref=f4e200] [cursor=pointer]
+        - region [ref=f4e208]:
+          - generic [ref=f4e119]:
+            - heading "Nuevo empleado" [level=2] [ref=f4e209]
+            - paragraph [ref=f4e121]: Completa el perfil para habilitarlo en la agenda.
+          - generic [ref=f4e122]:
+            - generic [ref=f4e123]:
+              - heading "Perfil" [level=3] [ref=f4e124]
+              - generic [ref=f4e125]:
+                - generic [ref=f4e126]:
+                  - generic [ref=f4e127]: Nombre completo
+                  - textbox "Nombre completo" [ref=f4e128]
+                - generic [ref=f4e129]:
+                  - generic [ref=f4e130]: Rol
+                  - combobox "Rol" [ref=f4e131]:
+                    - option "Groomer" [selected]
+                    - option "Bañador"
+                    - option "Cuidador"
+              - generic [ref=f4e132]:
+                - generic [ref=f4e133]: URL de foto (opcional)
+                - textbox "URL de foto (opcional)" [ref=f4e134]:
+                  - /placeholder: https://…
+              - generic [ref=f4e135] [cursor=pointer]:
+                - checkbox "Empleado activo Puede recibir nuevas asignaciones." [checked] [ref=f4e136]
+                - generic [ref=f4e137]:
+                  - strong [ref=f4e138]: Empleado activo
+                  - generic [ref=f4e139]: Puede recibir nuevas asignaciones.
+            - group "Servicios que puede atender" [ref=f4e140]:
+              - generic [ref=f4e142]:
+                - generic [ref=f4e143] [cursor=pointer]:
+                  - checkbox "Spa Day" [ref=f4e144]
+                  - generic [ref=f4e145]: Spa Day
+                - generic [ref=f4e146] [cursor=pointer]:
+                  - checkbox "Grooming" [ref=f4e147]
+                  - generic [ref=f4e148]: Grooming
+                - generic [ref=f4e149] [cursor=pointer]:
+                  - checkbox "Guardería" [ref=f4e150]
+                  - generic [ref=f4e151]: Guardería
+                - generic [ref=f4e152] [cursor=pointer]:
+                  - checkbox "Pensión" [ref=f4e153]
+                  - generic [ref=f4e154]: Pensión
+            - group "Disponibilidad semanal" [ref=f4e155]:
+              - paragraph [ref=f4e157]: El horario se usa para buscar candidatos compatibles con cada reserva.
+              - generic [ref=f4e158]:
+                - generic [ref=f4e159]:
+                  - generic [ref=f4e160]: Lunes
+                  - combobox "Lunes" [ref=f4e161]:
+                    - option "Sin turno"
+                    - option "Mañana (08:00–14:00)"
+                    - option "Tarde (14:00–20:00)"
+                    - option "Día completo (08:00–20:00)" [selected]
+                - generic [ref=f4e162]:
+                  - generic [ref=f4e163]: Martes
+                  - combobox "Martes" [ref=f4e164]:
+                    - option "Sin turno"
+                    - option "Mañana (08:00–14:00)"
+                    - option "Tarde (14:00–20:00)"
+                    - option "Día completo (08:00–20:00)" [selected]
+                - generic [ref=f4e165]:
+                  - generic [ref=f4e166]: Miércoles
+                  - combobox "Miércoles" [ref=f4e167]:
+                    - option "Sin turno"
+                    - option "Mañana (08:00–14:00)"
+                    - option "Tarde (14:00–20:00)"
+                    - option "Día completo (08:00–20:00)" [selected]
+                - generic [ref=f4e168]:
+                  - generic [ref=f4e169]: Jueves
+                  - combobox "Jueves" [ref=f4e170]:
+                    - option "Sin turno"
+                    - option "Mañana (08:00–14:00)"
+                    - option "Tarde (14:00–20:00)"
+                    - option "Día completo (08:00–20:00)" [selected]
+                - generic [ref=f4e171]:
+                  - generic [ref=f4e172]: Viernes
+                  - combobox "Viernes" [ref=f4e173]:
+                    - option "Sin turno"
+                    - option "Mañana (08:00–14:00)"
+                    - option "Tarde (14:00–20:00)"
+                    - option "Día completo (08:00–20:00)" [selected]
+                - generic [ref=f4e174]:
+                  - generic [ref=f4e175]: Sábado
+                  - combobox "Sábado" [ref=f4e176]:
+                    - option "Sin turno"
+                    - option "Mañana (08:00–14:00)"
+                    - option "Tarde (14:00–20:00)"
+                    - option "Día completo (08:00–20:00)" [selected]
+                - generic [ref=f4e177]:
+                  - generic [ref=f4e178]: Domingo
+                  - combobox "Domingo" [ref=f4e179]:
+                    - option "Sin turno" [selected]
+                    - option "Mañana (08:00–14:00)"
+                    - option "Tarde (14:00–20:00)"
+                    - option "Día completo (08:00–20:00)"
+            - generic [ref=f4e180]:
+              - button "Crear empleado" [ref=f4e210] [cursor=pointer]
+              - button "Limpiar" [ref=f4e211] [cursor=pointer]

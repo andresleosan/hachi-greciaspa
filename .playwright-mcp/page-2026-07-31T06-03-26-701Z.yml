@@ -1,0 +1,42 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: Cargando
+        - progressbar [ref=e8]
+      - main [ref=e15]:
+        - generic [ref=e24]:
+          - heading "Accede a tu cuenta" [level=1] [ref=e25]
+          - generic [ref=e26]: con tu Cuenta de Google. Esta cuenta estará disponible para otras apps de Google en el navegador.
+        - generic [ref=e29]:
+          - generic [ref=e34]:
+            - generic [ref=e39]:
+              - textbox "Correo electrónico o teléfono" [active] [ref=e40]
+              - generic: Correo electrónico o teléfono
+            - button "¿Olvidaste el correo electrónico?" [ref=e44] [cursor=pointer]
+          - generic [ref=e47]:
+            - text: ¿Esta no es tu computadora? Usa el modo de invitado para navegar de forma privada.
+            - link "Más información sobre el uso del Modo de invitado (vínculo externo, se abre en una ventana nueva)" [ref=e48] [cursor=pointer]:
+              - /url: https://support.google.com/chrome/answer/6130773?hl=es-419
+              - text: Más información para usar el modo de invitado
+        - generic [ref=e50]:
+          - button "Siguiente" [ref=e54]
+          - button "Crear cuenta" [ref=e63]
+    - contentinfo [ref=e70]:
+      - combobox "Cambiar de idioma Español (Latinoamérica)" [ref=e74] [cursor=pointer]:
+        - generic: Español (Latinoamérica)
+      - list [ref=e76]:
+        - listitem [ref=e77]:
+          - link "Abrir el Centro de ayuda de la Cuenta de Google (vínculo externo, se abre en una ventana nueva)" [ref=e78] [cursor=pointer]:
+            - /url: https://support.google.com/accounts?hl=es-419&p=account_iph
+            - text: Ayuda
+        - listitem [ref=e79]:
+          - link "Política de Privacidad (vínculo externo, se abre en una ventana nueva)" [ref=e80] [cursor=pointer]:
+            - /url: https://accounts.google.com/TOS?loc=CO&hl=es-419&privacy=true
+            - text: Privacidad
+        - listitem [ref=e81]:
+          - link "Condiciones del Servicio de Google (vínculo externo, se abre en una ventana nueva)" [ref=e82] [cursor=pointer]:
+            - /url: https://accounts.google.com/TOS?loc=CO&hl=es-419
+            - text: Condiciones
+  - iframe [ref=e83]:
+    

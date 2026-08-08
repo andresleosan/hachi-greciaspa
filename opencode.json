@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "opencode/mimo-v2-5-free",
   "permission": {
     "bash": {
       "*": "allow",
@@ -19,16 +18,14 @@
   },
   "agent": {
     "cronos": {
-      "description": "Cronos 3.3.3 — agente único: arquitectura, backend, frontend, datos, integraciones, seguridad, QA, rendimiento y despliegue",
+      "description": "Cronos 4.2.0 — agente primario con delegación controlada: arquitectura, backend, frontend, datos, integraciones, seguridad, QA, rendimiento y despliegue",
       "mode": "primary",
-      "model": "opencode/mimo-v2-5-free",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
+      "permission": {
+        "task": "allow"
       }
     }
   },
+  "subagent_depth": 1,
   "mcp": {
     "playwright": {
       "type": "local",
@@ -36,7 +33,7 @@
         "npx",
         "@playwright/mcp@latest"
       ],
-      "enabled": true
+      "enabled": false
     }
   }
 }

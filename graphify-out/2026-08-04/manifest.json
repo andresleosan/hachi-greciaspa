@@ -1,0 +1,367 @@
+{
+  "firebase.json": {
+    "mtime": 1785545072.433271,
+    "ast_hash": "7c42c1428a0be8e91b10ee0c45e76e07",
+    "semantic_hash": "7c42c1428a0be8e91b10ee0c45e76e07"
+  },
+  "firestore.indexes.json": {
+    "mtime": 1785537035.0231194,
+    "ast_hash": "322c59f114c67aee80c8bae8fa4c35a1",
+    "semantic_hash": "322c59f114c67aee80c8bae8fa4c35a1"
+  },
+  "opencode.json": {
+    "mtime": 1785477716.2948983,
+    "ast_hash": "dd1257e060056790341a1060bb6234cc",
+    "semantic_hash": "dd1257e060056790341a1060bb6234cc"
+  },
+  "package.json": {
+    "mtime": 1785482580.0505395,
+    "ast_hash": "84c3694fc88efe964165c32fb1a44fae",
+    "semantic_hash": "84c3694fc88efe964165c32fb1a44fae"
+  },
+  "postcss.config.cjs": {
+    "mtime": 1779775018.3448603,
+    "ast_hash": "84d3864f5948767921ee8e102ee73a3d",
+    "semantic_hash": "84d3864f5948767921ee8e102ee73a3d"
+  },
+  "src/App.tsx": {
+    "mtime": 1785515165.7917414,
+    "ast_hash": "2fe7777a2fa2f1159f50843212c63586",
+    "semantic_hash": "2fe7777a2fa2f1159f50843212c63586"
+  },
+  "src/components/AdminPrices.tsx": {
+    "mtime": 1785800232.2615232,
+    "ast_hash": "c73673730a9fa35f12256e70f43fc3e9",
+    "semantic_hash": "c73673730a9fa35f12256e70f43fc3e9"
+  },
+  "src/components/Footer.tsx": {
+    "mtime": 1779749015.8660884,
+    "ast_hash": "3ec7e8090eb797328f0b5b8108e90d3e",
+    "semantic_hash": "3ec7e8090eb797328f0b5b8108e90d3e"
+  },
+  "src/components/Header.tsx": {
+    "mtime": 1785515173.8883202,
+    "ast_hash": "4a4d3252cdd864f3bba49e758b17fa61",
+    "semantic_hash": "4a4d3252cdd864f3bba49e758b17fa61"
+  },
+  "src/components/PricesList.tsx": {
+    "mtime": 1785481855.198848,
+    "ast_hash": "c48eb43f90276622884f5a723a8b09ac",
+    "semantic_hash": "c48eb43f90276622884f5a723a8b09ac"
+  },
+  "src/components/ProtectedRoute.tsx": {
+    "mtime": 1785796507.008432,
+    "ast_hash": "aff56b99c924b07b46dcea70277787a5",
+    "semantic_hash": "aff56b99c924b07b46dcea70277787a5"
+  },
+  "src/components/ServiceCard.tsx": {
+    "mtime": 1785515725.9893837,
+    "ast_hash": "651b79a3f27d46d889059f85bc60cfc6",
+    "semantic_hash": "651b79a3f27d46d889059f85bc60cfc6"
+  },
+  "src/hooks/useAuth.tsx": {
+    "mtime": 1785476230.9465597,
+    "ast_hash": "fe12ed3b7b065b524001613b0552acd1",
+    "semantic_hash": "fe12ed3b7b065b524001613b0552acd1"
+  },
+  "src/main.tsx": {
+    "mtime": 1779748790.263295,
+    "ast_hash": "f895ef478ced7c8f067467830413bd14",
+    "semantic_hash": "f895ef478ced7c8f067467830413bd14"
+  },
+  "src/pages/Contacto.tsx": {
+    "mtime": 1785544170.93266,
+    "ast_hash": "9ea59390cbf4d95c4de09d1421ada1b3",
+    "semantic_hash": "9ea59390cbf4d95c4de09d1421ada1b3"
+  },
+  "src/pages/DashboardPage.tsx": {
+    "mtime": 1785799738.3781662,
+    "ast_hash": "902698c960674d5d670910b34f67a95e",
+    "semantic_hash": "902698c960674d5d670910b34f67a95e"
+  },
+  "src/pages/Equipo.tsx": {
+    "mtime": 1779750273.8632975,
+    "ast_hash": "c46c2d297701f5272495ff6705329dcb",
+    "semantic_hash": "c46c2d297701f5272495ff6705329dcb"
+  },
+  "src/pages/Galeria.tsx": {
+    "mtime": 1785544490.3599477,
+    "ast_hash": "34ee42e8b518d3605c7eba3927bc3a79",
+    "semantic_hash": "34ee42e8b518d3605c7eba3927bc3a79"
+  },
+  "src/pages/LandingNueva.tsx": {
+    "mtime": 1782455286.3016663,
+    "ast_hash": "1ce6b10a44a7b6b87b8bb66aeed14ae1",
+    "semantic_hash": "1ce6b10a44a7b6b87b8bb66aeed14ae1"
+  },
+  "src/pages/Login.tsx": {
+    "mtime": 1785516532.030128,
+    "ast_hash": "58aae8bc83dbf208833e6d732d08fb85",
+    "semantic_hash": "58aae8bc83dbf208833e6d732d08fb85"
+  },
+  "src/pages/NotFound.tsx": {
+    "mtime": 1785475252.23495,
+    "ast_hash": "b046bc403a83bcb2ce78d1bc13a6fc30",
+    "semantic_hash": "b046bc403a83bcb2ce78d1bc13a6fc30"
+  },
+  "src/pages/Precios.tsx": {
+    "mtime": 1779775018.4468267,
+    "ast_hash": "daf9cf89ae40c1d2e891b8fd92384694",
+    "semantic_hash": "daf9cf89ae40c1d2e891b8fd92384694"
+  },
+  "src/pages/Register.tsx": {
+    "mtime": 1785544121.6096115,
+    "ast_hash": "fab4aef72dba3bd3443f6e230c2ea5cb",
+    "semantic_hash": "fab4aef72dba3bd3443f6e230c2ea5cb"
+  },
+  "src/pages/Reservar.tsx": {
+    "mtime": 1785515127.2361689,
+    "ast_hash": "9544688f41ce5d5d4a213a5a96ced43b",
+    "semantic_hash": "9544688f41ce5d5d4a213a5a96ced43b"
+  },
+  "src/pages/Servicios.tsx": {
+    "mtime": 1785516391.9644215,
+    "ast_hash": "46e79744823ed7aa6f9d0f1809682196",
+    "semantic_hash": "46e79744823ed7aa6f9d0f1809682196"
+  },
+  "src/services/auth.ts": {
+    "mtime": 1785474169.7176015,
+    "ast_hash": "263600497822bc6798ba374a61a72fe9",
+    "semantic_hash": "263600497822bc6798ba374a61a72fe9"
+  },
+  "src/services/firebase.ts": {
+    "mtime": 1785796482.4017596,
+    "ast_hash": "f6685ae90f6d34d5f0978ae0c81d0caa",
+    "semantic_hash": "f6685ae90f6d34d5f0978ae0c81d0caa"
+  },
+  "src/services/reservas.ts": {
+    "mtime": 1785539713.675012,
+    "ast_hash": "1d9036dbc7dbd364a6f6ec7b8779ff0a",
+    "semantic_hash": "1d9036dbc7dbd364a6f6ec7b8779ff0a"
+  },
+  "src/types/index.ts": {
+    "mtime": 1785516165.8288994,
+    "ast_hash": "b9ba352c3313966ca5fc389f5b3a059e",
+    "semantic_hash": "b9ba352c3313966ca5fc389f5b3a059e"
+  },
+  "src/types/precios.ts": {
+    "mtime": 1785481833.8685176,
+    "ast_hash": "2f1b37027784e149ab228bcfaf291e5c",
+    "semantic_hash": "2f1b37027784e149ab228bcfaf291e5c"
+  },
+  "src/types/reserva.ts": {
+    "mtime": 1785481825.3110714,
+    "ast_hash": "dd907723a79fd6964e4338ad5d66f87d",
+    "semantic_hash": "dd907723a79fd6964e4338ad5d66f87d"
+  },
+  "src/types/servicios.ts": {
+    "mtime": 1785516138.6715326,
+    "ast_hash": "b9b0db495e4f868bf7a2dafdad9fabed",
+    "semantic_hash": "b9b0db495e4f868bf7a2dafdad9fabed"
+  },
+  "src/utils/rateLimit.ts": {
+    "mtime": 1785475178.4105513,
+    "ast_hash": "06a8df75bfce67d4dd19e017aa356a34",
+    "semantic_hash": "06a8df75bfce67d4dd19e017aa356a34"
+  },
+  "src/vite-env.d.ts": {
+    "mtime": 1785796458.4181309,
+    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "semantic_hash": "0352474ba2918efe13895edbc3780d94"
+  },
+  "tailwind.config.cjs": {
+    "mtime": 1779748767.963541,
+    "ast_hash": "d222f831c4639ad24c0dc58a0d780513",
+    "semantic_hash": "d222f831c4639ad24c0dc58a0d780513"
+  },
+  "tools/firestore-tests/e2e-reserva.mjs": {
+    "mtime": 1785537106.539549,
+    "ast_hash": "02479292dc895f6d4df86ae7f3317411",
+    "semantic_hash": "02479292dc895f6d4df86ae7f3317411"
+  },
+  "tools/firestore-tests/run-rules-tests.mjs": {
+    "mtime": 1785543999.0344977,
+    "ast_hash": "ce786dbc59993685efad8ab8e9e5ddf7",
+    "semantic_hash": "ce786dbc59993685efad8ab8e9e5ddf7"
+  },
+  "tools/seed-services.mjs": {
+    "mtime": 1785486358.507938,
+    "ast_hash": "27d2dc2a34f68ff6b1c833be8014d19c",
+    "semantic_hash": "27d2dc2a34f68ff6b1c833be8014d19c"
+  },
+  "tools/set-admin.js": {
+    "mtime": 1785799738.3781662,
+    "ast_hash": "1e4502346d8af023e205ba8084f35ac9",
+    "semantic_hash": "1e4502346d8af023e205ba8084f35ac9"
+  },
+  "tsconfig.json": {
+    "mtime": 1785553637.45042,
+    "ast_hash": "8b2edc8742c94aee9761857202e49246",
+    "semantic_hash": "8b2edc8742c94aee9761857202e49246"
+  },
+  "vercel.json": {
+    "mtime": 1782455854.485811,
+    "ast_hash": "6411d2fbb5f0e00aaff0ca0ded84e0b6",
+    "semantic_hash": "6411d2fbb5f0e00aaff0ca0ded84e0b6"
+  },
+  "vite.config.ts": {
+    "mtime": 1779748764.1279185,
+    "ast_hash": "37d1f4a3015c765294d6a4064eb1a34e",
+    "semantic_hash": "37d1f4a3015c765294d6a4064eb1a34e"
+  },
+  ".github/workflows/firebase-hosting.yml": {
+    "mtime": 1785560732.189932,
+    "ast_hash": "83b040e1109fe7a496e628fb006269e0",
+    "semantic_hash": "83b040e1109fe7a496e628fb006269e0"
+  },
+  "AGENTS.md": {
+    "mtime": 1785544931.898875,
+    "ast_hash": "b969564be29352b42907e902c9c2b3a1",
+    "semantic_hash": "b969564be29352b42907e902c9c2b3a1"
+  },
+  "AUDITORIA.md": {
+    "mtime": 1785480632.583321,
+    "ast_hash": "a81184f26725cf689d609350508dfdca",
+    "semantic_hash": "a81184f26725cf689d609350508dfdca"
+  },
+  "Guia-Firebase-security-rules-vibe-coding.md": {
+    "mtime": 1779641543.8475282,
+    "ast_hash": "7e8aa551641b012c2012d6d1b6cd4492",
+    "semantic_hash": "7e8aa551641b012c2012d6d1b6cd4492"
+  },
+  "docs/Fase3.md": {
+    "mtime": 1785548007.1752176,
+    "ast_hash": "09030277a1be97e4e791947822d2f5ec",
+    "semantic_hash": "09030277a1be97e4e791947822d2f5ec"
+  },
+  "docs/README-firebase.md": {
+    "mtime": 1785486482.528065,
+    "ast_hash": "1b78647e9cecf36c2feb930c1c856be8",
+    "semantic_hash": "1b78647e9cecf36c2feb930c1c856be8"
+  },
+  "docs/SCHEMA.md": {
+    "mtime": 1785481745.084645,
+    "ast_hash": "c8d87794fbe8c4e9b2ef7541f47dea96",
+    "semantic_hash": "c8d87794fbe8c4e9b2ef7541f47dea96"
+  },
+  "docs/STACK.md": {
+    "mtime": 1785544796.6345375,
+    "ast_hash": "e8080680ef792c6618f896a9f46eca88",
+    "semantic_hash": "e8080680ef792c6618f896a9f46eca88"
+  },
+  "docs/adr/ADR-001-validacion-reservas.md": {
+    "mtime": 1785481592.9179637,
+    "ast_hash": "a84113c0fc5bb7d4a8b57f00b426879a",
+    "semantic_hash": "a84113c0fc5bb7d4a8b57f00b426879a"
+  },
+  "docs/adr/ADR-002-cancelacion-cliente.md": {
+    "mtime": 1785481652.8026645,
+    "ast_hash": "f92b38de19d16c7d076cab605dbe3177",
+    "semantic_hash": "f92b38de19d16c7d076cab605dbe3177"
+  },
+  "docs/adr/ADR-003-storage-vs-paths-publicos.md": {
+    "mtime": 1785481688.726111,
+    "ast_hash": "7cc41539618d99b33b8ab8bee9da43f5",
+    "semantic_hash": "7cc41539618d99b33b8ab8bee9da43f5"
+  },
+  "docs/firestore-tests.md": {
+    "mtime": 1785480770.2489202,
+    "ast_hash": "912dc66f33668253e99254f54912a4cd",
+    "semantic_hash": "912dc66f33668253e99254f54912a4cd"
+  },
+  "docs/sistema-de-diseno.md": {
+    "mtime": 1779747171.775537,
+    "ast_hash": "211e00199cd378be123689f7c3a6701f",
+    "semantic_hash": "211e00199cd378be123689f7c3a6701f"
+  },
+  "docs/tasks.md": {
+    "mtime": 1785548188.4658754,
+    "ast_hash": "d7ddf8f6647dc4a002bcdc4bf1b44d0c",
+    "semantic_hash": "d7ddf8f6647dc4a002bcdc4bf1b44d0c"
+  },
+  "index.html": {
+    "mtime": 1779748790.3335752,
+    "ast_hash": "7a737d15a69afc900155f8ce605faf9f",
+    "semantic_hash": "7a737d15a69afc900155f8ce605faf9f"
+  },
+  "src/app/pages/Contacto.html": {
+    "mtime": 1779775018.3625548,
+    "ast_hash": "e72b60763e6b7581a2dc000640625855",
+    "semantic_hash": "e72b60763e6b7581a2dc000640625855"
+  },
+  "src/app/pages/Equipo.html": {
+    "mtime": 1779775018.3783894,
+    "ast_hash": "1ffa71c1a581114eb86962f0e79596ac",
+    "semantic_hash": "1ffa71c1a581114eb86962f0e79596ac"
+  },
+  "src/app/pages/Galeria.html": {
+    "mtime": 1779775018.3968406,
+    "ast_hash": "a389c2746da2286e6d85a13f64452b4d",
+    "semantic_hash": "a389c2746da2286e6d85a13f64452b4d"
+  },
+  "src/app/pages/Inicio.html": {
+    "mtime": 1779775018.3978379,
+    "ast_hash": "0f0d3ed2a54c12e4dd7a4aefae620d8d",
+    "semantic_hash": "0f0d3ed2a54c12e4dd7a4aefae620d8d"
+  },
+  "src/app/pages/Servicios.html": {
+    "mtime": 1779775018.4115455,
+    "ast_hash": "7ef57ecddfc364ede928ea2951d1c513",
+    "semantic_hash": "7ef57ecddfc364ede928ea2951d1c513"
+  },
+  "src/dashboard/Dashboard.html": {
+    "mtime": 1779775018.4175458,
+    "ast_hash": "43cecb04353f7e473f3bc868455fc20c",
+    "semantic_hash": "43cecb04353f7e473f3bc868455fc20c"
+  },
+  "tmp_root.html": {
+    "mtime": 1779775018.4849994,
+    "ast_hash": "21798c501f89e7237b7b9d4e6645dc95",
+    "semantic_hash": "21798c501f89e7237b7b9d4e6645dc95"
+  },
+  "bl.png": {
+    "mtime": 1779775017.5607665,
+    "ast_hash": "6c55422d4e129d5a0fa4f914a6d76e8e",
+    "semantic_hash": "6c55422d4e129d5a0fa4f914a6d76e8e"
+  },
+  "br.png": {
+    "mtime": 1779775017.6533902,
+    "ast_hash": "dfe430988cdb02c46f4ce4f44f141dee",
+    "semantic_hash": "dfe430988cdb02c46f4ce4f44f141dee"
+  },
+  "contact-sheet.png": {
+    "mtime": 1779775017.8283677,
+    "ast_hash": "1dcc7ad93dcf1d0270eb536d84f2e8ef",
+    "semantic_hash": "1dcc7ad93dcf1d0270eb536d84f2e8ef"
+  },
+  "dashboard_header_zoom.png": {
+    "mtime": 1779775017.9985657,
+    "ast_hash": "778aff7fc6f23d773cd71ad75f0a339e",
+    "semantic_hash": "778aff7fc6f23d773cd71ad75f0a339e"
+  },
+  "hachi-greciaspa.png": {
+    "mtime": 1779746392.9417384,
+    "ast_hash": "7cba4a16e51b35a9595c43e39a6c2cd3",
+    "semantic_hash": "7cba4a16e51b35a9595c43e39a6c2cd3"
+  },
+  "hero_text_zoom.png": {
+    "mtime": 1779775018.2535532,
+    "ast_hash": "04904113c5303f123122419a75a322fd",
+    "semantic_hash": "04904113c5303f123122419a75a322fd"
+  },
+  "mobile_top_zoom.png": {
+    "mtime": 1779775018.333394,
+    "ast_hash": "3f08f3d62e347fa9c8229afc98c94f07",
+    "semantic_hash": "3f08f3d62e347fa9c8229afc98c94f07"
+  },
+  "tl.png": {
+    "mtime": 1779775018.4839954,
+    "ast_hash": "40937a4f286c88bddcfddbea54d48565",
+    "semantic_hash": "40937a4f286c88bddcfddbea54d48565"
+  },
+  "tr.png": {
+    "mtime": 1779775018.5304475,
+    "ast_hash": "fb9dfbc798afe6f2f8094229115132ff",
+    "semantic_hash": "fb9dfbc798afe6f2f8094229115132ff"
+  }
+}

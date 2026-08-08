@@ -19,7 +19,7 @@ const publicSeo: Record<string, Omit<SeoConfig, 'canonicalPath' | 'indexable'>> 
   },
   '/precios': {
     title: 'Precios de grooming y spa canino | Hachi & Grecia',
-    description: 'Consulta los precios de nuestros servicios de grooming, baño, guardería, pensión y spa canino.',
+    description: 'Consulta el tarifario de Spa Day, grooming, guardería, pensión y extras en Hachi & Grecia Spa, Roma Norte, CDMX. Pregunta por WhatsApp por precios variables.',
   },
   '/equipo': {
     title: 'Nuestro equipo | Hachi & Grecia Spa',
@@ -31,7 +31,7 @@ const publicSeo: Record<string, Omit<SeoConfig, 'canonicalPath' | 'indexable'>> 
   },
   '/contacto': {
     title: 'Contacto y horarios | Hachi & Grecia Spa',
-    description: 'Encuentra Hachi & Grecia Spa en Roma Norte, CDMX. Consulta horarios y envíanos un mensaje.',
+    description: 'Encuentra Hachi & Grecia Spa en Roma Norte, CDMX. Consulta horarios y contáctanos por WhatsApp.',
   },
 }
 

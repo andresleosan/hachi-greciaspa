@@ -1,0 +1,26 @@
+{
+  "name": "hachi-greciaspa-functions",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run --passWithNoTests src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "date-fns-tz": "^3.2.0",
+    "firebase-admin": "^14.2.0",
+    "firebase-functions": "^7.3.2",
+    "resend": "^6.18.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
+  }
+}

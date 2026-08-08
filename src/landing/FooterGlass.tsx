@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../config/contact'
 
 /** Footer editorial — consistente con la experiencia luxe. */
 
@@ -9,7 +10,12 @@ export default function FooterGlass() {
         <div>
           <h4>Hachi &amp; Grecia Spa</h4>
           <p>Baños · Grooming · Guardería · Pensión · Spa</p>
-          <p>contacto@hachigreciasp.com — +52 55 1234 5678</p>
+          <p>
+            contacto@hachigreciasp.com —{' '}
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label={`WhatsApp ${WHATSAPP_DISPLAY}`}>
+              WhatsApp: {WHATSAPP_DISPLAY}
+            </a>
+          </p>
         </div>
         <div>
           <h4>Explora</h4>

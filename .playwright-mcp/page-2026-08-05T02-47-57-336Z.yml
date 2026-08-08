@@ -1,0 +1,53 @@
+- generic [ref=f12e51]:
+  - complementary [ref=f12e52]:
+    - generic [ref=f12e53]:
+      - generic [ref=f12e54]: HG
+      - generic [ref=f12e55]:
+        - strong [ref=f12e56]: Hachi & Grecia
+        - generic [ref=f12e57]: Admin
+    - navigation [ref=f12e58]:
+      - link "D Dashboard" [ref=f12e59] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=f12e60]: D
+        - text: Dashboard
+      - link "C Citas" [ref=f12e61] [cursor=pointer]:
+        - /url: /dashboard/agenda
+        - generic [ref=f12e62]: C
+        - text: Citas
+      - generic [ref=f12e63]:
+        - generic [ref=f12e64]: U
+        - text: Clientes
+        - generic [ref=f12e65]: próxim.
+      - link "S Servicios" [ref=f12e66] [cursor=pointer]:
+        - /url: /servicios
+        - generic [ref=f12e67]: S
+        - text: Servicios
+      - generic [ref=f12e68]:
+        - generic [ref=f12e69]: R
+        - text: Reportes
+        - generic [ref=f12e70]: próxim.
+    - generic [ref=f12e71]: qa-client-t35@emulator.invalidCliente
+  - main [ref=f12e73]:
+    - generic [ref=f12e74]:
+      - button "Toggle sidebar" [ref=f12e75] [cursor=pointer]: ☰
+      - img "Dashboard" [ref=f12e77]
+      - generic [ref=f12e78]:
+        - strong [ref=f12e79]: Dashboard
+        - text: Resumen y actividad
+    - generic [ref=f12e80]:
+      - generic [ref=f12e81]:
+        - generic [ref=f12e82]:
+          - generic [ref=f12e83]: Citas Hoy
+          - generic [ref=f12e84]: "0"
+          - generic [ref=f12e85]: Reservas del día
+        - generic [ref=f12e86]:
+          - generic [ref=f12e87]: Servicios Hoy
+          - generic [ref=f12e88]: "0"
+          - generic [ref=f12e89]: Servicios distintos
+        - generic [ref=f12e90]:
+          - generic [ref=f12e91]: Reservas Totales
+          - generic [ref=f12e92]: "0"
+          - generic [ref=f12e93]: Últimas 20
+      - heading "Reservas recientes" [level=3] [ref=f12e94]
+      - paragraph [ref=f12e95]: No hay reservas visibles.
+      - list

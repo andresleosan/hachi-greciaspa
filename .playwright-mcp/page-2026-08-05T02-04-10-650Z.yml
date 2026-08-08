@@ -1,0 +1,113 @@
+- main [ref=f7e4]:
+  - generic [ref=f7e5]:
+    - generic [ref=f7e6]:
+      - generic [ref=f7e7]:
+        - link "Volver al dashboard" [ref=f7e8] [cursor=pointer]:
+          - /url: /dashboard
+        - paragraph [ref=f7e9]: Operación diaria
+        - heading "Agenda diaria" [level=1] [ref=f7e10]
+        - paragraph [ref=f7e11]: Organizá las reservas del spa en una sola vista.
+      - generic [ref=f7e12]:
+        - generic [ref=f7e13]: Fecha seleccionada
+        - textbox "Fecha seleccionada" [ref=f7e14]: 2026-08-04
+    - region "Filtros de agenda" [ref=f7e15]:
+      - generic [ref=f7e16]:
+        - generic [ref=f7e17]: Servicio
+        - combobox "Servicio" [ref=f7e18] [cursor=pointer]:
+          - option "Todos los servicios" [selected]
+          - option "QA Sin terapeuta"
+          - option "Spa Day"
+      - generic [ref=f7e19]:
+        - generic [ref=f7e20]: Terapeuta
+        - combobox "Terapeuta" [ref=f7e21] [cursor=pointer]:
+          - option "Todas" [selected]
+          - option "Alberto González (activa)"
+          - option "Daniela Padilla (activa)"
+          - option "Harold Salcedo (activa)"
+          - option "QA Empleado T3.5 Editado (inactiva)"
+          - option "Sin terapeuta"
+      - paragraph [ref=f7e22]: 7 reservas para 2026-08-04
+    - region [ref=f7e23]:
+      - generic [ref=f7e24]:
+        - generic [ref=f7e25]:
+          - paragraph [ref=f7e26]: Cola de asignación
+          - heading "Sin terapeuta asignado" [level=2] [ref=f7e27]
+        - generic [ref=f7e28]: 2 reservas
+      - list [ref=f7e29]:
+        - listitem [ref=f7e30]:
+          - button "QA Sin terapeuta QA Client T3.5 · 10:00" [ref=f7e31] [cursor=pointer]:
+            - strong [ref=f7e32]: QA Sin terapeuta
+            - generic [ref=f7e33]: QA Client T3.5 · 10:00
+        - listitem [ref=f7e34]:
+          - button "Spa Day QA Client T3.5 · 11:00" [ref=f7e35] [cursor=pointer]:
+            - strong [ref=f7e36]: Spa Day
+            - generic [ref=f7e37]: QA Client T3.5 · 11:00
+    - region [ref=f7e38]:
+      - generic [ref=f7e39]:
+        - generic [ref=f7e40]:
+          - paragraph [ref=f7e41]: 08:00 - 20:00
+          - heading "Reservas del día" [level=2] [ref=f7e42]
+        - generic [ref=f7e43]: Seleccioná una reserva para ver el detalle
+      - region "Línea de tiempo de reservas" [ref=f7e44]:
+        - generic [ref=f7e45]:
+          - generic [ref=f7e46]:
+            - generic [ref=f7e47]: 08:00
+            - generic [ref=f7e48]: 08:30
+            - generic [ref=f7e49]: 09:00
+            - generic [ref=f7e50]: 09:30
+            - generic [ref=f7e51]: 10:00
+            - generic [ref=f7e52]: 10:30
+            - generic [ref=f7e53]: 11:00
+            - generic [ref=f7e54]: 11:30
+            - generic [ref=f7e55]: 12:00
+            - generic [ref=f7e56]: 12:30
+            - generic [ref=f7e57]: 13:00
+            - generic [ref=f7e58]: 13:30
+            - generic [ref=f7e59]: 14:00
+            - generic [ref=f7e60]: 14:30
+            - generic [ref=f7e61]: 15:00
+            - generic [ref=f7e62]: 15:30
+            - generic [ref=f7e63]: 16:00
+            - generic [ref=f7e64]: 16:30
+            - generic [ref=f7e65]: 17:00
+            - generic [ref=f7e66]: 17:30
+            - generic [ref=f7e67]: 18:00
+            - generic [ref=f7e68]: 18:30
+            - generic [ref=f7e69]: 19:00
+            - generic [ref=f7e70]: 19:30
+          - generic [ref=f7e71]:
+            - button "Ver Spa Day a las 09:00. Daniela Padilla" [ref=f7e72] [cursor=pointer]:
+              - strong [ref=f7e73]: Spa Day
+              - generic [ref=f7e74]: QA Client T3.5
+              - generic [ref=f7e75]: Daniela Padilla
+              - generic [ref=f7e76]: 09:00 · Pendiente
+            - button "Ver Spa Day a las 09:00. Alberto González" [ref=f7e77] [cursor=pointer]:
+              - strong [ref=f7e78]: Spa Day
+              - generic [ref=f7e79]: QA Client T3.5
+              - generic [ref=f7e80]: Alberto González
+              - generic [ref=f7e81]: 09:00 · Pendiente
+            - button "Ver QA Sin terapeuta a las 10:00. Sin terapeuta asignado" [ref=f7e82] [cursor=pointer]:
+              - strong [ref=f7e83]: QA Sin terapeuta
+              - generic [ref=f7e84]: QA Client T3.5
+              - generic [ref=f7e85]: Sin terapeuta asignado
+              - generic [ref=f7e86]: 10:00 · Pendiente
+            - button "Ver Spa Day a las 11:00. Sin terapeuta asignado" [ref=f7e87] [cursor=pointer]:
+              - strong [ref=f7e88]: Spa Day
+              - generic [ref=f7e89]: QA Client T3.5
+              - generic [ref=f7e90]: Sin terapeuta asignado
+              - generic [ref=f7e91]: 11:00 · Pendiente
+            - button "Ver Spa Day a las 11:00. Alberto González" [ref=f7e92] [cursor=pointer]:
+              - strong [ref=f7e93]: Spa Day
+              - generic [ref=f7e94]: QA Client T3.5
+              - generic [ref=f7e95]: Alberto González
+              - generic [ref=f7e96]: 11:00 · Pendiente
+            - button "Ver Spa Day a las 11:00. Daniela Padilla" [ref=f7e97] [cursor=pointer]:
+              - strong [ref=f7e98]: Spa Day
+              - generic [ref=f7e99]: QA Client T3.5
+              - generic [ref=f7e100]: Daniela Padilla
+              - generic [ref=f7e101]: 11:00 · Pendiente
+            - button "Ver Spa Day a las 11:00. Harold Salcedo" [ref=f7e102] [cursor=pointer]:
+              - strong [ref=f7e103]: Spa Day
+              - generic [ref=f7e104]: QA Client T3.5
+              - generic [ref=f7e105]: Harold Salcedo
+              - generic [ref=f7e106]: 11:00 · Pendiente

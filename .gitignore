@@ -17,10 +17,6 @@ serviceAccountKey.json
 .clasprc.json
 .firebase/
 firebase-debug.log
-firestore-debug.log
-emul.err
-emul.out
-emul.pid
 
 # Dependencias e instalación
 node_modules/
@@ -34,9 +30,6 @@ __pycache__/
 dist/
 build/
 out/
-functions/lib/
-functions/.firebase/
-functions/.runtimeconfig.json
 *.log
 coverage/
 
@@ -55,20 +48,5 @@ Thumbs.db
 *.sqlite3
 *.db
 
-# Graphify output
-graphify-out/
-
-# Playwright MCP temp
-.playwright-mcp/
-
-# QA visual screenshots (temporales, regenerables)
-qa-*.jpeg
-qa-*.png
-
 # Backups que dejan los scripts de la agencia al actualizar
 *.bak-*
-backfill-empleado-id-manifest*.json
-
-# Worktrees locales de desarrollo aislado
-.worktrees/
-.vercel

@@ -1,7 +1,7 @@
 # Release Preflight
 
-Fecha: 2026-08-06T04:22:48.564Z
-Commit: 38220634c9e207af4cf7b033fcd3f64745fc915c
+Fecha: 2026-08-08T03:12:49.660Z
+Commit: 16b11b6a4e270e8ff6d47ea78db5b5044e3c26a7
 Resultado local: PASS_WITH_WARNINGS
 
 ## Checks locales
@@ -14,7 +14,7 @@ Resultado local: PASS_WITH_WARNINGS
 | functions typecheck | required | 0 | PASS |
 | functions build | required | 0 | PASS |
 | diff check | required | 0 | PASS |
-| client audit | audit | 1 | WARN |
+| client audit | audit | 0 | PASS |
 | functions audit | audit | 0 | PASS |
 
 ## Gates de produccion
@@ -33,22 +33,7 @@ Resultado local: PASS_WITH_WARNINGS
 ### client audit
 
 ```text
-# npm audit report
-
-react-router  7.12.0 - 8.2.0
-Severity: high
-React Router: RSC Mode CSRF Bypass Allows Action Execution Before 400 Response - https://github.com/advisories/GHSA-qwww-vcr4-c8h2
-fix available via `npm audit fix --force`
-Will install react-router-dom@7.11.0, which is a breaking change
-node_modules/react-router
-  react-router-dom  >=7.12.0-pre.0
-  Depends on vulnerable versions of react-router
-  node_modules/react-router-dom
-
-2 high severity vulnerabilities
-
-To address all issues (including breaking changes), run:
-  npm audit fix --force
+found 0 vulnerabilities
 
 ```
 

@@ -1,4 +1,5 @@
-import { Resend } from 'resend'
+import { createHash } from 'node:crypto'
+import type { Resend } from 'resend'
 
 import type {
   ConfirmationEmailInput,
@@ -9,6 +10,7 @@ import { renderConfirmationHtml } from '../templates/confirmation.js'
 import { renderReminderHtml } from '../templates/reminder.js'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const EMAIL_REQUEST_TIMEOUT_MS = 15_000
 
 export class EmailProviderError extends Error {
   constructor(message: string, public readonly retryable: boolean) {
@@ -94,10 +96,15 @@ function providerFailure(
   statusCode: number | null | undefined,
   error?: unknown,
 ): EmailProviderError {
+  const errorName =
+    typeof error === 'object' && error !== null && 'name' in error && typeof error.name === 'string'
+      ? error.name
+      : ''
   const retryable =
     statusCode === null ||
     statusCode === 429 ||
     (statusCode !== undefined && statusCode >= 500) ||
+    (statusCode === 409 && errorName === 'concurrent_idempotent_requests') ||
     (statusCode === undefined && (isTimeout(error) || isNetworkError(error)))
 
   return new EmailProviderError(
@@ -106,6 +113,27 @@ function providerFailure(
       : `Email provider request failed with status ${statusCode}`,
     retryable,
   )
+}
+
+function normalizeIdempotencyKey(value: string): string {
+  const normalized = value.trim()
+  if (normalized.length <= 256) return normalized
+  return createHash('sha256').update(normalized).digest('hex')
+}
+
+async function withRequestTimeout<T>(request: Promise<T>): Promise<T> {
+  let timeout: ReturnType<typeof setTimeout> | undefined
+  const timeoutRequest = new Promise<never>((_, reject) => {
+    timeout = setTimeout(() => {
+      reject(Object.assign(new Error('Email provider request timed out'), { code: 'ETIMEDOUT' }))
+    }, EMAIL_REQUEST_TIMEOUT_MS)
+  })
+
+  try {
+    return await Promise.race([request, timeoutRequest])
+  } finally {
+    if (timeout !== undefined) clearTimeout(timeout)
+  }
 }
 
 function suppressResendErrorLogging(resend: Resend): void {
@@ -121,8 +149,16 @@ export function createResendProvider(secret: string): TransactionalEmailProvider
     throw new EmailProviderError('Email provider secret is required', false)
   }
 
-  const resend = new Resend(secret)
-  suppressResendErrorLogging(resend)
+  let resendPromise: Promise<Resend> | undefined
+
+  async function getResend(): Promise<Resend> {
+    resendPromise ??= import('resend').then(({ Resend: ResendClient }) => {
+      const resend = new ResendClient(secret)
+      suppressResendErrorLogging(resend)
+      return resend
+    })
+    return resendPromise
+  }
 
   async function sendEmail(
     input: ReminderEmailInput,
@@ -130,25 +166,30 @@ export function createResendProvider(secret: string): TransactionalEmailProvider
     render: (value: ReminderEmailInput) => string,
   ): Promise<{ providerMessageId?: string }> {
     validateInput(input)
+    const resend = await getResend()
 
     try {
-      const result = await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? 'reservas@hachi-greciaspa.com',
-        to: input.to,
-        subject,
-        html: render(input),
-        headers: {
-          'Idempotency-Key': input.idempotencyKey,
-        },
-      })
+      const result = await withRequestTimeout(
+        resend.emails.send(
+          {
+            from: process.env.RESEND_FROM_EMAIL ?? 'reservas@hachi-greciaspa.com',
+            to: input.to,
+            subject,
+            html: render(input),
+          },
+          { idempotencyKey: normalizeIdempotencyKey(input.idempotencyKey) },
+        ),
+      )
 
       if (result.error) {
         throw providerFailure(statusCodeOf(result.error), result.error)
       }
 
-      return result.data?.id
-        ? { providerMessageId: result.data.id }
-        : {}
+      if (!result.data?.id) {
+        throw new EmailProviderError('Email provider returned no message id', true)
+      }
+
+      return { providerMessageId: result.data.id }
     } catch (error) {
       if (error instanceof EmailProviderError) {
         throw error

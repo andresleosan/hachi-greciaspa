@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../config/contact'
 import { SCHEDULE, TEAM, FAQS } from './data'
 import Reveal from './Reveal'
 
@@ -103,9 +104,15 @@ export function CTASectionLuxe() {
           <Link className="sl-btn sl-btn--primary" to="/reservar">
             Agendar cita ahora
           </Link>
-          <Link className="sl-btn" to="/contacto">
-            Escribirnos
-          </Link>
+          <a
+            className="sl-btn"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Escribir por WhatsApp al ${WHATSAPP_DISPLAY}`}
+          >
+            Escribir por WhatsApp
+          </a>
         </div>
         <p className="sl-cta-meta">Lun – Dom · 08:00 am – 07:00 pm</p>
       </div>

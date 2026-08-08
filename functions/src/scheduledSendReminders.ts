@@ -1,4 +1,3 @@
-import { formatInTimeZone } from 'date-fns-tz'
 import { getFirestore, Timestamp, type Firestore } from 'firebase-admin/firestore'
 import { defineSecret } from 'firebase-functions/params'
 import { onSchedule } from 'firebase-functions/v2/scheduler'
@@ -12,6 +11,7 @@ import {
   isReminderDue,
   reminderDocId,
 } from './reminders.js'
+import { formatInTimeZone } from './timeZone.js'
 import type { EmailProvider, ReminderRecord, ReservationForReminder } from './types.js'
 
 const TIME_ZONE = 'America/Mexico_City'
@@ -38,6 +38,7 @@ export interface AcquireReminderLockInput {
 
 export interface ReminderStore {
   findConfirmedReservations(dates: readonly string[]): Promise<unknown[]>
+  getConfirmedReservation(reservaId: string): Promise<unknown | null>
   acquireReminderLock(input: AcquireReminderLockInput): Promise<ReminderLockResult>
   updateReminder(
     id: string,
@@ -128,6 +129,32 @@ async function persistReminderState(
   if (!persisted) throw new ReminderStatePersistenceError()
 }
 
+async function releaseReminderLock(
+  store: ReminderStore,
+  reservaId: string,
+  scheduledFor: Date,
+  now: Date,
+  processingToken: string,
+  attempts: number,
+): Promise<void> {
+  await persistReminderState(
+    store,
+    reservaId,
+    {
+      status: 'pending',
+      attempts: Math.max(0, attempts - 1),
+      scheduledFor: timestamp(scheduledFor),
+      lastAttemptAt: null,
+      lastError: null,
+      processingLockUntil: null,
+      processingToken: null,
+      nextAttemptAt: null,
+      updatedAt: timestamp(now),
+    },
+    processingToken,
+  )
+}
+
 async function markFailed(
   store: ReminderStore,
   reservaId: string,
@@ -204,13 +231,43 @@ export async function runReminderOrchestration({
 
     if (lockResult.status !== 'acquired') continue
 
+    const currentReservation = await store.getConfirmedReservation(candidate.id)
+    if (!isValidReservation(currentReservation)) {
+      await releaseReminderLock(
+        store,
+        candidate.id,
+        appointment,
+        now,
+        lockResult.processingToken,
+        lockResult.attempts,
+      )
+      continue
+    }
+
+    const currentAppointment = getAppointmentInstant(
+      currentReservation.date,
+      currentReservation.timeSlot,
+      TIME_ZONE,
+    )
+    if (Number.isNaN(currentAppointment.getTime()) || !isReminderDue(currentAppointment, now)) {
+      await releaseReminderLock(
+        store,
+        candidate.id,
+        currentAppointment,
+        now,
+        lockResult.processingToken,
+        lockResult.attempts,
+      )
+      continue
+    }
+
     const emailInput = {
-      to: candidate.userEmail as string,
-      recipientName: candidate.userName?.trim() || 'Cliente',
-      serviceName: candidate.serviceName.trim(),
-      date: candidate.date,
-      timeSlot: candidate.timeSlot,
-      idempotencyKey: reminderDocId(candidate.id),
+      to: currentReservation.userEmail as string,
+      recipientName: currentReservation.userName?.trim() || 'Cliente',
+      serviceName: currentReservation.serviceName.trim(),
+      date: currentReservation.date,
+      timeSlot: currentReservation.timeSlot,
+      idempotencyKey: reminderDocId(currentReservation.id),
     }
 
     let providerMessageId: string | null
@@ -233,13 +290,13 @@ export async function runReminderOrchestration({
           : null,
       }
       if (!retryable) patch.attempts = 3
-      await persistReminderState(store, candidate.id, patch, lockResult.processingToken)
+      await persistReminderState(store, currentReservation.id, patch, lockResult.processingToken)
       continue
     }
 
     await persistReminderState(
       store,
-      candidate.id,
+      currentReservation.id,
       {
         status: 'sent',
         sentAt: nowTimestamp,
@@ -265,6 +322,12 @@ function firestoreReminderStore(db: Firestore): ReminderStore {
         .get()
 
       return snapshot.docs.map((document) => ({ ...document.data(), id: document.id }))
+    },
+
+    async getConfirmedReservation(reservaId) {
+      const snapshot = await db.collection('reservas').doc(reservaId).get()
+      if (!snapshot.exists || snapshot.data()?.status !== 'confirmed') return null
+      return { ...snapshot.data(), id: snapshot.id }
     },
 
     async acquireReminderLock(input) {

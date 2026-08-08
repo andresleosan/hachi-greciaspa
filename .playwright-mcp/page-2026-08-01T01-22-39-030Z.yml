@@ -1,0 +1,59 @@
+- generic [ref=f5e4]:
+  - banner [ref=f5e5]:
+    - generic [ref=f5e6]:
+      - generic [ref=f5e7]:
+        - generic [ref=f5e8]: HG
+        - generic [ref=f5e9]:
+          - strong [ref=f5e10]: Hachi & Grecia
+          - generic [ref=f5e11]: Spa Canino
+      - navigation "Main navigation" [ref=f5e12]:
+        - link "Inicio" [ref=f5e13] [cursor=pointer]:
+          - /url: /
+        - link "Servicios" [ref=f5e14] [cursor=pointer]:
+          - /url: /servicios
+        - link "Precios" [ref=f5e15] [cursor=pointer]:
+          - /url: /precios
+        - link "Equipo" [ref=f5e16] [cursor=pointer]:
+          - /url: /equipo
+        - link "Galería" [ref=f5e17] [cursor=pointer]:
+          - /url: /galeria
+        - link "Contacto" [ref=f5e18] [cursor=pointer]:
+          - /url: /contacto
+      - generic [ref=f5e19]:
+        - link "Iniciar sesión" [ref=f5e20] [cursor=pointer]:
+          - /url: /login
+        - link "Agendar cita" [ref=f5e21] [cursor=pointer]:
+          - /url: /reservar
+  - main [ref=f5e22]:
+    - generic [ref=f5e23]:
+      - generic [ref=f5e24]:
+        - heading "Iniciar sesión" [level=2] [ref=f5e25]
+        - paragraph [ref=f5e26]: Accede con tu cuenta para gestionar reservas y clientes.
+      - generic [ref=f5e28]:
+        - generic [ref=f5e29]:
+          - generic [ref=f5e30]: Correo
+          - textbox [ref=f5e31]
+        - generic [ref=f5e32]:
+          - generic [ref=f5e33]: Contraseña
+          - textbox [ref=f5e34]
+        - button "Entrar" [ref=f5e36] [cursor=pointer]
+  - contentinfo [ref=f5e37]:
+    - generic [ref=f5e38]:
+      - generic [ref=f5e39]:
+        - strong [ref=f5e40]: Hachi & Grecia Spa
+        - paragraph [ref=f5e41]: "Contacto: contacto@hachigreciasp.com — +52 55 1234 5678"
+      - generic [ref=f5e42]:
+        - link "Términos" [ref=f5e43] [cursor=pointer]:
+          - /url: "#"
+        - link "Privacidad" [ref=f5e44] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f5e45]:
+        - link "Servicios" [ref=f5e46] [cursor=pointer]:
+          - /url: "#"
+        - link "Equipo" [ref=f5e47] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f5e48]:
+        - link "Ubicación" [ref=f5e49] [cursor=pointer]:
+          - /url: "#"
+        - link "Horario" [ref=f5e50] [cursor=pointer]:
+          - /url: "#"

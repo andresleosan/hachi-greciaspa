@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PublicLuxeShell from '../components/PublicLuxeShell'
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../config/contact'
 import { firebaseDb } from '../services/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
@@ -83,6 +84,15 @@ export default function Contacto() {
               <div className="map-pin"></div>
             </div>
             <p>Estamos en Roma Norte, CDMX</p>
+            <a
+              className="sl-btn sl-btn--primary"
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Contactar por WhatsApp al ${WHATSAPP_DISPLAY}`}
+            >
+              WhatsApp: {WHATSAPP_DISPLAY}
+            </a>
 
             <div id="horarios">
               <h2>Horarios</h2>

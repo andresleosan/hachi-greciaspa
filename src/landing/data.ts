@@ -18,16 +18,30 @@ export const PRICING_SPA = {
 }
 
 export const EXTRAS_LIST = [
-  { name: 'Aromaterapia (aceites esenciales)', price: '$140' },
-  { name: 'Mascarilla restauración/nutrición', price: '$180' },
-  { name: 'Mascarilla hidratación/brillo', price: '$180' },
+  { name: 'Aromaterapia (shampoo de aceites esenciales)', price: '$140' },
+  { name: 'Mascarilla restauración crecimiento saludable y nutrición capilar', price: '$180' },
+  { name: 'Mascarilla hidratación, pelaje brillante y fácil de peinar', price: '$180' },
   { name: 'Baño Prevención Bichos (Antipulgas)', price: '$140' },
   { name: 'Corte de uñas', price: '$70' },
   { name: 'Limpieza de dientes', price: '$100' },
-  { name: 'Deslanado / Desanudar', price: 'Variable' },
+  { name: 'Deslanado/Desanudar', price: 'Variable' },
   { name: 'Grooming (Spa + corte)', price: 'Variable' },
   { name: 'Pipeta Antipulgas', price: 'Variable' },
 ]
+
+export const COMMERCIAL_NOTES = [
+  'Nuestros productos son libres de sulfatos y parabenos, hipoalergénicos y cruelty free.',
+  'Espacio libre de jaulas.',
+  'Precios sujetos a cambio sin previo aviso, consulta términos y condiciones al agendar.',
+  'Afiliados Hexalud obtienen 10% de descuento en cualquier servicio.',
+]
+
+export const SERVICE_PRICE_LABELS: Record<string, string> = {
+  'spa-day': 'Desde $240',
+  grooming: 'Variable',
+  guarderia: '$250/día · $3,500/mes',
+  pension: '$300-$380/noche',
+}
 
 export const SERVICES = [
   {
@@ -48,14 +62,14 @@ export const SERVICES = [
     icon: '🏠',
     title: 'Guardería',
     desc: 'Tu peludo cuidado mientras trabajas. Plan mensual o eventual con alimentación, paseos y supervisión constante.',
-    price: '$3,500 /mes',
+    price: SERVICE_PRICE_LABELS.guarderia,
     note: 'Eventual: $250/día · Lun – Vie · 08:00 am – 06:00 pm',
   },
   {
     icon: '🌙',
     title: 'Pensión',
     desc: 'Alojamiento nocturno con todas las comodidades. Tu mascota como en casa.',
-    price: '$300 /noche',
+    price: SERVICE_PRICE_LABELS.pension,
     note: 'Temporada baja · Temporada alta: $380/noche',
   },
   {

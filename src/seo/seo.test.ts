@@ -25,4 +25,13 @@ describe('SEO route metadata', () => {
       indexable: false,
     })
   })
+
+  it('describes the public pricing and WhatsApp contact channels', () => {
+    expect(getSeoConfig('/precios').description).toBe(
+      'Consulta el tarifario de Spa Day, grooming, guardería, pensión y extras en Hachi & Grecia Spa, Roma Norte, CDMX. Pregunta por WhatsApp por precios variables.',
+    )
+    expect(getSeoConfig('/contacto').description).toBe(
+      'Encuentra Hachi & Grecia Spa en Roma Norte, CDMX. Consulta horarios y contáctanos por WhatsApp.',
+    )
+  })
 })

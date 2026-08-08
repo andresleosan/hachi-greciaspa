@@ -49,12 +49,14 @@ const event = {
   data: {
     data: () => ({
       id: 'reservation-1',
+      userId: 'client-1',
       status: 'pending',
       userEmail: 'cliente@example.com',
       userName: 'Ana',
       serviceName: 'Baño y corte',
       date: '2026-08-20',
       timeSlot: '10:30',
+      createdBy: 'client',
       empleadoId: null,
     }),
   },
@@ -96,6 +98,30 @@ describe('onReservaConfirmationCreated handler', () => {
 
     expect(sendConfirmationEmail).not.toHaveBeenCalled()
     expect(db.documents.size).toBe(0)
+  })
+
+  it('does not send confirmation for a non-client pending reservation', async () => {
+    const db = new TransactionFirestoreFake()
+    const sendConfirmationEmail = vi.fn()
+    const confirmedEvent = {
+      ...event,
+      data: {
+        data: () => ({ ...event.data?.data(), status: 'confirmed' }),
+      },
+    }
+
+    await onReservaConfirmationCreatedHandler(
+      confirmedEvent,
+      db as unknown as Firestore,
+      'resend-test-secret',
+      () => ({ sendConfirmationEmail }),
+    )
+
+    expect(sendConfirmationEmail).not.toHaveBeenCalled()
+    expect(db.documents.get('confirmaciones/confirmation-reservation-1')).toMatchObject({
+      status: 'failed',
+      lastError: 'Invalid confirmation data',
+    })
   })
 
   it('leaves assignment fields untouched while sending the confirmation', async () => {

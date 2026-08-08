@@ -35,6 +35,7 @@ function reservation(
 
 class MemoryReminderStore implements ReminderStore {
   reservations: unknown[] = []
+  currentReservation: unknown = undefined
   records = new Map<string, ReminderRecord>()
   updates: Array<{ id: string; patch: Partial<ReminderRecord> }> = []
   queriedDates: readonly string[] = []
@@ -44,6 +45,17 @@ class MemoryReminderStore implements ReminderStore {
   async findConfirmedReservations(dates: readonly string[]) {
     this.queriedDates = dates
     return this.reservations
+  }
+
+  async getConfirmedReservation(id: string) {
+    if (this.currentReservation !== undefined) return this.currentReservation
+    return this.reservations.find(
+      (candidate) =>
+        typeof candidate === 'object' &&
+        candidate !== null &&
+        'id' in candidate &&
+        candidate.id === id,
+    ) ?? null
   }
 
   async acquireReminderLock(input: Parameters<ReminderStore['acquireReminderLock']>[0]) {
@@ -253,6 +265,38 @@ describe('scheduled reminder orchestration', () => {
 
     expect(sends).toBe(0)
     expect(store.records.size).toBe(0)
+  })
+
+  it('rechecks the reservation after locking and skips stale or rescheduled data', async () => {
+    for (const currentReservation of [
+      reservation({ status: 'cancelled' }),
+      reservation({ date: '2026-08-05' }),
+    ]) {
+      const store = new MemoryReminderStore()
+      store.reservations = [reservation()]
+      store.currentReservation = currentReservation
+      let sends = 0
+
+      await runReminderOrchestration({
+        store,
+        secret: 'resend-test-secret',
+        now: NOW,
+        providerFactory: () => ({
+          sendReminderEmail: async () => {
+            sends += 1
+            return {}
+          },
+        }),
+      })
+
+      expect(sends).toBe(0)
+      expect(store.records.get('reservation-1')).toMatchObject({
+        status: 'pending',
+        attempts: 0,
+        processingLockUntil: null,
+        processingToken: null,
+      })
+    }
   })
 
   it('rejects missing email and service data before calling the provider', async () => {

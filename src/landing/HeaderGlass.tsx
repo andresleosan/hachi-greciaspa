@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { WHATSAPP_DISPLAY, WHATSAPP_URL } from '../config/contact'
 
 /** Header de vidrio esmerilado — se vuelve opaco con el scroll. */
 
@@ -33,6 +34,15 @@ export default function HeaderGlass() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <a
+            className="sl-btn sl-btn--ghost sl-header-whatsapp"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Escribir por WhatsApp al ${WHATSAPP_DISPLAY}`}
+          >
+            WhatsApp
+          </a>
           <Link className="sl-btn sl-btn--ghost sl-header-login" to="/login">Iniciar sesión</Link>
           <Link className="sl-btn sl-btn--primary sl-header-cta" to="/reservar">Agendar cita</Link>
         </div>

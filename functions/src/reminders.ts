@@ -1,4 +1,4 @@
-import { fromZonedTime } from 'date-fns-tz'
+import { fromZonedTime } from './timeZone.js'
 
 const HOUR_MS = 60 * 60 * 1000
 const MAX_RETRY_DELAY_MS = HOUR_MS

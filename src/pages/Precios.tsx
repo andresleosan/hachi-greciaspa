@@ -1,6 +1,8 @@
 import React from 'react'
 import PublicLuxeShell from '../components/PublicLuxeShell'
 import PricesList from '../components/PricesList'
+import { WHATSAPP_URL } from '../config/contact'
+import { COMMERCIAL_NOTES } from '../landing/data'
 
 export default function Precios() {
   return (
@@ -17,6 +19,17 @@ export default function Precios() {
           </button>
         </header>
         <PricesList />
+        <aside className="sl-contact-info" aria-labelledby="precios-notes-title">
+          <h2 id="precios-notes-title">Antes de agendar</h2>
+          <ul>
+            {COMMERCIAL_NOTES.map((note) => <li key={note}>{note}</li>)}
+          </ul>
+          <p>
+            <a className="sl-btn sl-btn--primary" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+              Consultar por WhatsApp
+            </a>
+          </p>
+        </aside>
       </section>
     </PublicLuxeShell>
   )

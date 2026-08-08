@@ -1,0 +1,52 @@
+- generic [ref=e51]:
+  - complementary [ref=e52]:
+    - generic [ref=e53]:
+      - generic [ref=e54]: HG
+      - generic [ref=e55]:
+        - strong [ref=e56]: Hachi & Grecia
+        - generic [ref=e57]: Admin
+    - navigation [ref=e58]:
+      - link "D Dashboard" [ref=e59] [cursor=pointer]:
+        - /url: /dashboard
+        - generic [ref=e60]: D
+        - text: Dashboard
+      - link "C Citas" [ref=e61] [cursor=pointer]:
+        - /url: /dashboard/agenda
+        - generic [ref=e62]: C
+        - text: Citas
+      - generic [ref=e63]:
+        - generic [ref=e64]: U
+        - text: Clientes
+        - generic [ref=e65]: próxim.
+      - link "S Servicios" [ref=e66] [cursor=pointer]:
+        - /url: /servicios
+        - generic [ref=e67]: S
+        - text: Servicios
+      - generic [ref=e68]:
+        - generic [ref=e69]: R
+        - text: Reportes
+        - generic [ref=e70]: próxim.
+    - generic [ref=e71]: QA Client T3.5Cliente
+  - main [ref=e73]:
+    - generic [ref=e74]:
+      - img "Dashboard" [ref=e76]
+      - generic [ref=e77]:
+        - strong [ref=e78]: Dashboard
+        - text: Resumen y actividad
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - generic [ref=e82]: Citas Hoy
+          - generic [ref=e83]: "0"
+          - generic [ref=e84]: Reservas del día
+        - generic [ref=e85]:
+          - generic [ref=e86]: Servicios Hoy
+          - generic [ref=e87]: "0"
+          - generic [ref=e88]: Servicios distintos
+        - generic [ref=e89]:
+          - generic [ref=e90]: Reservas Totales
+          - generic [ref=e91]: "0"
+          - generic [ref=e92]: Últimas 20
+      - heading "Reservas recientes" [level=3] [ref=e93]
+      - paragraph [ref=e94]: No hay reservas visibles.
+      - list

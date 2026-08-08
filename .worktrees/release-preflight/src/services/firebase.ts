@@ -1,0 +1,89 @@
+import { initializeApp } from 'firebase/app';
+import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+
+// Read runtime env variables injected by Vite. Keep secrets out of source control.
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
+
+// Basic safety: ensure required keys are set in runtime (development will throw if missing)
+if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+  // eslint-disable-next-line no-console
+  console.warn('[firebase] Missing Firebase configuration in environment variables.');
+}
+
+export const firebaseApp = initializeApp(firebaseConfig as any);
+
+let _auth: ReturnType<typeof getAuth> | null = null
+let _db: ReturnType<typeof getFirestore> | null = null
+
+try {
+  _auth = getAuth(firebaseApp)
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.warn('[firebase] auth init failed:', e)
+}
+
+try {
+  _db = getFirestore(firebaseApp)
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.warn('[firebase] firestore init failed:', e)
+}
+
+if (!_auth || !_db) {
+  throw new Error('[firebase] Auth and Firestore could not be initialized.')
+}
+
+export const firebaseAuth = _auth
+export const firebaseDb = _db
+export const firebaseFunctions = getFunctions(firebaseApp)
+
+// App Check (H4): rate limiting server-side via reCAPTCHA v3
+// Requires: VITE_FIREBASE_APP_CHECK_SITE_KEY in .env.local
+// and App Check enabled in Firebase Console → Project Settings → App Check
+const appCheckSiteKey = import.meta.env.VITE_FIREBASE_APP_CHECK_SITE_KEY
+if (appCheckSiteKey && !import.meta.env.VITE_USE_FIREBASE_EMULATOR) {
+  try {
+    initializeAppCheck(firebaseApp, {
+      provider: new ReCaptchaV3Provider(appCheckSiteKey),
+      isTokenAutoRefreshEnabled: true,
+    })
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn('[firebase] App Check init failed:', e)
+  }
+}
+
+// If running with emulators locally, connect the SDKs to them when requested via env
+const useEmulator = import.meta.env.VITE_USE_FIREBASE_EMULATOR === 'true'
+if (useEmulator) {
+  try {
+    // Default emulator host/ports from firebase.json
+    connectAuthEmulator(firebaseAuth, 'http://localhost:9099', { disableWarnings: true })
+  } catch (e) {
+    // ignore
+  }
+
+  try {
+    connectFirestoreEmulator(firebaseDb, 'localhost', 8080)
+  } catch (e) {
+    // ignore
+  }
+
+  try {
+    connectFunctionsEmulator(firebaseFunctions, 'localhost', 5001)
+  } catch (e) {
+    // ignore
+  }
+}
+
+export default firebaseApp;

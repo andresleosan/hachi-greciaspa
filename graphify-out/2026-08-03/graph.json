@@ -1,0 +1,6509 @@
+{
+  "nodes": [
+    {
+      "id": "opencode",
+      "label": "opencode.json",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_schema",
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_model",
+      "label": "model",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_permission",
+      "label": "permission",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_permission_bash",
+      "label": "bash",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_rm_rf",
+      "label": "rm -rf *",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_git_push_force",
+      "label": "git push --force*",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_sudo",
+      "label": "sudo *",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_migrate",
+      "label": "*migrate*",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_prod",
+      "label": "*--prod*",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_cat_env",
+      "label": "cat *.env*",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_cat_secret",
+      "label": "cat *secret*",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_cat_credential",
+      "label": "cat *credential*",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_env",
+      "label": "env",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_printenv",
+      "label": "printenv*",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_bash_history",
+      "label": "history",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L17",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_agent",
+      "label": "agent",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_agent_cronos",
+      "label": "cronos",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_cronos_description",
+      "label": "description",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_cronos_mode",
+      "label": "mode",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L23",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_cronos_model",
+      "label": "model",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_cronos_tools",
+      "label": "tools",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L25",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_tools_write",
+      "label": "write",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_tools_edit",
+      "label": "edit",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L27",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_tools_bash",
+      "label": "bash",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_mcp",
+      "label": "mcp",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_mcp_playwright",
+      "label": "playwright",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_playwright_type",
+      "label": "type",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_playwright_command",
+      "label": "command",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L35",
+      "_origin": "ast"
+    },
+    {
+      "id": "ref_npx",
+      "label": "npx",
+      "file_type": "concept",
+      "source_file": "opencode.json",
+      "source_location": "L35",
+      "_origin": "ast"
+    },
+    {
+      "id": "ref_playwright_mcp_latest",
+      "label": "@playwright/mcp@latest",
+      "file_type": "concept",
+      "source_file": "opencode.json",
+      "source_location": "L35",
+      "_origin": "ast"
+    },
+    {
+      "id": "opencode_playwright_enabled",
+      "label": "enabled",
+      "file_type": "code",
+      "source_file": "opencode.json",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "package",
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_name",
+      "label": "name",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_version",
+      "label": "version",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_description",
+      "label": "description",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_main",
+      "label": "main",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_directories",
+      "label": "directories",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_directories_doc",
+      "label": "doc",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_dev",
+      "label": "dev",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_build",
+      "label": "build",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_preview",
+      "label": "preview",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_test",
+      "label": "test",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_set_admin",
+      "label": "set-admin",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_seed_services",
+      "label": "seed:services",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_scripts_rules_test",
+      "label": "rules:test",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_repository",
+      "label": "repository",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_repository_type",
+      "label": "type",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_repository_url",
+      "label": "url",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_keywords",
+      "label": "keywords",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_author",
+      "label": "author",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_license",
+      "label": "license",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_type",
+      "label": "type",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_bugs",
+      "label": "bugs",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_bugs_url",
+      "label": "url",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_homepage",
+      "label": "homepage",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies",
+      "label": "dependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_date_fns",
+      "label": "date-fns",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "_origin": "ast"
+    },
+    {
+      "id": "date_fns",
+      "label": "date-fns",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_firebase",
+      "label": "firebase",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "firebase",
+      "label": "firebase",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_react",
+      "label": "react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "react",
+      "label": "react",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_react_dom",
+      "label": "react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "react_dom",
+      "label": "react-dom",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_dependencies_react_router_dom",
+      "label": "react-router-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "_origin": "ast"
+    },
+    {
+      "id": "react_router_dom",
+      "label": "react-router-dom",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies",
+      "label": "devDependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_firebase_rules_unit_testing",
+      "label": "@firebase/rules-unit-testing",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "_origin": "ast"
+    },
+    {
+      "id": "firebase_rules_unit_testing",
+      "label": "@firebase/rules-unit-testing",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_tailwindcss_postcss",
+      "label": "@tailwindcss/postcss",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "tailwindcss_postcss",
+      "label": "@tailwindcss/postcss",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_types_react",
+      "label": "@types/react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "_origin": "ast"
+    },
+    {
+      "id": "types_react",
+      "label": "@types/react",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_types_react_dom",
+      "label": "@types/react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L41",
+      "_origin": "ast"
+    },
+    {
+      "id": "types_react_dom",
+      "label": "@types/react-dom",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L41",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_vitejs_plugin_react",
+      "label": "@vitejs/plugin-react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L42",
+      "_origin": "ast"
+    },
+    {
+      "id": "vitejs_plugin_react",
+      "label": "@vitejs/plugin-react",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L42",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_autoprefixer",
+      "label": "autoprefixer",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L43",
+      "_origin": "ast"
+    },
+    {
+      "id": "autoprefixer",
+      "label": "autoprefixer",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L43",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_firebase_admin",
+      "label": "firebase-admin",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L44",
+      "_origin": "ast"
+    },
+    {
+      "id": "firebase_admin",
+      "label": "firebase-admin",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L44",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_firebase_tools",
+      "label": "firebase-tools",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L45",
+      "_origin": "ast"
+    },
+    {
+      "id": "firebase_tools",
+      "label": "firebase-tools",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L45",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_postcss",
+      "label": "postcss",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L46",
+      "_origin": "ast"
+    },
+    {
+      "id": "postcss",
+      "label": "postcss",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L46",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_tailwindcss",
+      "label": "tailwindcss",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L47",
+      "_origin": "ast"
+    },
+    {
+      "id": "tailwindcss",
+      "label": "tailwindcss",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L47",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_typescript",
+      "label": "typescript",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L48",
+      "_origin": "ast"
+    },
+    {
+      "id": "typescript",
+      "label": "typescript",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L48",
+      "_origin": "ast"
+    },
+    {
+      "id": "package_devdependencies_vite",
+      "label": "vite",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L49",
+      "_origin": "ast"
+    },
+    {
+      "id": "vite",
+      "label": "vite",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L49",
+      "_origin": "ast"
+    },
+    {
+      "id": "postcss_config",
+      "label": "postcss.config.cjs",
+      "file_type": "code",
+      "source_file": "postcss.config.cjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app",
+      "label": "App.tsx",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_landingnueva",
+      "label": "LandingNueva",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_servicios",
+      "label": "Servicios",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_precios",
+      "label": "Precios",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_equipo",
+      "label": "Equipo",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_galeria",
+      "label": "Galeria",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_contacto",
+      "label": "Contacto",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_reservar",
+      "label": "Reservar",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_dashboardpage",
+      "label": "DashboardPage",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_login",
+      "label": "Login",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_register",
+      "label": "Register",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_notfound",
+      "label": "NotFound",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_loader",
+      "label": "Loader()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_app_app",
+      "label": "App()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_adminprices",
+      "label": "AdminPrices.tsx",
+      "file_type": "code",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_adminprices_adminprices",
+      "label": "AdminPrices()",
+      "file_type": "code",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_footer",
+      "label": "Footer.tsx",
+      "file_type": "code",
+      "source_file": "src/components/Footer.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_footer_footer",
+      "label": "Footer()",
+      "file_type": "code",
+      "source_file": "src/components/Footer.tsx",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_header",
+      "label": "Header.tsx",
+      "file_type": "code",
+      "source_file": "src/components/Header.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_header_header",
+      "label": "Header()",
+      "file_type": "code",
+      "source_file": "src/components/Header.tsx",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_priceslist",
+      "label": "PricesList.tsx",
+      "file_type": "code",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_priceslist_priceslist",
+      "label": "PricesList()",
+      "file_type": "code",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_protectedroute",
+      "label": "ProtectedRoute.tsx",
+      "file_type": "code",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_protectedroute_props",
+      "label": "Props",
+      "file_type": "code",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_protectedroute_protectedroute",
+      "label": "ProtectedRoute()",
+      "file_type": "code",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_servicecard",
+      "label": "ServiceCard.tsx",
+      "file_type": "code",
+      "source_file": "src/components/ServiceCard.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_servicecard_props",
+      "label": "Props",
+      "file_type": "code",
+      "source_file": "src/components/ServiceCard.tsx",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_components_servicecard_servicecard",
+      "label": "ServiceCard()",
+      "file_type": "code",
+      "source_file": "src/components/ServiceCard.tsx",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_hooks_useauth",
+      "label": "useAuth.tsx",
+      "file_type": "code",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_hooks_useauth_useauth",
+      "label": "useAuth()",
+      "file_type": "code",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_main",
+      "label": "main.tsx",
+      "file_type": "code",
+      "source_file": "src/main.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_contacto",
+      "label": "Contacto.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_contacto_contacto",
+      "label": "Contacto()",
+      "file_type": "code",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_dashboardpage",
+      "label": "DashboardPage.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_dashboardpage_metrics",
+      "label": "Metrics",
+      "file_type": "code",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_dashboardpage_dashboardpage",
+      "label": "DashboardPage()",
+      "file_type": "code",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_equipo",
+      "label": "Equipo.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_equipo_equipo",
+      "label": "Equipo()",
+      "file_type": "code",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_galeria",
+      "label": "Galeria.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_galeria_galeria_items",
+      "label": "GALERIA_ITEMS",
+      "file_type": "code",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_galeria_galeria",
+      "label": "Galeria()",
+      "file_type": "code",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva",
+      "label": "LandingNueva.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_pricing_spa",
+      "label": "PRICING_SPA",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_extras_list",
+      "label": "EXTRAS_LIST",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_services",
+      "label": "SERVICES",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_schedule",
+      "label": "SCHEDULE",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L70",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_team",
+      "label": "TEAM",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L80",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_faqs",
+      "label": "FAQS",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L86",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_pill",
+      "label": "Pill()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L95",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_stat",
+      "label": "Stat()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L104",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_sectiontitle",
+      "label": "SectionTitle()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L113",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_service",
+      "label": "Service",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L122",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_pricingtable",
+      "label": "PricingTable()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L132",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_servicecard",
+      "label": "ServiceCard()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L146",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_schedulerow",
+      "label": "ScheduleRow()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L175",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_teamcard",
+      "label": "TeamCard()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L188",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_faqitem",
+      "label": "FAQItem()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L201",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_topbar",
+      "label": "TopBar()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L219",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_herosection",
+      "label": "HeroSection()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L228",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_servicessection",
+      "label": "ServicesSection()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L255",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_schedulesection",
+      "label": "ScheduleSection()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L271",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_teamsection",
+      "label": "TeamSection()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L286",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_adminaccesssection",
+      "label": "AdminAccessSection()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L299",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_faqsection",
+      "label": "FAQSection()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L325",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_ctasection",
+      "label": "CTASection()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L339",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_landingnueva_landingnueva",
+      "label": "LandingNueva()",
+      "file_type": "code",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L353",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_login",
+      "label": "Login.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_login_login",
+      "label": "Login()",
+      "file_type": "code",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_notfound",
+      "label": "NotFound.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_notfound_notfound",
+      "label": "NotFound()",
+      "file_type": "code",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_precios",
+      "label": "Precios.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_precios_precios",
+      "label": "Precios()",
+      "file_type": "code",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_register",
+      "label": "Register.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_register_register",
+      "label": "Register()",
+      "file_type": "code",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_reservar",
+      "label": "Reservar.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_reservar_servicio",
+      "label": "Servicio",
+      "file_type": "code",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_reservar_status_labels",
+      "label": "STATUS_LABELS",
+      "file_type": "code",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_reservar_reservar",
+      "label": "Reservar()",
+      "file_type": "code",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_servicios",
+      "label": "Servicios.tsx",
+      "file_type": "code",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_servicios_icon_by_category",
+      "label": "ICON_BY_CATEGORY",
+      "file_type": "code",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_servicios_img_by_slug",
+      "label": "IMG_BY_SLUG",
+      "file_type": "code",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L17",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_pages_servicios_servicios",
+      "label": "Servicios()",
+      "file_type": "code",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_auth",
+      "label": "auth.ts",
+      "file_type": "code",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_auth_signin",
+      "label": "signIn()",
+      "file_type": "code",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_auth_register",
+      "label": "register()",
+      "file_type": "code",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_auth_signout",
+      "label": "signOut()",
+      "file_type": "code",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_auth_getuserprofile",
+      "label": "getUserProfile()",
+      "file_type": "code",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L43",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_firebase",
+      "label": "firebase.ts",
+      "file_type": "code",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_firebase_firebaseconfig",
+      "label": "firebaseConfig",
+      "file_type": "code",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_firebase_firebaseapp",
+      "label": "firebaseApp",
+      "file_type": "code",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_firebase_firebaseauth",
+      "label": "firebaseAuth",
+      "file_type": "code",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L45",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_firebase_firebasedb",
+      "label": "firebaseDb",
+      "file_type": "code",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L46",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas",
+      "label": "reservas.ts",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_slottakenerror",
+      "label": "SlotTakenError",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_slottakenerror_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_reservaerror",
+      "label": "ReservaError",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_reservaerror_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_newreservainput",
+      "label": "NewReservaInput",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_assertslotfree",
+      "label": "assertSlotFree()",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L55",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_createreserva",
+      "label": "createReserva()",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L76",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_cancelmyreserva",
+      "label": "cancelMyReserva()",
+      "file_type": "code",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L109",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_ts_docref_adr_0001",
+      "label": "ADR-0001",
+      "file_type": "doc_ref",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L43",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_services_reservas_ts_docref_adr_0002",
+      "label": "ADR-0002",
+      "file_type": "doc_ref",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L105",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_index",
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_precios",
+      "label": "precios.ts",
+      "file_type": "code",
+      "source_file": "src/types/precios.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_precios_priceitem",
+      "label": "PriceItem",
+      "file_type": "code",
+      "source_file": "src/types/precios.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_reserva",
+      "label": "reserva.ts",
+      "file_type": "code",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_reserva_reservastatus",
+      "label": "ReservaStatus",
+      "file_type": "code",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_reserva_reservacreatedby",
+      "label": "ReservaCreatedBy",
+      "file_type": "code",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_reserva_reserva",
+      "label": "Reserva",
+      "file_type": "code",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_reserva_reserva_status_labels",
+      "label": "RESERVA_STATUS_LABELS",
+      "file_type": "code",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L23",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_servicios",
+      "label": "servicios.ts",
+      "file_type": "code",
+      "source_file": "src/types/servicios.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_types_servicios_servicio",
+      "label": "Servicio",
+      "file_type": "code",
+      "source_file": "src/types/servicios.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_utils_ratelimit",
+      "label": "rateLimit.ts",
+      "file_type": "code",
+      "source_file": "src/utils/rateLimit.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_utils_ratelimit_attempts",
+      "label": "attempts",
+      "file_type": "code",
+      "source_file": "src/utils/rateLimit.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_utils_ratelimit_canattempt",
+      "label": "canAttempt()",
+      "file_type": "code",
+      "source_file": "src/utils/rateLimit.ts",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_utils_ratelimit_getremainingms",
+      "label": "getRemainingMs()",
+      "file_type": "code",
+      "source_file": "src/utils/rateLimit.ts",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "src_vite_env_d",
+      "label": "vite-env.d.ts",
+      "file_type": "code",
+      "source_file": "src/vite-env.d.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tailwind_config",
+      "label": "tailwind.config.cjs",
+      "file_type": "code",
+      "source_file": "tailwind.config.cjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva",
+      "label": "e2e-reserva.mjs",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_app",
+      "label": "app",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L42",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_auth",
+      "label": "auth",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L48",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_db",
+      "label": "db",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L51",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_fshost_fsport",
+      "label": "[fsHost, fsPort]",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L52",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_uniqemail",
+      "label": "uniqEmail()",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L55",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_seedprofilefor",
+      "label": "seedProfileFor()",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L59",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_makereservacaller",
+      "label": "makeReservaCaller()",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L64",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_counter",
+      "label": "Counter",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L98",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_counter_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L99",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_counter_run",
+      "label": ".run()",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L100",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L106",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_e2e_reserva_mjs_docref_adr_0001",
+      "label": "ADR-0001",
+      "file_type": "doc_ref",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L67",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_run_rules_tests",
+      "label": "run-rules-tests.mjs",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_run_rules_tests_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_firestore_tests_run_rules_tests_mjs_docref_adr_0002",
+      "label": "ADR-0002",
+      "file_type": "doc_ref",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L86",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_seed_services",
+      "label": "seed-services.mjs",
+      "file_type": "code",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_seed_services_servicios",
+      "label": "SERVICIOS",
+      "file_type": "code",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L36",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_seed_services_precios",
+      "label": "PRECIOS",
+      "file_type": "code",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L81",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_seed_services_loadadmin",
+      "label": "loadAdmin()",
+      "file_type": "code",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L115",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_seed_services_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L133",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_set_admin",
+      "label": "set-admin.js",
+      "file_type": "code",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_set_admin_usage",
+      "label": "usage()",
+      "file_type": "code",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_set_admin_fullpath",
+      "label": "fullPath",
+      "file_type": "code",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "tools_set_admin_key",
+      "label": "key",
+      "file_type": "code",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L35",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig",
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_target",
+      "label": "target",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_usedefineforclassfields",
+      "label": "useDefineForClassFields",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_lib",
+      "label": "lib",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "ref_dom",
+      "label": "DOM",
+      "file_type": "concept",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "ref_esnext",
+      "label": "ESNext",
+      "file_type": "concept",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_allowjs",
+      "label": "allowJs",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_jsx",
+      "label": "jsx",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_module",
+      "label": "module",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_moduleresolution",
+      "label": "moduleResolution",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_ignoredeprecations",
+      "label": "ignoreDeprecations",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_strict",
+      "label": "strict",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_esmoduleinterop",
+      "label": "esModuleInterop",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_skiplibcheck",
+      "label": "skipLibCheck",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_forceconsistentcasinginfilenames",
+      "label": "forceConsistentCasingInFileNames",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_resolvejsonmodule",
+      "label": "resolveJsonModule",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_isolatedmodules",
+      "label": "isolatedModules",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_compileroptions_noemit",
+      "label": "noEmit",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L17",
+      "_origin": "ast"
+    },
+    {
+      "id": "tsconfig_include",
+      "label": "include",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "ref_src",
+      "label": "src",
+      "file_type": "concept",
+      "source_file": "tsconfig.json",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "vercel",
+      "label": "vercel.json",
+      "file_type": "code",
+      "source_file": "vercel.json",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "vercel_rewrites",
+      "label": "rewrites",
+      "file_type": "code",
+      "source_file": "vercel.json",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "vite_config",
+      "label": "vite.config.ts",
+      "file_type": "code",
+      "source_file": "vite.config.ts",
+      "source_location": "L1",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "opencode",
+      "target": "opencode_schema",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode",
+      "target": "opencode_model",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode",
+      "target": "opencode_permission",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission",
+      "target": "opencode_permission_bash",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_rm_rf",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_git_push_force",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_sudo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_migrate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_prod",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_cat_env",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_cat_secret",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_cat_credential",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_env",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_printenv",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_permission_bash",
+      "target": "opencode_bash_history",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode",
+      "target": "opencode_agent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_agent",
+      "target": "opencode_agent_cronos",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_agent_cronos",
+      "target": "opencode_cronos_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_agent_cronos",
+      "target": "opencode_cronos_mode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_agent_cronos",
+      "target": "opencode_cronos_model",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_agent_cronos",
+      "target": "opencode_cronos_tools",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_cronos_tools",
+      "target": "opencode_tools_write",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_cronos_tools",
+      "target": "opencode_tools_edit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_cronos_tools",
+      "target": "opencode_tools_bash",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode",
+      "target": "opencode_mcp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_mcp",
+      "target": "opencode_mcp_playwright",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_mcp_playwright",
+      "target": "opencode_playwright_type",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_mcp_playwright",
+      "target": "opencode_playwright_command",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_playwright_command",
+      "target": "ref_npx",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_playwright_command",
+      "target": "ref_playwright_mcp_latest",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "opencode_mcp_playwright",
+      "target": "opencode_playwright_enabled",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "opencode.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_name",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_version",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_directories",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_directories",
+      "target": "package_directories_doc",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_scripts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_dev",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_build",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_preview",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_test",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_set_admin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_seed_services",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_scripts",
+      "target": "package_scripts_rules_test",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_repository",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_repository",
+      "target": "package_repository_type",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_repository",
+      "target": "package_repository_url",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_keywords",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_author",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_license",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_type",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_bugs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_bugs",
+      "target": "package_bugs_url",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_homepage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_dependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_date_fns",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies_date_fns",
+      "target": "date_fns",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_firebase",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies_firebase",
+      "target": "firebase",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies_react",
+      "target": "react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_react_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies_react_dom",
+      "target": "react_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies",
+      "target": "package_dependencies_react_router_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_dependencies_react_router_dom",
+      "target": "react_router_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package",
+      "target": "package_devdependencies",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_firebase_rules_unit_testing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_firebase_rules_unit_testing",
+      "target": "firebase_rules_unit_testing",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_tailwindcss_postcss",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_tailwindcss_postcss",
+      "target": "tailwindcss_postcss",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_types_react",
+      "target": "types_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_types_react_dom",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_types_react_dom",
+      "target": "types_react_dom",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L41",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_vitejs_plugin_react",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_vitejs_plugin_react",
+      "target": "vitejs_plugin_react",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L42",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_autoprefixer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_autoprefixer",
+      "target": "autoprefixer",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L43",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_firebase_admin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_firebase_admin",
+      "target": "firebase_admin",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L44",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_firebase_tools",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_firebase_tools",
+      "target": "firebase_tools",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_postcss",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_postcss",
+      "target": "postcss",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L46",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_tailwindcss",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_tailwindcss",
+      "target": "tailwindcss",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L47",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_typescript",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_typescript",
+      "target": "typescript",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L48",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies",
+      "target": "package_devdependencies_vite",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "package_devdependencies_vite",
+      "target": "vite",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L49",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_landingnueva",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_servicios",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_precios",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_equipo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_galeria",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_contacto",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_reservar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_dashboardpage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_login",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_register",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_notfound",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_loader",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_app",
+      "target": "src_app_app",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_adminprices",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_adminprices",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_adminprices",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_adminprices",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_adminprices",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_adminprices",
+      "target": "src_types_precios_priceitem",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_adminprices",
+      "target": "src_components_adminprices_adminprices",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/AdminPrices.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_footer",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Footer.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_footer",
+      "target": "src_components_footer_footer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Footer.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_header",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Header.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_header",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Header.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_header",
+      "target": "src_components_header_header",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/Header.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_priceslist",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_priceslist",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_priceslist",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_priceslist",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_priceslist",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_priceslist",
+      "target": "src_types_precios_priceitem",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_priceslist",
+      "target": "src_components_priceslist_priceslist",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/PricesList.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_protectedroute",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_protectedroute",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_protectedroute",
+      "target": "src_hooks_useauth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_protectedroute",
+      "target": "src_hooks_useauth_useauth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_protectedroute",
+      "target": "src_components_protectedroute_props",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_protectedroute",
+      "target": "src_components_protectedroute_protectedroute",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_servicecard",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ServiceCard.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_servicecard",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ServiceCard.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_servicecard",
+      "target": "src_components_servicecard_props",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ServiceCard.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_servicecard",
+      "target": "src_components_servicecard_servicecard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/components/ServiceCard.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth",
+      "target": "src_services_firebase_firebaseauth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth",
+      "target": "ref_firebase_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth",
+      "target": "src_services_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth",
+      "target": "src_services_auth_getuserprofile",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth",
+      "target": "src_hooks_useauth_useauth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_main",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_main",
+      "target": "ref_react_dom_client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_main",
+      "target": "src_app",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_main",
+      "target": "src_styles_index",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "src_pages_contacto_contacto",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_components_protectedroute",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_hooks_useauth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_hooks_useauth_useauth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_components_adminprices",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "ref_date_fns",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_types_reserva_reserva",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_types_reserva_reservastatus",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_types_reserva_reserva_status_labels",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_services_reservas",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_services_reservas_cancelmyreserva",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_pages_dashboardpage_metrics",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_pages_dashboardpage_dashboardpage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_equipo",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_equipo",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_equipo",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_equipo",
+      "target": "src_pages_equipo_equipo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_galeria",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_galeria",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_galeria",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_galeria",
+      "target": "src_pages_galeria_galeria_items",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_galeria",
+      "target": "src_pages_galeria_galeria",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_pricing_spa",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_extras_list",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_services",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_schedule",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_team",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_faqs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_pill",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_stat",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L104",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_sectiontitle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L113",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_service",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L122",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_pricingtable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L132",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_servicecard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_schedulerow",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L175",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_teamcard",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L188",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_faqitem",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L201",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_topbar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L219",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_herosection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L228",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_servicessection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L255",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_schedulesection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L271",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_teamsection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L286",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_adminaccesssection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L299",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_faqsection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L325",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_ctasection",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L339",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_pages_landingnueva_landingnueva",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L353",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_services_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_services_auth_signin",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_utils_ratelimit",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_utils_ratelimit_canattempt",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_utils_ratelimit_getremainingms",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_pages_login_login",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_notfound",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_notfound",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_notfound",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_notfound",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_notfound",
+      "target": "src_pages_notfound_notfound",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "src_components_priceslist",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "src_pages_precios_precios",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_services_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_services_auth_register",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_utils_ratelimit",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_utils_ratelimit_canattempt",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_utils_ratelimit_getremainingms",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_pages_register_register",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "ref_react_router_dom",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_components_protectedroute",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_hooks_useauth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_hooks_useauth_useauth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_services_reservas",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_services_reservas_createreserva",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_services_reservas_slottakenerror",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_services_reservas_reservaerror",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_types_reserva_reservastatus",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_pages_reservar_servicio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_pages_reservar_status_labels",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_pages_reservar_reservar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_header",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_footer",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_priceslist",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_servicecard",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_types_servicios_servicio",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_pages_servicios_icon_by_category",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_pages_servicios_img_by_slug",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_pages_servicios_servicios",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "src_services_firebase_firebaseauth",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "ref_firebase_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "src_services_auth_signin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "src_services_auth_register",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "src_services_auth_signout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_auth",
+      "target": "src_services_auth_getuserprofile",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/auth.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "ref_firebase_app",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "ref_firebase_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "ref_firebase_app_check",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "src_services_firebase_firebaseconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "src_services_firebase_firebaseapp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "src_services_firebase_firebaseauth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_firebase",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/firebase.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_firebase",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_firebase_firebasedb",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_types_index",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_types_reserva_reserva",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_slottakenerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas_slottakenerror",
+      "target": "src_services_reservas_slottakenerror_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_reservaerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas_reservaerror",
+      "target": "src_services_reservas_reservaerror_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_newreservainput",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_assertslotfree",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_createreserva",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_cancelmyreserva",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas_createreserva",
+      "target": "src_services_reservas_assertslotfree",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_ts_docref_adr_0001",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_services_reservas",
+      "target": "src_services_reservas_ts_docref_adr_0002",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "source_file": "src/services/reservas.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_reserva",
+      "relation": "imports_from",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_reserva_reserva",
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_reserva_reservastatus",
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_reserva_reservacreatedby",
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_reserva_reserva_status_labels",
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_precios",
+      "relation": "imports_from",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_precios_priceitem",
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_servicios",
+      "relation": "imports_from",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_servicios_servicio",
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_precios",
+      "target": "src_types_precios_priceitem",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/precios.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_reserva",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_reserva",
+      "target": "src_types_reserva_reservastatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_reserva",
+      "target": "src_types_reserva_reservacreatedby",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_reserva",
+      "target": "src_types_reserva_reserva",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_reserva",
+      "target": "src_types_reserva_reserva_status_labels",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/reserva.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_servicios",
+      "target": "src_types_servicios_servicio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/servicios.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_utils_ratelimit",
+      "target": "src_utils_ratelimit_attempts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/rateLimit.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_utils_ratelimit",
+      "target": "src_utils_ratelimit_canattempt",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/rateLimit.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_utils_ratelimit",
+      "target": "src_utils_ratelimit_getremainingms",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/rateLimit.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "ref_firebase_app",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "ref_firebase_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "ref_firebase_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_app",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_auth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_db",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_fshost_fsport",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_uniqemail",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_seedprofilefor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_makereservacaller",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_counter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L98",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva_counter",
+      "target": "tools_firestore_tests_e2e_reserva_counter_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L99",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva_counter",
+      "target": "tools_firestore_tests_e2e_reserva_counter_run",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L106",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva_main",
+      "target": "tools_firestore_tests_e2e_reserva_uniqemail",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L112",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva_main",
+      "target": "tools_firestore_tests_e2e_reserva_seedprofilefor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L116",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva_main",
+      "target": "tools_firestore_tests_e2e_reserva_makereservacaller",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L123",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva_main",
+      "target": "tools_firestore_tests_e2e_reserva_counter_run",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L128",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_e2e_reserva",
+      "target": "tools_firestore_tests_e2e_reserva_mjs_docref_adr_0001",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/e2e-reserva.mjs",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_run_rules_tests",
+      "target": "ref_firebase_rules_unit_testing",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_run_rules_tests",
+      "target": "ref_fs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_run_rules_tests",
+      "target": "ref_path",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_run_rules_tests",
+      "target": "tools_firestore_tests_run_rules_tests_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_firestore_tests_run_rules_tests",
+      "target": "tools_firestore_tests_run_rules_tests_mjs_docref_adr_0002",
+      "relation": "cites",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/firestore-tests/run-rules-tests.mjs",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services",
+      "target": "ref_fs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services",
+      "target": "ref_process",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services",
+      "target": "tools_seed_services_servicios",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services",
+      "target": "tools_seed_services_precios",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services",
+      "target": "tools_seed_services_loadadmin",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L115",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services",
+      "target": "tools_seed_services_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L133",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services_loadadmin",
+      "target": "ref_firebase_admin",
+      "relation": "imports_from",
+      "context": "import",
+      "deferred": true,
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L117",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services_loadadmin",
+      "target": "ref_firebase_admin_firestore",
+      "relation": "imports_from",
+      "context": "import",
+      "deferred": true,
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L118",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_seed_services_main",
+      "target": "tools_seed_services_loadadmin",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/seed-services.mjs",
+      "source_location": "L147",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_set_admin",
+      "target": "ref_fs",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_set_admin",
+      "target": "ref_path",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_set_admin",
+      "target": "ref_process",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_set_admin",
+      "target": "ref_firebase_admin",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_set_admin",
+      "target": "tools_set_admin_usage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_set_admin",
+      "target": "tools_set_admin_fullpath",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tools_set_admin",
+      "target": "tools_set_admin_key",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tools/set-admin.js",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig",
+      "target": "tsconfig_compileroptions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_target",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_usedefineforclassfields",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_lib",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions_lib",
+      "target": "ref_dom",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions_lib",
+      "target": "ref_esnext",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_allowjs",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_jsx",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_module",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_moduleresolution",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_ignoredeprecations",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_strict",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_esmoduleinterop",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_skiplibcheck",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_forceconsistentcasinginfilenames",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_resolvejsonmodule",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_isolatedmodules",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_noemit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig",
+      "target": "tsconfig_include",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tsconfig_include",
+      "target": "ref_src",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "vercel",
+      "target": "vercel_rewrites",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "vercel.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "vite_config",
+      "target": "ref_vite",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "vite.config.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "vite_config",
+      "target": "ref_vitejs_plugin_react",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "vite.config.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_reserva",
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_precios",
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_types_index",
+      "target": "src_types_servicios",
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types/index.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_main",
+      "target": "src_app_app",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_contacto",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Contacto.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_components_protectedroute_protectedroute",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage",
+      "target": "src_components_adminprices_adminprices",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_equipo",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_equipo",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Equipo.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_galeria",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_galeria",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Galeria.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_landingnueva",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/LandingNueva.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_login",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Login.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_notfound",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_notfound",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/NotFound.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_precios",
+      "target": "src_components_priceslist_priceslist",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Precios.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_register",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Register.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar",
+      "target": "src_components_protectedroute_protectedroute",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_header_header",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_footer_footer",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_priceslist_priceslist",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_servicios",
+      "target": "src_components_servicecard_servicecard",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/pages/Servicios.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_components_protectedroute_protectedroute",
+      "target": "src_hooks_useauth_useauth",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/components/ProtectedRoute.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_hooks_useauth_useauth",
+      "target": "src_services_auth_getuserprofile",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/hooks/useAuth.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_dashboardpage_dashboardpage",
+      "target": "src_hooks_useauth_useauth",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/DashboardPage.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "src_pages_reservar_reservar",
+      "target": "src_hooks_useauth_useauth",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/pages/Reservar.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
