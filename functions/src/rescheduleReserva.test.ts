@@ -16,6 +16,7 @@ type EmployeeDocument = Omit<AssignmentEmployee, 'id'>
 class TransactionFirestoreFake {
   readonly documents = new Map<string, Reservation>()
   readonly updates: Array<{ path: string; data: Reservation }> = []
+  readonly sets: Array<{ path: string; data: Reservation }> = []
   readonly queries: Array<Array<{ field: string; value: unknown }>> = []
   transactionCalls = 0
 
@@ -98,6 +99,10 @@ class TransactionFirestoreFake {
         if (!current) throw new Error('Missing document')
         this.documents.set(reference.path, { ...current, ...data })
         this.updates.push({ path: reference.path, data })
+      },
+      set: (reference: { path: string }, data: Reservation) => {
+        this.documents.set(reference.path, { ...data })
+        this.sets.push({ path: reference.path, data })
       },
     }
 
@@ -492,5 +497,22 @@ describe('rescheduleReservaHandler', () => {
       date: '2026-08-06',
       timeSlot: '12:00',
     })
+  })
+
+  it('writes the destination service/day availability lock with the reservation update', async () => {
+    const firestore = firestoreWithReservation()
+
+    await rescheduleReservaHandler(request(input()), firestore as unknown as Firestore, NOW)
+
+    expect(firestore.sets).toEqual([
+      {
+        path: 'bookingSlotGuards/service-1__2026-08-06',
+        data: expect.objectContaining({
+          serviceId: 'service-1',
+          date: '2026-08-06',
+          updatedAt: expect.anything(),
+        }),
+      },
+    ])
   })
 })

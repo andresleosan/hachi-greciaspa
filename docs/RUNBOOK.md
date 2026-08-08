@@ -21,6 +21,97 @@ El reporte se escribe en `docs/release-preflight.md`. Un preflight local exitoso
 
 El preflight no lee valores de `.env`, claves, tokens ni cuentas de servicio. No ejecutar `npm audit fix --force`; los advisories conocidos se conservan como evidencia para una decisión separada.
 
+## Creación De Reservas Callable
+
+### Contrato Y Controles Locales
+
+El navegador envía únicamente `serviceId`, `date`, `timeSlot`, `mascotaId` y
+`notes` a `createReserva` mediante `httpsCallable`. Functions crea la reserva
+canónica dentro de una transacción y deriva identidad, servicio, duración,
+snapshots, `price: null`, estado `pending` y `createdBy` desde fuentes
+server-side. `firestore.rules` niega el `create` directo de `reservas`.
+
+La callable valida Auth y App Check antes de entrar al handler. Una invocación
+que supera ambas validaciones consume un intento: máximo 3 dentro de 15
+minutos. También exige fecha futura en `America/Mexico_City`, servicio activo,
+mascota propia, máximo 10 reservas `pending`/`confirmed` y ausencia de
+solapamiento por `durationMin`. `cancelled` y `completed` no cuentan para el
+límite activo.
+
+`bookingGuards/{uid}` es privado para Functions/Admin SDK. App Check se omite
+únicamente en el emulador: el cliente usa `VITE_USE_FIREBASE_EMULATOR` y la
+callable usa `FUNCTIONS_EMULATOR`; no se debe convertir ese bypass en una
+configuración de producción.
+
+`bookingSlotGuards/{encodeURIComponent(serviceId)}__{date}` es el lock privado
+de disponibilidad compartido por `createReserva` y `rescheduleReserva`. El
+orden local verificado dentro de la transacción de creación es:
+consumir el guard de cuota, validar la fecha futura, leer el lock del
+servicio/día, leer catálogo y mascota si corresponde, consultar los activos del
+usuario y todos los activos del servicio/día, y escribir el guard de cuota, el
+lock y la reserva en el commit exitoso. `firestore.rules` deniega lectura y
+escritura del lock a clientes. El lock se crea lazy, contiene
+`serviceId`, `date` y `updatedAt`, y no se escribe cuando la reserva es
+rechazada. En `rescheduleReserva`, el lock de destino se lee después de
+validar ownership/estado y antes de la consulta de conflictos; se escribe en
+el commit exitoso antes de actualizar la reserva. Ambas callables usan el
+helper compartido `bookingSlotGuardId`, por lo que una creación y un
+reagendado concurrentes del mismo servicio/día compiten por el mismo path.
+La contención deliberada queda acotada al servicio/día para admitir duraciones
+variables. La consulta de disponibilidad no tiene un límite de documentos
+conocido; el lock no reemplaza una futura estrategia de particionamiento o
+retención.
+
+### Checks Locales
+
+Ejecutar desde la raíz, sin cargar secretos ni cuentas productivas:
+
+```bash
+npm run test:client
+npx tsc --noEmit
+npm run build
+npm run rules:test
+npm --prefix functions test
+npm --prefix functions run typecheck
+npm --prefix functions run build
+npm run qa:local
+```
+
+`npm run rules:test` valida que el cliente no pueda crear `reservas` ni leer o
+escribir `bookingGuards`/`bookingSlotGuards`. `npm --prefix functions test`
+cubre cuota, límite activo, fecha futura, snapshots, mascota, solapamiento,
+concurrencia create/create y concurrencia create/reschedule.
+`npm run qa:local` ejecuta el flujo de creación/cancelación mediante callable
+contra emuladores y no prueba App Check productivo.
+
+Evidencia local fechada 2026-08-07: cliente `103 passed`, rules `74 passed, 0
+failed`, Functions `159 passed, 2 skipped`, typecheck/build de cliente y
+Functions verdes, y `npm run qa:local` con `12 passed, 0 failed`. Esta evidencia
+no autoriza despliegue ni declara production-ready.
+
+### Gates Externos Antes De Producción
+
+Los siguientes puntos no se consideran completados por los checks locales:
+
+- [ ] Firebase Console: habilitar App Check con el proveedor aprobado y
+  verificar rechazo de invocaciones sin token válido en el entorno desplegado.
+- [ ] Billing/Blaze: confirmar la cuenta de facturación y el plan requeridos
+  para Functions.
+- [ ] Budget alert: crear y verificar la alerta aprobada, incluido su alcance y
+  destinatarios.
+- [ ] Secret Manager/Resend: verificar dominio y configurar el secreto
+  `RESEND_API_KEY` sin escribir su valor en repositorio, logs o frontend.
+- [ ] Deploy/autorización: revisar Rules, Functions y cliente con el operador y
+  obtener autorización explícita; este runbook no incluye un comando productivo
+  ejecutable sin esa autorización.
+- [ ] Rollback operativo: revisar el procedimiento, conservar reservas,
+  guards y locks, y confirmar cómo deshabilitar la callable y retirar los
+  índices nuevos sin borrar datos. No se borran documentos de
+  `bookingSlotGuards` durante el rollback.
+- [ ] Browser QA productivo: ejecutar el flujo autenticado de crear/cancelar y
+  verificar App Check, cuota, fecha futura, límite y solapamiento en el entorno
+  desplegado.
+
 ## Empleados Y Asignación Local
 
 ### Prerrequisitos del emulador
@@ -92,12 +183,15 @@ Operador: [completar después de verificar]
 Autorizar producción solo cuando cada punto tenga evidencia y autorización explícita:
 
 - [ ] Dominio propio del spa verificado en Resend, con SPF, DKIM y DMARC configurados según las instrucciones del proveedor; no usar un dominio compartido, personal o de prueba en producción.
+- [ ] App Check habilitado y verificado en Firebase Console; el rechazo de una invocación sin App Check válido está probado en producción.
 - [ ] Secret Manager configurado con el secreto exacto `RESEND_API_KEY`; no colocar su valor en el repositorio, logs o frontend.
+- [ ] Billing/Blaze y budget alert verificados en Google Cloud Console.
 - [x] Evidencia local de build y typecheck registrada abajo.
 - [x] Evidencia local de las pruebas de reglas registrada abajo.
+- [ ] Callable `createReserva` desplegada y autorizada; no usar el bypass del emulador fuera de local.
 - [ ] Revisión de seguridad completada.
-- [ ] QA de navegador completado.
-- [ ] Procedimiento de rollback revisado.
+- [ ] QA de navegador productivo completado, separado de la QA local.
+- [ ] Procedimiento de rollback operativo revisado y ensayado según autorización.
 - [ ] Autorización explícita para producción registrada por el responsable.
 
 El proveedor recomendado es Resend según ADR-004, pero la integración, el dominio, el secreto y el despliegue no están verificados en este runbook.
@@ -117,32 +211,52 @@ Los valores exactos de DNS deben copiarse de las instrucciones vigentes de Verce
 
 Costos de planificación: Vercel Free `$0`, Firebase Spark `$0`, Blaze/Functions `$0–3/mes`, Resend `$0–3/mes`, Cloudflare DNS `$0`; la compra del dominio es independiente. El budget de `$10/mes` aún no está configurado y sus alertas no imponen un límite duro de facturación.
 
-## Evidencia Local — 2026-08-04
+## Evidencia Local — 2026-08-07
 
 Estos resultados pertenecen al repositorio local. No autorizan despliegue ni demuestran que los gates externos estén completados.
 
 ```text
-npm run test:client                    81 passed, 0 failed
+npm run test:client                    103 passed, 0 failed
 npx tsc --noEmit                         PASS
 npm run build                            PASS
-npm run rules:test                       62 passed, 0 failed
-npm --prefix functions test              99 passed, 2 skipped
+npm run rules:test                       74 passed, 0 failed
+npm --prefix functions test              159 passed, 2 skipped
 npm --prefix functions run typecheck     PASS
 npm --prefix functions run build         PASS
 git diff --check                         PASS
 ```
 
-La matriz se ejecutó completa en el worktree de T3.5. Las líneas de denegación que imprime la suite de rules son casos esperados; el proceso terminó con código `0` y reportó cero fallos.
+La matriz se ejecutó completa en el worktree actual. Las líneas de denegación que imprime la suite de rules son casos esperados; el proceso terminó con código `0` y reportó cero fallos.
 
 ## Browser QA Local — Emuladores
+
+### Harness Automatizado
+
+Ejecutar desde la raíz del repositorio:
+
+```bash
+npm run qa:local
+```
+
+El harness arranca Auth, Firestore, Functions Emulator y Vite en `127.0.0.1`, genera cuentas
+efímeras `example.test`, siembra fixtures locales y ejecuta Playwright. Las credenciales solo
+viven en el entorno de los procesos y se elimina el override temporal de `functions/.secret.local`
+al finalizar. No se leen `.env`, cuentas de servicio ni secretos productivos.
+
+Evidencia local del 2026-08-07: **12 passed, 0 failed**, con reporte HTML en
+`qa/reports/local/index.html`. Cubre login admin/cliente, CRUD de empleados, agenda y filtros,
+creación/cancelación de reserva, reagendado mediante callable con preservación/limpieza de
+`empleadoId`, retry de asignación posterior a cancelación, catálogo público de precios/servicios y
+contacto/WhatsApp.
+
+Esta evidencia es exclusivamente contra emuladores. No cierra el gate de browser QA contra
+producción ni autoriza despliegue.
 
 Se intentó QA manual con Auth, Firestore y Functions emulator, datos sembrados localmente y cuentas de prueba creadas en el Auth emulator. Se verificaron: redirección de no-admin, CRUD admin de empleados, persistencia de servicios/turnos tras reload, primer empleado elegible, salto por conflicto, cola sin candidato, filtros todos/empleado/sin terapeuta y scroll horizontal móvil.
 
 Limitaciones observadas:
 
-- La primera recarga posterior a una cancelación conservó temporalmente una reserva en cola; una segunda invocación local de la callable y un reload posterior mostraron la asignación. Repetir este caso antes de release.
-- El reagendado de navegador no pudo completarse de forma reproducible: en la repetición de preservación y limpieza por conflicto, el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED` en Auth/Firestore. Las pruebas de Functions del reagendado sí quedaron verdes, pero eso no sustituye browser QA.
-- La repetición del retry posterior a cancelación tampoco alcanzó el flujo: el mismo proceso de emuladores terminó antes de la verificación. Ambos gates de browser QA quedan explícitamente pendientes.
+- El browser QA local de preservación y limpieza por conflicto pasó de forma estable; esto no sustituye browser QA contra producción.
 - Se observó un `404` de `/favicon.ico`, además de un error transitorio causado por un documento de fixture malformado creado y eliminado exclusivamente en el emulador. No se introdujo cambio de source para corregirlos en esta tarea.
 - No se usaron credenciales, cuentas, servicios ni datos de producción.
 
@@ -156,15 +270,20 @@ Bucket operativo previsto: `gs://hachi-greciaspa-backups/`. Debe tener lifecycle
 
 ### Export manual controlado
 
-Ejecutar solo después de confirmar proyecto, cuenta y permisos. No usar credenciales del repositorio:
+Ejecutar solo después de confirmar proyecto, cuenta, permisos y autorización
+explícita del operador. No usar credenciales del repositorio. Este bloque es un
+procedimiento futuro y no se ejecuta como parte de la verificación local:
 
-```bash
-gcloud config set project hachi-greciaspa
-gcloud firestore export gs://hachi-greciaspa-backups/firestore/YYYY-MM-DDTHH-mm-ssZ --project=hachi-greciaspa
-gcloud storage ls gs://hachi-greciaspa-backups/firestore/YYYY-MM-DDTHH-mm-ssZ/
-```
+Seleccionar el proyecto confirmado `<PROJECT_ID>` y solicitar una exportación
+total de Firestore hacia `<BACKUP_URI>/firestore/<EXPORT_TIMESTAMP>` mediante
+el mecanismo operativo aprobado. Verificar que la identidad usada tenga mínimo
+privilegio y que no dependa de credenciales almacenadas en el repositorio.
+Después, comprobar que la ruta contiene `export_metadata` y los archivos
+generados, y que pertenece al proyecto confirmado. Registrar fecha, operador,
+proyecto, ruta exacta y resultado. Este procedimiento es descriptivo y no
+ejecuta una exportación productiva.
 
-La carpeta debe conservar el `export_metadata` y los archivos generados por Firestore. Registrar fecha, operador, proyecto, ruta exacta y resultado. Un export no se considera verificado solo porque el comando terminó: hay que comprobar que existen los metadatos y que la ruta pertenece al proyecto correcto.
+La carpeta debe conservar el `export_metadata` y los archivos generados por Firestore. Registrar fecha, operador, proyecto, ruta exacta y resultado. Un export no se considera verificado solo porque la operación terminó: hay que comprobar que existen los metadatos y que la ruta pertenece al proyecto correcto.
 
 ### Programación diaria
 
@@ -176,10 +295,11 @@ La automatización diaria debe ejecutar el mismo export total mediante un compon
 2. Confirmar dos veces el proyecto destino, la base `(default)` y la ruta exacta del export verificado.
 3. Restaurar el export completo:
 
-```bash
-gcloud config set project hachi-greciaspa
-gcloud firestore import gs://hachi-greciaspa-backups/firestore/YYYY-MM-DDTHH-mm-ssZ --project=hachi-greciaspa
-```
+Solicitar la importación del export verificado ubicado en
+`<BACKUP_URI>/firestore/<EXPORT_TIMESTAMP>` hacia el proyecto confirmado
+`<PROJECT_ID>` mediante el mecanismo operativo aprobado. Esperar el resultado,
+revisar los logs de importación y conservar la evidencia de la operación. No
+asumir que la importación borra documentos creados fuera del export.
 
 4. Esperar a que termine la operación y revisar los logs de importación.
 5. Verificar documentos representativos en `users`, `reservas`, `mascotas`, `recordatorios` y `confirmaciones`, además del conteo esperado por colección.

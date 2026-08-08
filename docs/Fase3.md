@@ -2,9 +2,9 @@
 
 > **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
 >
-> **Evidencia local al 2026-08-06:** client `81 passed`; `tsc --noEmit` y build del cliente verdes; rules `62 passed, 0 failed`; Functions `99 passed, 2 skipped`; typecheck y build de Functions verdes. Esta evidencia no constituye verificación de producción.
+> **Evidencia local al 2026-08-07:** client `103 passed`; `tsc --noEmit` y build del cliente verdes; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; typecheck y build de Functions verdes. El harness `npm run qa:local` verificó `12 passed, 0 failed` contra emuladores, incluyendo creación mediante callable, retry de asignación posterior a cancelación y las rutas públicas de precios, servicios y contacto/WhatsApp. Esta evidencia no constituye verificación de producción.
 >
-> **Pendiente de verificación externa:** rollback, autorización de producción, dominio, `RESEND_API_KEY`, billing, budget alert, despliegue y browser QA.
+> **Pendiente de verificación externa:** App Check en Firebase Console, rollback operativo, autorización de producción, dominio y `RESEND_API_KEY` en Secret Manager/Resend, Billing/Blaze, budget alert, despliegue y browser QA contra producción.
 
 Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
 
@@ -43,7 +43,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
   2. Genera email HTML mediante Resend; el proveedor primario está documentado en T3.2.
   3. Actualiza el estado de `recordatorios` a `sent` o `failed` con error.
 - [x] Template de email en `functions/templates/reminder.html` con datos de la reserva.
-- [ ] Documentar en `docs/adr/ADR-005-cron-recordatorios.md` la decisión de cron cada hora vs cron diario a las 18:00; este ADR de frecuencia queda pendiente hasta su creación.
+- [x] Documentar en `docs/adr/ADR-005-cron-recordatorios.md` la decisión de cron cada hora vs cron diario a las 18:00.
 - [ ] Configurar el secreto backend `RESEND_API_KEY` en Firebase Secret Manager.
 
 **Refs:** `firestore.rules` (nueva colección), `docs/STACK.md` "Email transaccional — Fase 3".
@@ -69,12 +69,23 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **AC implementados:**
 - [x] Hardening de `firestore.rules`: el dueño solo puede cancelar con el cambio exacto `status -> 'cancelled'`; las escrituras directas del cliente sobre `date`/`timeSlot` están denegadas y no son una vía de reagendado.
 - [x] Controles en `DashboardPage`: cancelar reservas propias `pending`/`confirmed` y mostrar reagendado solo para reservas propias `pending` con fecha futura.
-- [x] Validación server-side en la callable `rescheduleReserva`: usa Admin SDK, autentica y valida ownership/estado, fecha y hora futuras en `America/Mexico_City`, y es la autoridad para rechazar slots activos ocupados dentro de una transacción.
-- [x] Tests (evidencia local fechada 2026-08-06; no verificación de producción): reglas (`62 passed, 0 failed`), Functions (`99 passed, 2 skipped`) y cliente (`81 passed`) para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
+- [x] Validación server-side en la callable `rescheduleReserva`: usa Admin SDK, autentica y valida ownership/estado, fecha y hora futuras en `America/Mexico_City`, y es la autoridad para rechazar slots activos ocupados dentro de una transacción que comparte el lock de disponibilidad con `createReserva`.
+- [x] Tests (evidencia local fechada 2026-08-07; no verificación de producción): reglas (`74 passed, 0 failed`), Functions (`159 passed, 2 skipped`) y cliente (`103 passed`) para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
 
 **Operación separada, no completada por esta tarea:** desplegar la callable, configurar producción y verificar el comportamiento en el entorno desplegado.
 
-**Refs:** `docs/SCHEMA.md`, `docs/adr/ADR-002-cancelacion-cliente.md`, `firestore.rules:37-60`.
+**Extensión local de hardening (ADR-008):**
+
+- [x] La creación del cliente usa `createReserva` mediante callable; `reservas` ya no acepta `create` directo desde Rules.
+- [x] La callable es transaccional y aplica cuota de 3 intentos por 15 minutos, límite de 10 reservas activas (`pending`/`confirmed`), fecha futura en `America/Mexico_City`, servicio activo, ownership de mascota y rechazo de solapamientos por `durationMin`.
+- [x] Los snapshots de identidad y catálogo son canónicos; `price` queda en `null`, el estado inicial es `pending` y el cliente no puede enviar `userId`, `userEmail`, `durationMin`, `status`, `createdBy` ni `empleadoId`.
+- [x] `bookingGuards/{uid}` es privado para Functions/Admin SDK y el bypass de App Check se limita al emulador.
+- [x] `bookingSlotGuards/{encodeURIComponent(serviceId)}__{date}` serializa la disponibilidad entre `createReserva` y `rescheduleReserva`, incluso entre usuarios distintos del mismo servicio/día. Es server-only, se crea lazy sin backfill, contiene `serviceId`, `date` y `updatedAt`, y la contención deliberada queda acotada al servicio/día para soportar duraciones variables.
+- [x] El orden local verificado lee el lock antes de consultar disponibilidad/conflictos y escribe el lock junto con la creación o el reagendado solo en el commit exitoso. La consulta no tiene un límite de documentos conocido; quedan pendientes futuras estrategias de particionamiento o retención.
+- [x] La evidencia local cubre Rules, Functions, cliente, builds y browser QA contra emuladores.
+- [ ] Permanecen pendientes App Check Console, Billing/Blaze, budget alert, Secret Manager/Resend, deploy con autorización explícita, verificación del lock privado en producción, rollback operativo no destructivo y browser QA productivo.
+
+**Refs:** `docs/SCHEMA.md`, `docs/adr/ADR-002-cancelacion-cliente.md`, `docs/adr/ADR-008-creacion-reservas-callable.md`, `firestore.rules:55-82`.
 
 ---
 
@@ -110,11 +121,13 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Filtro "por terapeuta" en la agenda, incluyendo "Sin terapeuta".
 - [x] Cola "Sin terapeuta asignado" para reservas sin candidato elegible.
 - [ ] Backfill opcional e idempotente de legacy: el comando está documentado, pero esta tarea no lo ejecutó ni contra emulador ni contra producción.
-- [ ] Browser QA completo del reagendado en emulador: la nueva tentativa de preservación y limpieza por conflicto quedó interrumpida cuando el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`.
-- [ ] Browser QA completo del retry posterior a cancelación: la repetición no alcanzó el flujo porque el mismo proceso de emuladores terminó; el gate permanece pendiente.
+- [x] Browser QA local del reagendado en emulador: preservación y limpieza de `empleadoId` pasaron dentro de `npm run qa:local`.
+- [x] Browser QA completo del retry posterior a cancelación: el caso E2E dedicado en `qa/tests/local-authenticated.spec.mjs` pasó contra los emuladores locales.
 - [ ] Despliegue, backfill productivo, configuración productiva y browser QA contra producción.
 
-**Verificación local fechada 2026-08-06:** client `81/81`; rules `62 passed, 0 failed`; Functions `99 passed, 2 skipped`; typecheck y builds verdes. La QA previa contra emuladores verificó autorización no-admin, CRUD admin, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. La repetición de esta ola para retry post-cancelación y reagendado no pudo ejecutarse hasta completar porque el proceso de emuladores terminó y el navegador recibió `ERR_CONNECTION_REFUSED`; ambos gates quedan pendientes.
+**Actualización de evidencia 2026-08-07:** la suite actual de rules registra `74 passed, 0 failed` y Functions `159 passed, 2 skipped` después del hardening local de reservas, email y recordatorios; el resto de la evidencia de browser QA local de esta sección sigue vigente.
+
+**Verificación local fechada 2026-08-07:** client `103/103`; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; typecheck y builds verdes. La QA previa contra emuladores verificó autorización no-admin, CRUD de empleados, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. El harness automatizado `npm run qa:local` verificó login por rol, CRUD de empleados, agenda/filtros, creación/cancelación mediante callable, reagendado con preservación/limpieza de `empleadoId`, retry de asignación posterior a cancelación y las rutas públicas de catálogo/contacto (`12 passed, 0 failed`). Toda verificación contra producción sigue pendiente.
 
 **Refs:** `docs/SCHEMA.md` `empleados`, `firestore.rules` `empleados`.
 
@@ -162,7 +175,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar; usa `confirmaciones/{reservaId}` y clave determinística de Resend.
 - [x] Variables de plantilla: nombre del cliente, servicio, fecha, hora y enlace al dashboard.
 
-**Verificación local:** 62 casos de rules, 99 tests de Functions (2 skips existentes), 81 tests de cliente, typecheck y build pasan. La configuración de Resend, dominio, Secret Manager, Billing/Blaze, despliegue y browser QA permanecen pendientes como gates operativos.
+**Verificación local:** 74 casos de rules, 159 tests de Functions (2 skips existentes), 103 tests de cliente, typecheck y build pasan. El harness local cubre los flujos autenticados principales y las páginas públicas contra emuladores. La creación cliente de reservas ahora exige allowlist de campos, servicio activo y snapshot coherente, estado `pending`, `createdBy: 'client'` y que `userEmail` coincida con el email del token; esto evita que el trigger de confirmación se use para enviar a destinatarios arbitrarios. La configuración de Resend, dominio, Secret Manager, Billing/Blaze, despliegue y browser QA de producción permanecen pendientes como gates operativos.
 
 **Refs:** T3.1 (mismo proveedor), T3.3 (link cancelación).
 
@@ -202,7 +215,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **Por qué:** Si Harold borra accidentalmente todas las reservas desde el dashboard, hoy no hay forma de recuperarlas. El proyecto es la fuente de verdad operacional del spa.
 
 **AC:**
-- [ ] Configurar export programado a Cloud Storage (GCS): `gcloud firestore export` diario vía Cloud Scheduler.
+- [ ] Configurar export programado de Firestore a Cloud Storage (GCS) vía Cloud Scheduler.
 - [ ] Bucket `gs://hachi-greciaspa-backups/` con lifecycle de 90 días.
 - [x] Documentar en `docs/RUNBOOK.md` cómo restaurar toda la base Firestore desde un backup (procedimiento, no script automático).
 - [ ] Verificar primer export manual después de configurar.
@@ -281,17 +294,19 @@ Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
                         T3.14, T3.15 según necesidad
 ```
 
-## ADRs por crear
+## ADRs y decisiones
 
 - `ADR-004-proveedor-email.md` — T3.2.
-- `ADR-005-cron-recordatorios.md` — T3.1 (frecuencia del job).
+- `ADR-005-cron-recordatorios.md` — T3.1 (frecuencia del job), aceptado.
 - `ADR-006-backups-firestore.md` — T3.11 (frecuencia y retención).
+- `ADR-007-react-router-audit-remediation.md` — decisión aceptada sobre el advisory residual de React Router.
+- `ADR-008-creacion-reservas-callable.md` — creación transaccional de reservas, cuota y disponibilidad; aceptada para la decisión local, no production-ready.
 
 ## Estimación de costo incremental
 
 | Track | Costo mensual estimado |
 |---|---|
-| A (Resend + Functions) | $0 de email en el baseline de Resend; Functions requiere Blaze y su costo operativo sigue pendiente de verificación |
+| A (Resend + Functions) | $0 de email en el baseline de Resend; Functions requiere Blaze y la callable agrega lecturas/escrituras de Firestore e índices; costo operativo pendiente de verificación |
 | B (sin nuevos servicios) | $0 |
 | C (sin proveedor externo) | $0 incremental; backups < 1 GB = $0 |
 | D | $0 |

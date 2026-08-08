@@ -9,8 +9,26 @@ import {
 } from './reservaGuards'
 
 describe('mapReservaError', () => {
+  it('maps resource-exhausted to a safe quota or active reservation message', () => {
+    expect(mapReservaError({
+      code: 'functions/resource-exhausted',
+      message: 'internal quota details',
+    })).toMatch(/límite|intentos|reservas/i)
+    expect(mapReservaError({ code: 'resource-exhausted', message: 'internal quota details' }))
+      .not.toContain('internal quota details')
+  })
+
   it('maps failed-precondition to a slot/date business message', () => {
     expect(mapReservaError({ code: 'failed-precondition' })).toMatch(/fecha|horario|disponible/i)
+  })
+
+  it('maps unauthenticated to a safe session message', () => {
+    expect(mapReservaError({
+      code: 'functions/unauthenticated',
+      message: 'internal auth details',
+    })).toMatch(/sesión|iniciá|inicia|ingres/i)
+    expect(mapReservaError({ code: 'unauthenticated', message: 'internal auth details' }))
+      .not.toContain('internal auth details')
   })
 
   it('maps permission-denied to an ownership/status business message', () => {

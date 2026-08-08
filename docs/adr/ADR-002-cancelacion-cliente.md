@@ -58,7 +58,7 @@ El cliente cancela mediante `cancelMyReserva`, que envía solo `{ status: 'cance
 ## Refs
 
 - tasks.md T2.4 AC.
-- `firestore.rules:37-60` (regla implementada de `reservas`).
+- `firestore.rules:55-82` (reglas implementadas de `reservas` y su lock privado).
 - `src/services/reservas.ts` (cancelación directa mínima y llamada callable para reagendado).
 - `functions/src/rescheduleReserva.ts` (validación y transacción autoritativa).
 - `npm run rules:test` — suite de reglas de reservas.

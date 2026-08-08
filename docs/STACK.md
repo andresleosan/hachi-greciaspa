@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-04 (MVP y código/tests de T3.5 verificados localmente; browser QA de T3.5 incompleto).
+Última actualización: 2026-08-07 (MVP, catálogo público, harness de browser QA local y código/tests de T3.5 verificados localmente; gates externos pendientes).
 
 ## Stack técnico
 
@@ -14,8 +14,9 @@
 | Estado | (sin store global) | — | Zustand removido en Fase 1 (M6) por no usado |
 | Formularios | (sin lib) | — | react-hook-form removido en Fase 1 (M6) por no usado |
 | Fechas | date-fns | 4.3 | usado en `DashboardPage.tsx` |
-| Backend | Firebase | 12.13 | Auth + Firestore + App Check opcional; Storage no usado |
-| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 62 passed, 0 failed; evidencia local fechada 2026-08-06; no verificacion de produccion; JDK 21 requerido |
+| Backend | Firebase | 12.13 | Auth + Firestore + Functions v2; App Check obligatorio fuera del emulador; Storage no usado |
+| Reservas cliente | `createReserva` y `rescheduleReserva` callable | Functions v2 | transacciones server-side, cuota 3/15 minutos para creación, máximo 10 activas, lock lazy server-only compartido por servicio/día y solapamiento por duración |
+| Tests reglas | `@firebase/rules-unit-testing` | 5.0 | 74 passed, 0 failed; evidencia local fechada 2026-08-07; no verificacion de produccion; JDK 21 requerido |
 
 ## Identidad visual — Rediseño luxe
 
@@ -28,21 +29,32 @@
 
 ## Evaluación de seguridad: React Router
 
-El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relacionados con el modo RSC en `react-router-dom@7.18.2`. La aplicación es una SPA y usa únicamente `BrowserRouter`, `Routes`, `Route`, `Link`, `Navigate`, `useNavigate` y `useSearchParams`; no se encontraron APIs RSC ni server actions. Por la arquitectura SPA actual, los advisories no son alcanzables a través de la ruta actual de la aplicación. Deben revisitarse cuando se publique una versión parcheada; el audit no se suprime ni se considera limpio.
+La reevaluación de `npm audit --omit=dev` al 2026-08-07 reporta `0 vulnerabilities` con `react-router-dom@7.18.2`. La aplicación es una SPA y usa únicamente `BrowserRouter`, `Routes`, `Route`, `Link`, `Navigate`, `useNavigate` y `useSearchParams`; no se encontraron APIs RSC ni server actions. ADR-007 conserva el contexto de la alerta anterior y la decisión de no ejecutar `npm audit fix --force`; la dependencia permanece fijada en `7.18.2` y el audit debe repetirse antes de producción.
 
 ## Estado de entrega
 
 ### MVP verificado
 
-- Los clientes autenticados pueden leer el catálogo, crear sus propias reservas, verlas en el dashboard y cancelarlas. Firestore permite la cancelación únicamente con el cambio exacto de `status` a `cancelled`; las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas.
+- Los clientes autenticados pueden leer el catálogo, solicitar sus propias reservas mediante la callable `createReserva`, verlas en el dashboard y cancelarlas. Firestore niega el `create` directo de `reservas`; la cancelación solo permite el cambio exacto de `status` a `cancelled` y las escrituras directas del cliente sobre `date`/`timeSlot` son denegadas.
 - El cliente solicita el reagendado exclusivamente mediante la callable `rescheduleReserva`, que usa Admin SDK y es la autoridad para disponibilidad. Valida ownership, estado, fecha/hora futura en `America/Mexico_City` y conflictos de slots activos dentro de una transacción. El código está implementado localmente; el despliegue y la configuración de producción siguen pendientes.
-- La validación de slots está implementada en `src/services/reservas.ts` como best-effort client-side; el tradeoff de concurrencia aceptado está documentado en ADR-001.
+- `createReserva` acepta solo `serviceId`, `date`, `timeSlot`, `mascotaId` y `notes`; Functions deriva identidad, servicio, duración, snapshots, `price: null`, `status: 'pending'` y `createdBy`. La transacción exige fecha futura en `America/Mexico_City`, servicio activo, mascota propia, máximo 10 reservas `pending`/`confirmed` y ausencia de solapamiento por duración.
 - Los mensajes de contacto persisten en `mensajes`, con creación anónima y lectura/eliminación solo para admin.
 - La galería se sirve mediante seis paths públicos estáticos y no depende de Cloud Storage.
-- `firestore.rules` está cubierta por la suite actual: `62 passed, 0 failed`, incluidos ownership de reservas, cancelación exacta, validación del schema de precios, asignación y acceso admin. Functions reporta `99 passed, 2 skipped`, incluidos asignación, solapamientos y reagendado. Esta es evidencia local fechada 2026-08-06 y no constituye verificación de producción.
-- La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite en el emulador.
+- `firestore.rules` está cubierta por la suite actual: `74 passed, 0 failed`, con evidencia de que el cliente no puede crear directamente `reservas`, leer/escribir `bookingGuards` ni `bookingSlotGuards`, ni saltarse ownership, lectura propia, cancelación exacta o permisos admin. La validación del input, catálogo activo, email de identidad, snapshots, cuota, límite activo y disponibilidad pertenece a Functions; su suite reporta `159 passed, 2 skipped`, incluidos creación callable, solapamientos, reagendado, recordatorios obsoletos, confirmación por estado y pruebas de zona horaria. Esta es evidencia local fechada 2026-08-07 y no constituye verificación de producción.
+- La inicialización de App Check está presente cuando se configura `VITE_FIREBASE_APP_CHECK_SITE_KEY` y se omite únicamente con `VITE_USE_FIREBASE_EMULATOR`; en Functions `enforceAppCheck` es obligatorio fuera de `FUNCTIONS_EMULATOR`. La configuración y el bypass exclusivo del emulador fueron verificados localmente; App Check Console y el rechazo productivo aún no.
 
 ### Brechas de Fase 3
+
+### Hardening local de creación de reservas — ADR-008
+
+- `createReserva` está exportada desde Functions y el cliente la invoca mediante `httpsCallable`; no queda una segunda vía HTTP ni un `addDoc` de cliente para crear reservas.
+- La transacción actualiza `bookingGuards/{uid}` con 3 intentos por ventana de 15 minutos. Auth/App Check se validan antes del handler; todo intento que llega al handler consume cuota, incluso si falla la validación del payload, el límite activo o la disponibilidad.
+- El límite es de 10 reservas activas por usuario; solo `pending` y `confirmed` cuentan. Antes de consultar disponibilidad, `createReserva` lee `bookingSlotGuards/{encodeURIComponent(serviceId)}__{date}` y lo actualiza solo al crear la reserva. `rescheduleReserva` lee el mismo lock de destino antes de su consulta de conflictos y lo actualiza antes de aplicar el reagendado. El documento es server-only, determinista y se crea lazy.
+- `rescheduleReserva` conserva `empleadoId` si el empleado sigue elegible y libre; lo limpia si el nuevo slot entra en conflicto. Usa el mismo helper y el mismo lock de destino que `createReserva`, antes de consultar conflictos y antes de actualizar la reserva.
+- La disponibilidad consulta todos los activos del mismo `serviceId` y `date`, usa `durationMin` del catálogo y rechaza solapamientos. No existe un límite de documentos conocido para esa consulta; el lock serializa la carrera, pero no sustituye una futura estrategia de particionamiento o retención.
+- La contención deliberada del lock queda acotada al servicio/día, como trade-off para soportar intervalos de duración variable sin imponer una migración de reservas existentes.
+- La evidencia local cubre callable, cuota, límite activo, fecha futura, snapshots canónicos, ownership de mascota y concurrencia; no constituye evidencia de producción.
+- **Gates productivos pendientes:** habilitar/verificar App Check en Firebase Console, confirmar Billing/Blaze y budget alert, configurar dominio y `RESEND_API_KEY` en Secret Manager para Resend, desplegar con autorización explícita, revisar/probar rollback operativo y ejecutar browser QA contra producción.
 
 ### T3.5 — Empleados y autoasignación local
 
@@ -53,13 +65,16 @@ El `npm audit --omit=dev` actual reporta dos advisories de severidad alta relaci
 - Backfill dry-run local: `node tools/backfill-empleado-id.mjs --emulator`. Aplicación local: `node tools/backfill-empleado-id.mjs --emulator --apply`. El backfill solo agrega `empleadoId: null` a documentos legacy y nunca asigna empleados.
 - `onReservaCreated` intenta asignar una reserva nueva y está configurada con retry. `assignPendingReservasForDate` permite a un admin reintentar la cola al cargar la agenda. `rescheduleReserva` conserva `empleadoId` si el empleado sigue elegible y libre; lo limpia si el nuevo slot entra en conflicto.
 - La selección usa empleados activos que atienden el servicio, tienen turno compatible y no están ocupados por una reserva `pending` o `confirmed` solapada. `cancelled` y `completed` no bloquean. Sin candidato, `empleadoId` permanece `null` y la agenda muestra "Sin terapeuta asignado".
-- Browser QA local verificó la mayoría de estos flujos contra emuladores. La repetición de reagendado y retry post-cancelación quedó incompleta porque el proceso de emuladores terminó durante la corrida y el navegador recibió `ERR_CONNECTION_REFUSED`; no se usaron credenciales ni datos productivos. El gate de browser QA permanece pendiente.
+- Browser QA local verificó login, CRUD de empleados, agenda/filtros, creación/cancelación, reagendado con preservación/limpieza de `empleadoId`, retry de asignación posterior a cancelación y las rutas públicas de catálogo/contacto: `12 passed, 0 failed` contra emuladores; no se usaron credenciales ni datos productivos.
 - No se ejecutó backfill productivo, no se desplegaron Functions y no se cambió configuración de producción en esta tarea.
 
 - La integración de email transaccional, confirmación inmediata y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
+- La implementación local de creación callable ya aplica cuota, fecha futura y disponibilidad transaccional; la activación de App Check en Console, Billing/Blaze, budget alert, Secret Manager/Resend, deploy, rollback operativo y browser QA productivo siguen siendo gates antes de producción.
 - Las alertas de presupuesto no están configuradas en Google Cloud Console. Sigue siendo COST-1/T3.10 y no debe considerarse completado.
 - La activación de App Check en consola y la comprobación de rechazo de writes no autorizados en producción siguen pendientes; la suite del emulador de rules no prueba esa configuración de despliegue.
-- La agenda y terapeutas tienen implementación local; permanecen pendientes la repetición estable del browser QA de reagendado, el despliegue y la configuración operativa. Backups y observabilidad siguen siendo trabajo de Fase 3.
+- La agenda y terapeutas tienen implementación local; la corrida estable de browser QA en emuladores ya pasó y permanecen pendientes el despliegue, la configuración operativa y el browser QA contra producción. Backups y observabilidad siguen siendo trabajo de Fase 3.
+- `npm run qa:local` ejecuta browser QA autenticado y público contra emuladores con doce casos: login por rol, CRUD de empleados, agenda/filtros, creación/cancelación, reagendado, retry de asignación posterior a cancelación, catálogo de precios/servicios y contacto/WhatsApp. La última corrida registró `12 passed, 0 failed`; la corrida local no valida producción.
+- La creación del navegador durante esa QA usa la callable real contra el Functions Emulator. El bypass de App Check es exclusivo del emulador y no prueba el rechazo de tokens ausentes o inválidos en producción.
 
 ## Servicios de pago: Firebase
 
@@ -74,7 +89,7 @@ Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actua
 | **Cloud Storage** | 5 GiB almacenamiento, 1 GB/día egress | no usado (declarado en firebase.ts pero sin callers) | $0 |
 | **Hosting** | 10 GB almacenamiento, 360 MB egress/día | build estático < 5 MB | $0 |
 
-**Costo mensual estimado MVP verificado: $0** — todo dentro del Spark free tier con amplio margen; no hay alertas de presupuesto configuradas todavía.
+**Costo mensual estimado MVP local: $0** — la evidencia local no genera consumo productivo. Para producción, la callable requiere Functions con Billing/Blaze; el uso medido esperado sigue siendo bajo, pero las lecturas/escrituras de cuota, snapshots, consultas de reservas e índices agregan consumo variable de Firestore. No hay alertas de presupuesto configuradas todavía.
 
 ### Cuándo se excede el free tier (proyección)
 
@@ -85,7 +100,11 @@ Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actua
 | Firestore almacenamiento | 1 GiB | ~500k reservas acumuladas (cada doc ~2 KB) — años |
 | Auth | 50k SMS/mes | solo si se habilita phone auth (no en scope) |
 
-Conclusión: el proyecto puede operar en free tier **varias años** a su ritmo actual. Único riesgo real sería una viralidad inesperada o logs mal diseñados.
+Conclusión: Authentication, Firestore, Storage y Hosting sin Functions pueden
+permanecer dentro de sus cuotas Spark al ritmo estimado. La callable y cualquier
+otra Cloud Function requieren Billing/Blaze para producción, por lo que el
+producto completo no puede considerarse Spark-only. El riesgo adicional es una
+viralidad inesperada o logs mal diseñados; no hay budget alert configurada.
 
 ### Migración a Blaze (pay-as-you-go)
 
@@ -108,6 +127,20 @@ Firebase Spark:
 | Hosting | 10 GB de almacenamiento; 360 MB/día de transferencia (~10 GB/mes) |
 
 Cloud Functions requiere Blaze para producción; la cuota gratuita estimada es de ~2 millones de invocaciones/mes y no elimina el requisito de Billing. Estas cuotas son un baseline operativo y deben verificarse contra la consola y precios vigentes antes de producción.
+
+La creación callable no agrega un proveedor de rate limiting. Por invocación que
+supera Auth y App Check, Firestore puede leer/escribir `bookingGuards/{uid}` y,
+si continúa el flujo, leer catálogo, perfil, mascota opcional y reservas activas
+antes de escribir la reserva canónica. Los índices `userId + status` y
+`serviceId + date + status` también tienen costo de almacenamiento y
+mantenimiento. El rango final depende de volumen y reintentos; no está verificado
+en producción.
+
+Cada creación o reagendado valido agrega una lectura y una escritura de
+`bookingSlotGuards/{encodeURIComponent(serviceId)}__{date}`. Las fallas de
+negocio pueden leer el lock sin escribirlo; las transacciones reintentadas
+pueden repetir lecturas y escrituras. El costo adicional es variable y no
+constituye una proyección ni una autorización de facturación.
 
 ### Cloudflare R2 — opción futura
 
@@ -153,7 +186,7 @@ El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Se
 | Servicio | Estado | Cuándo se consideraría |
 |---|---|---|
 | Email transaccional (Resend; Postmark fallback) | Código implementado en `functions/`; no configurado/desplegado | Verificación de dominio, secreto y despliegue de recordatorios/confirmaciones |
-| reCAPTCHA v3 | Código integrado; activación de producción pendiente | Habilitar y verificar en Firebase Console |
+| App Check con reCAPTCHA v3 | Código integrado; bypass local del emulador verificado; activación y enforcement productivos pendientes | Habilitar y verificar en Firebase Console |
 
 ## Limpieza de servicios sin uso
 
@@ -166,4 +199,4 @@ Tras Fase 1 (M6) + Fase 2 (T2.7):
 - `tasks.md` T2.1-T2.8 — cierre documentado con deuda residual y sub-items pendientes.
 - `AUDITORIA.md` H4 — integración App Check implementada; activación/verificación de producción pendiente.
 - `AUDITORIA.md` M2 — dashboard con datos reales implementado para reservas y métricas básicas.
-- H1 (npm audit): 19 vulns restantes en devDeps (firebase-tools), no afectan prod bundle.
+- H1 (npm audit): las tres auditorías fueron ejecutadas el `2026-08-07` y tienen alcances distintos: full client `npm audit --audit-level=high`: 15 vulnerabilidades (`11 moderate`, `4 high`); client `npm audit --omit=dev`: `0 vulnerabilities`; Functions `npm --prefix functions audit --omit=dev`: `7 moderate`. Estas cifras conservan sus comandos y alcances originales.

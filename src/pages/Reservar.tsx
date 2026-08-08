@@ -8,7 +8,7 @@ import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
 import { firebaseDb } from '../services/firebase'
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
-import { createReserva, SlotTakenError, ReservaError } from '../services/reservas'
+import { createReserva, ReservaError } from '../services/reservas'
 import { readBookingPrefill } from '../services/bookingPrefill'
 import { listMyMascotas } from '../services/mascotas'
 import type { Mascota } from '../types'
@@ -74,7 +74,7 @@ function WizardPanel({ children }: { children: React.ReactNode }) {
 }
 
 export default function Reservar() {
-  const { user, profile } = useAuth()
+  const { user } = useAuth()
   const [searchParams] = useSearchParams()
   const prefill = useMemo(() => readBookingPrefill(searchParams), [searchParams])
   const preselect = prefill.serviceId
@@ -200,22 +200,15 @@ export default function Reservar() {
     setSubmitting(true)
     try {
       const id = await createReserva({
-        userId: user.uid,
-        userName: profile?.displayName || user.displayName || null,
-        userEmail: user.email || null,
         serviceId: servicio.id,
-        serviceName: servicio.name,
-        mascotaId: mascotaId || null,
-        price: null,
         date,
         timeSlot,
-        durationMin: servicio.durationMin || 60,
+        mascotaId: mascotaId || null,
         notes: notes.trim() || null,
       })
       setSuccess({ id, name: servicio.name, date, time: timeSlot })
     } catch (e: any) {
-      if (e instanceof SlotTakenError) setError(e.message)
-      else if (e instanceof ReservaError) setError(e.message)
+      if (e instanceof ReservaError) setError(e.message)
       else setError(e?.message || 'No se pudo crear la reserva.')
     } finally {
       setSubmitting(false)

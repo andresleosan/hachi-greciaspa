@@ -1,14 +1,15 @@
-import { formatInTimeZone, fromZonedTime } from 'date-fns-tz'
-import { getFirestore, type Firestore } from 'firebase-admin/firestore'
+import { FieldValue, getFirestore, type Firestore } from 'firebase-admin/firestore'
 import { HttpsError, onCall, type CallableRequest } from 'firebase-functions/v2/https'
 
 import { isEmployeeEligible, reservationsOverlap } from './assignment.js'
+import { bookingSlotGuardId } from './bookingSlotGuard.js'
 import {
   normalizeEmployee,
   normalizeReservation,
   readReservations,
   reservationsForDateQuery,
 } from './employeeRepository.js'
+import { formatInTimeZone, fromZonedTime } from './timeZone.js'
 
 const TIME_ZONE = 'America/Mexico_City'
 
@@ -82,6 +83,11 @@ export async function rescheduleReservaHandler(
       throw new HttpsError('permission-denied', 'Reservation cannot be rescheduled')
     }
 
+    const slotGuardReference = db
+      .collection('bookingSlotGuards')
+      .doc(bookingSlotGuardId(reservation.serviceId, input.date))
+    await transaction.get(slotGuardReference)
+
     const conflicts = await transaction.get(
       db
         .collection('reservas')
@@ -144,6 +150,11 @@ export async function rescheduleReservaHandler(
       }
     }
 
+    transaction.set(slotGuardReference, {
+      serviceId: reservation.serviceId,
+      date: input.date,
+      updatedAt: FieldValue.serverTimestamp(),
+    })
     transaction.update(reservationReference, update)
 
     return {

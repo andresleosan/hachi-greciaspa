@@ -16,7 +16,7 @@ async function main() {
   // Contexts
   const guestDb = testEnv.unauthenticatedContext().firestore()
   // Alice: regular client (no admin claim, no admin role doc)
-  const aliceDb = testEnv.authenticatedContext('alice', { sub: 'alice' }).firestore()
+  const aliceDb = testEnv.authenticatedContext('alice', { sub: 'alice', email: 'alice@example.com' }).firestore()
   // Bob: admin via custom claim (token.admin = true)
   const bobAdminDb = testEnv.authenticatedContext('bob', { sub: 'bob', admin: true }).firestore()
 
@@ -38,6 +38,7 @@ async function main() {
   // Seed: only bob (admin via role doc) — alice and others are created by the tests themselves.
   await testEnv.withSecurityRulesDisabled(async (ctx) => {
     await ctx.firestore().collection('users').doc('bob').set({ displayName: 'Bob', email: 'bob@x.com', role: 'admin' })
+    await ctx.firestore().collection('servicios').doc('spa-day').set({ name: 'Spa Day', durationMin: 90, active: true })
   })
 
   try {
@@ -110,13 +111,38 @@ async function main() {
     })
     await test('admin can read any mascota', () => assertSucceeds(bobAdminDb.collection('mascotas').doc('m-alice').get()))
 
-      // --- Reservas (owner create/read, admin update/delete) ---
-      await test('user can create own reserva', () => assertSucceeds(aliceDb.collection('reservas').doc('r1').set({ userId: 'alice', serviceName: 'Spa', createdAt: new Date() })))
-      await test('client can create own reserva with empleadoId null', () => assertSucceeds(aliceDb.collection('reservas').doc('r-with-null-employee').set({ userId: 'alice', serviceName: 'Spa', empleadoId: null })))
-      await test('client can create own reserva with own mascota', () => assertSucceeds(aliceDb.collection('reservas').doc('r-with-mascota').set({ userId: 'alice', serviceName: 'Spa', mascotaId: 'm-alice' })))
+      // --- Reservas (owner read/cancel, admin update/delete) ---
+      const validClientReserva = {
+        userId: 'alice', userName: 'Alice', userEmail: 'alice@example.com', serviceId: 'spa-day',
+        serviceName: 'Spa Day', mascotaId: null, price: null, date: '2099-01-01', timeSlot: '10:00',
+        durationMin: 90, notes: null, status: 'pending', createdAt: new Date(), createdBy: 'client',
+      }
+      await test('client cannot create own reserva directly', () => assertFails(aliceDb.collection('reservas').doc('r1').set(validClientReserva)))
+      await test('client cannot create a reserva for an arbitrary email address', () => assertFails(aliceDb.collection('reservas').doc('r-invalid-email').set({
+        ...validClientReserva, userEmail: 'victim@example.com',
+      })))
+      await test('client cannot create a confirmed reserva', () => assertFails(aliceDb.collection('reservas').doc('r-invalid-status').set({
+        ...validClientReserva, status: 'confirmed',
+      })))
+      await test('client cannot create a reserva with unrecognized fields', () => assertFails(aliceDb.collection('reservas').doc('r-invalid-fields').set({
+        ...validClientReserva, unexpected: 'provider-abuse',
+      })))
+      await test('client cannot forge the catalog snapshot or price', () => assertFails(aliceDb.collection('reservas').doc('r-invalid-catalog').set({
+        ...validClientReserva, serviceName: 'Forged service', durationMin: 1, price: 1,
+      })))
+      await test('client cannot create own reserva with empleadoId null directly', () => assertFails(aliceDb.collection('reservas').doc('r-with-null-employee').set({ ...validClientReserva, empleadoId: null })))
+      await test('client cannot create own reserva with own mascota directly', () => assertFails(aliceDb.collection('reservas').doc('r-with-mascota').set({ ...validClientReserva, mascotaId: 'm-alice' })))
       await test('client cannot create reserva with another user mascota', () => assertFails(aliceDb.collection('reservas').doc('r-with-other-mascota').set({ userId: 'alice', serviceName: 'Spa', mascotaId: 'm-bob-read' })))
-      await test('user cannot create reserva for another user', () => assertFails(aliceDb.collection('reservas').doc('r2').set({ userId: 'bob', serviceName: 'Spa' })))
-    await test('client cannot create reserva with another empleado', () => assertFails(aliceDb.collection('reservas').doc('r-with-employee').set({ userId: 'alice', serviceName: 'Spa', empleadoId: 'employee-2' })))
+      await test('user cannot create reserva for another user', () => assertFails(aliceDb.collection('reservas').doc('r2').set({ ...validClientReserva, userId: 'bob', userEmail: 'bob@example.com' })))
+    await test('client cannot create reserva with another empleado', () => assertFails(aliceDb.collection('reservas').doc('r-with-employee').set({ ...validClientReserva, empleadoId: 'employee-2' })))
+    await test('client cannot write own booking guard', () => assertFails(aliceDb.collection('bookingGuards').doc('alice').set({ windowStartedAt: new Date(), attempts: 1 })))
+    await test('client cannot read own booking guard', () => assertFails(aliceDb.collection('bookingGuards').doc('alice').get()))
+    await test('admin client cannot write booking guard', () => assertFails(bobAdminDb.collection('bookingGuards').doc('alice').set({ windowStartedAt: new Date(), attempts: 1 })))
+    await test('admin client cannot read booking guard', () => assertFails(bobAdminDb.collection('bookingGuards').doc('alice').get()))
+    await test('client cannot write booking slot guard', () => assertFails(aliceDb.collection('bookingSlotGuards').doc('service-1__2099-01-01').set({ locked: true })))
+    await test('client cannot read booking slot guard', () => assertFails(aliceDb.collection('bookingSlotGuards').doc('service-1__2099-01-01').get()))
+    await test('admin client cannot write booking slot guard', () => assertFails(bobAdminDb.collection('bookingSlotGuards').doc('service-1__2099-01-01').set({ locked: true })))
+    await test('admin client cannot read booking slot guard', () => assertFails(bobAdminDb.collection('bookingSlotGuards').doc('service-1__2099-01-01').get()))
     await test('user can read own reserva', async () => {
       // seed own reserva then read
       await testEnv.withSecurityRulesDisabled(async (ctx) => {
