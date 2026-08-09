@@ -138,6 +138,14 @@ export async function seedQaBookings({ db, users, projectId = 'hachi-greciaspa',
   }
   const reservations = [
     {
+      id: `qa-rebook-${safeRunId(runId)}`,
+      date: dates.agendaDate,
+      timeSlot: '10:00',
+      status: 'completed',
+      notes: 'QA_REBOOK',
+      empleadoId: null,
+    },
+    {
       id: `qa-agenda-assigned-${safeRunId(runId)}`,
       date: dates.agendaDate,
       timeSlot: '10:00',
