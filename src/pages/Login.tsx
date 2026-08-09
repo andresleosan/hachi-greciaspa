@@ -24,6 +24,14 @@ type SubmitResult = {
   message?: string
 }
 
+export function getSafeNextPath(value: string | null | undefined): string {
+  if (!value || !value.startsWith('/') || value.startsWith('//') || /[\\\u0000-\u001F\u007F]/.test(value)) {
+    return '/dashboard'
+  }
+
+  return value
+}
+
 export async function submitLogin(
   { email, password, nextPath }: LoginSubmitInput,
   {
@@ -60,7 +68,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const nextPath = searchParams.get('next') || '/dashboard'
+  const nextPath = getSafeNextPath(searchParams.get('next'))
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -99,6 +107,8 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
+            aria-invalid={Boolean(error)}
+            aria-describedby="login-error"
             disabled={submitting}
             required
           />
@@ -112,6 +122,8 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
+              aria-invalid={Boolean(error)}
+              aria-describedby="login-error"
               disabled={submitting}
               required
             />
@@ -130,7 +142,7 @@ export default function Login() {
             </button>
           </div>
         </div>
-        <p className="auth-form__error" role="alert" aria-live="assertive" hidden={!error}>{error}</p>
+        <p id="login-error" className="auth-form__error" role="alert" aria-live="assertive" hidden={!error}>{error}</p>
         <p className="auth-form__status" role="status" aria-live="polite" hidden={!submitting}>{submitting ? 'Entrando…' : null}</p>
         <button className="auth-form__submit sl-btn sl-btn--primary" type="submit" disabled={submitting}>
           {submitting ? 'Entrando…' : 'Entrar'}

@@ -2,7 +2,7 @@ import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
-import Login, { submitLogin } from './Login'
+import Login, { getSafeNextPath, submitLogin } from './Login'
 
 describe('Login', () => {
   it('renders the accessible login form and registration link', () => {
@@ -23,9 +23,23 @@ describe('Login', () => {
     expect(markup).toContain('type="button"')
     expect(markup).toContain('role="alert"')
     expect(markup).toContain('role="status"')
+    expect(markup).toContain('id="login-error"')
+    expect(markup).toContain('aria-describedby="login-error"')
+    expect(markup).toContain('aria-invalid="false"')
     expect(markup).toContain('href="/register"')
     expect(markup).not.toContain('site-header')
     expect(markup).not.toContain('site-footer')
+  })
+
+  it.each([
+    ['/dashboard/agenda', '/dashboard/agenda'],
+    ['/dashboard/agenda?date=2026-08-09', '/dashboard/agenda?date=2026-08-09'],
+    ['https://example.com/account', '/dashboard'],
+    ['//example.com/account', '/dashboard'],
+    ['dashboard/agenda', '/dashboard'],
+    ['/\\\\example.com', '/dashboard'],
+  ])('accepts only safe internal next paths: %s', (value, expected) => {
+    expect(getSafeNextPath(value)).toBe(expected)
   })
 
   it('signs in, preserves next, and reports request state around the real submit flow', async () => {

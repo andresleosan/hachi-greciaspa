@@ -17,6 +17,7 @@ describe('DashboardEmpleados AdminShell migration', () => {
     expect(empleados).toContain('Desactivar')
     expect(empleados).toContain('role="alert"')
     expect(empleados).toContain('role="status"')
+    expect(empleados).toContain('Cargando empleados y servicios…</p>')
     expect(empleados).not.toContain('dashboard-layout')
     expect(empleados).not.toContain('dashboard-sidebar')
     expect(empleados).not.toContain('dashboard-topbar')

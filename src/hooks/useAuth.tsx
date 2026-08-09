@@ -23,9 +23,9 @@ export function useAuth() {
       try {
         const p = await getUserProfile(u.uid)
         setProfile(p)
-      } catch (e: any) {
+      } catch {
         setProfile(null)
-        setError(e?.message || 'No se pudo cargar el perfil de usuario.')
+        setError('No se pudo cargar el perfil de usuario.')
       } finally {
         setLoading(false)
       }

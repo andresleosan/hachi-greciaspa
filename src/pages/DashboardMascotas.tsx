@@ -56,8 +56,8 @@ export default function DashboardMascotas() {
     try {
       setMascotas(await listMyMascotas(user.uid))
       setError(null)
-    } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'No se pudieron cargar tus mascotas.')
+    } catch {
+      setError('No se pudieron cargar tus mascotas.')
     } finally {
       setLoading(false)
     }
@@ -73,8 +73,8 @@ export default function DashboardMascotas() {
     setHistoryLoading(true)
     try {
       setHistory(await listMyMascotaHistory(user.uid, mascota.id))
-    } catch (historyError) {
-      setError(historyError instanceof Error ? historyError.message : 'No se pudo cargar el historial.')
+    } catch {
+      setError('No se pudo cargar el historial.')
     } finally {
       setHistoryLoading(false)
     }
@@ -132,8 +132,8 @@ export default function DashboardMascotas() {
       if (editingId === mascota.id) startCreate()
       setNotice('Mascota eliminada.')
       await loadMascotas()
-    } catch (deleteError) {
-      setError(deleteError instanceof Error ? deleteError.message : 'No se pudo eliminar la mascota.')
+    } catch {
+      setError('No se pudo eliminar la mascota.')
     }
   }
 
@@ -166,7 +166,7 @@ export default function DashboardMascotas() {
                 </div>
                 <span className="mascotas-count">{mascotas.length}</span>
               </div>
-              {loading ? <p className="mascotas-state">Cargando mascotas...</p> : null}
+              {loading ? <p className="mascotas-state" role="status">Cargando mascotas...</p> : null}
               {!loading && mascotas.length === 0 ? (
                 <div className="mascotas-empty">
                   <strong>Aún no tienes mascotas guardadas.</strong>
@@ -240,7 +240,7 @@ export default function DashboardMascotas() {
                   <p>{selectedMascota ? `Citas de ${selectedMascota.name}` : 'Selecciona una mascota'}</p>
                 </div>
               </div>
-              {historyLoading ? <p className="mascotas-state">Cargando historial...</p> : null}
+               {historyLoading ? <p className="mascotas-state" role="status">Cargando historial...</p> : null}
               {!historyLoading && selectedMascota && history.length === 0 ? <p className="mascotas-state">Aún no hay citas vinculadas.</p> : null}
               <ul className="mascotas-history-list">
                 {history.map((reserva) => <li key={reserva.id}><strong>{historyLabel(reserva)}</strong><span>{reserva.status}</span></li>)}

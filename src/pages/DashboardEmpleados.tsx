@@ -327,7 +327,7 @@ export default function DashboardEmpleados() {
                   <span className="empleados-count">{employees.length} {employees.length === 1 ? 'persona' : 'personas'}</span>
                 </div>
 
-                {loading && <p className="empleados-state">Cargando empleados y servicios…</p>}
+                {loading && <p className="empleados-state" role="status">Cargando empleados y servicios…</p>}
                 {!loading && readError && <p className="field-error empleados-state" role="alert">{readError}</p>}
                 {!loading && !readError && employees.length === 0 && (
                   <div className="empleados-empty">

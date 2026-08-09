@@ -10,7 +10,7 @@ import { format } from 'date-fns'
 import type { Reserva, ReservaStatus } from '../types'
 import { RESERVA_STATUS_LABELS } from '../types'
 import { calculateDashboardMetrics, type DashboardMetricBooking } from '../services/dashboardMetrics'
-import { cancelMyReserva, rescheduleMyReserva } from '../services/reservas'
+import { cancelMyReserva, rescheduleMyReserva, ReservaError } from '../services/reservas'
 import {
   canShowReschedule,
   isReservationActionDisabled,
@@ -48,8 +48,8 @@ export default function DashboardPage() {
       setBookings((prev) =>
         prev.map((b) => (b.id === reservaId ? { ...b, status: 'cancelled' } : b))
       )
-    } catch (e: any) {
-      setCancelError(e?.message || 'No se pudo cancelar la reserva.')
+    } catch {
+      setCancelError('No se pudo cancelar la reserva.')
     } finally {
       setCancellingId(null)
     }
@@ -107,10 +107,12 @@ export default function DashboardPage() {
         ),
       )
       setEditingReservaId(null)
-    } catch (error: any) {
+    } catch (error) {
       setRescheduleErrors((prev) => ({
         ...prev,
-        [reservaId]: error?.message || 'No se pudo reagendar la reserva.',
+        [reservaId]: error instanceof ReservaError
+          ? error.message
+          : 'No se pudo reagendar la reserva.',
       }))
     } finally {
       setReschedulingId(null)

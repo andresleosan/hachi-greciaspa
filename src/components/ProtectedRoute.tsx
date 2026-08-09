@@ -11,7 +11,9 @@ export default function ProtectedRoute({ children, requireRole }: Props) {
   const { user, profile, loading } = useAuth()
   const location = useLocation()
 
-  if (loading) return <div />
+  if (loading) {
+    return <div className="app-loader" role="status" aria-live="polite">Cargando sesión...</div>
+  }
   if (!user) {
     const next = encodeURIComponent(location.pathname + location.search)
     return <Navigate to={`/login?next=${next}`} replace />

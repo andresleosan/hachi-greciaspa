@@ -18,25 +18,34 @@ test.describe.configure({ mode: 'serial' })
 async function login(page, email, password, roleLabel, {
   assertNavigationVisible = true,
   assertProfileVisible = true,
+  nextPath = '/dashboard',
 } = {}) {
-  await page.goto('/login?next=/dashboard', { waitUntil: 'domcontentloaded' })
+  await page.goto(`/login?next=${encodeURIComponent(nextPath)}`, { waitUntil: 'domcontentloaded' })
   await page.getByLabel('Correo').fill(email)
   await page.getByRole('textbox', { name: 'Contraseña', exact: true }).fill(password)
   await page.getByRole('button', { name: 'Entrar', exact: true }).click()
-  await expect(page).toHaveURL(/\/dashboard\/?$/)
+  const expectedPath = nextPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  await expect(page).toHaveURL(new RegExp(`${expectedPath}/?$`))
   const profileRole = page.getByText(roleLabel, { exact: true })
   if (assertProfileVisible) await expect(profileRole).toBeVisible({ timeout: 15_000 })
   else await expect(profileRole).toBeAttached()
   await expect(page.locator('button[aria-label="Abrir menú"]')).toBeAttached()
-  const navigation = page.getByRole('navigation', { name: 'Navegación del panel', exact: true })
+  const navigation = page.locator('nav[aria-label="Navegación del panel"]')
   await expect(navigation).toBeAttached()
   if (assertNavigationVisible) await expect(navigation).toBeVisible()
 
   if (roleLabel === 'Administrador') {
-    await expect(navigation.getByRole('link', { name: 'Empleados', exact: true })).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Cerrar sesión', exact: true })).toBeVisible()
+    const employeesLink = navigation.locator('a[href="/dashboard/empleados"]')
+    const logoutButton = page.locator('button.admin-shell__logout')
+    if (assertNavigationVisible) {
+      await expect(employeesLink).toBeVisible()
+      await expect(logoutButton).toBeVisible()
+    } else {
+      await expect(employeesLink).toBeAttached()
+      await expect(logoutButton).toBeAttached()
+    }
   } else {
-    await expect(navigation.getByRole('link', { name: 'Empleados', exact: true })).toHaveCount(0)
+    await expect(navigation.locator('a[href="/dashboard/empleados"]')).toHaveCount(0)
   }
 }
 
@@ -70,6 +79,14 @@ test('anonymous agenda access redirects to the AuthShell login', async ({ page }
   await expect(page.getByRole('complementary', { name: 'Hachi & Grecia Spa', exact: true })).toBeVisible()
 })
 
+test('anonymous agenda login returns to the requested agenda route', async ({ page }) => {
+  await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador', {
+    nextPath: '/dashboard/agenda',
+  })
+  await expect(page).toHaveURL(/\/dashboard\/agenda\/?$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Agenda diaria', exact: true })).toBeVisible()
+})
+
 test('admin can navigate the dashboard shell between its main routes', async ({ page }) => {
   await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador')
   await expect(page.getByRole('heading', { level: 1, name: 'Dashboard', exact: true })).toBeVisible()
@@ -90,15 +107,31 @@ test('admin can open and close the mobile navigation drawer', async ({ page }) =
     assertProfileVisible: false,
   })
 
-  const menuToggle = page.getByRole('button', { name: 'Abrir menú', exact: true })
+  const menuToggle = page.locator('button[aria-controls="admin-sidebar"]')
   await expect(menuToggle).toBeVisible()
+  await expect(menuToggle).toHaveAttribute('aria-label', 'Abrir menú')
   await expect(menuToggle).toHaveAttribute('aria-expanded', 'false')
   await menuToggle.click()
-  await expect(page.getByRole('button', { name: 'Cerrar menú', exact: true })).toHaveAttribute('aria-expanded', 'true')
+  await expect(menuToggle).toHaveAttribute('aria-label', 'Cerrar menú')
+  await expect(menuToggle).toHaveAttribute('aria-expanded', 'true')
   await expect(page.locator('#admin-sidebar').getByRole('button', { name: 'Cerrar menú', exact: true })).toBeVisible()
 
   await page.locator('#admin-sidebar').getByRole('button', { name: 'Cerrar menú', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Abrir menú', exact: true })).toHaveAttribute('aria-expanded', 'false')
+  await expect(menuToggle).toHaveAttribute('aria-label', 'Abrir menú')
+  await expect(menuToggle).toHaveAttribute('aria-expanded', 'false')
+})
+
+test('client can navigate to its pets route and cannot enter employees', async ({ page }) => {
+  await login(page, process.env.QA_CLIENT_EMAIL, process.env.QA_CLIENT_PASSWORD, 'Cliente')
+
+  await page.getByRole('link', { name: 'Mis mascotas', exact: true }).click()
+  await expect(page).toHaveURL(/\/dashboard\/mascotas\/?$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Mis mascotas', exact: true })).toBeVisible()
+
+  await page.goto('/dashboard/empleados', { waitUntil: 'domcontentloaded' })
+  await expect(page).toHaveURL(/\/dashboard\/?$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Dashboard', exact: true })).toBeVisible()
+  await expect(page.locator('nav[aria-label="Navegación del panel"] a[href="/dashboard/empleados"]')).toHaveCount(0)
 })
 
 test('logout returns to login and protects a subsequent dashboard request', async ({ page }) => {
@@ -121,6 +154,34 @@ test('login and dashboard have no horizontal overflow on a 360px viewport', asyn
     assertNavigationVisible: false,
     assertProfileVisible: false,
   })
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+})
+
+test('admin agenda and employees have no horizontal overflow at 360px', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 })
+  await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador', {
+    assertNavigationVisible: false,
+    assertProfileVisible: false,
+  })
+
+  await page.goto('/dashboard/agenda', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('heading', { level: 1, name: 'Agenda diaria', exact: true })).toBeVisible()
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+
+  await page.goto('/dashboard/empleados', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('heading', { level: 1, name: 'Empleados', exact: true })).toBeVisible()
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+})
+
+test('client pets page has no horizontal overflow at 360px', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 })
+  await login(page, process.env.QA_CLIENT_EMAIL, process.env.QA_CLIENT_PASSWORD, 'Cliente', {
+    assertNavigationVisible: false,
+    assertProfileVisible: false,
+  })
+
+  await page.goto('/dashboard/mascotas', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('heading', { level: 1, name: 'Mis mascotas', exact: true })).toBeVisible()
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
 })
 
@@ -155,9 +216,11 @@ test('admin can create edit deactivate and reload an employee', async ({ page })
 test('admin can inspect agenda filters for assigned and unassigned bookings', async ({ page }) => {
   await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador')
   await page.goto('/dashboard/agenda', { waitUntil: 'domcontentloaded' })
-  await expect(page.getByText('Cargando agenda...')).toBeHidden({ timeout: 15_000 })
+  const agendaLoading = page.getByText('Cargando agenda...')
+  await expect(agendaLoading).toBeAttached({ timeout: 15_000 })
+  await expect(agendaLoading).toBeHidden({ timeout: 15_000 })
   await page.getByLabel('Fecha seleccionada').fill(process.env.QA_AGENDA_DATE)
-  await expect(page.getByRole('heading', { name: 'Agenda diaria' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Agenda diaria', exact: true })).toBeVisible()
 
   await expect(page.getByRole('heading', { name: 'Sin terapeuta asignado' })).toBeVisible({ timeout: 15_000 })
   const therapistFilter = page.getByLabel('Terapeuta', { exact: true })
@@ -252,9 +315,11 @@ test('rescheduling clears an assigned employee when the new slot conflicts', asy
 test('admin retries assignment after cancelling the blocking reservation', async ({ page }) => {
   await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador')
   await page.goto('/dashboard/agenda', { waitUntil: 'domcontentloaded' })
-  await expect(page.getByText('Cargando agenda...')).toBeHidden({ timeout: 15_000 })
+  const agendaLoadingBeforeReload = page.getByText('Cargando agenda...')
+  await expect(agendaLoadingBeforeReload).toBeAttached({ timeout: 15_000 })
+  await expect(agendaLoadingBeforeReload).toBeHidden({ timeout: 15_000 })
   await page.getByLabel('Fecha seleccionada').fill(process.env.QA_RESCHEDULE_DATE)
-  await expect(page.getByRole('heading', { name: 'Agenda diaria' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Agenda diaria', exact: true })).toBeVisible()
 
   const timeline = page.getByRole('region', { name: 'Línea de tiempo de reservas' })
   const blockingReservation = timeline.getByRole('button', { name: /Ver Grooming a las 15:00/ })
@@ -265,10 +330,13 @@ test('admin retries assignment after cancelling the blocking reservation', async
   await expect(drawer).toContainText('QA_REAGENDADO_BLOCKER')
   page.once('dialog', (dialog) => dialog.accept())
   await drawer.getByRole('button', { name: 'Cancelar', exact: true }).click()
+  await expect(drawer).toBeAttached()
   await expect(drawer).toBeHidden()
 
   await page.reload({ waitUntil: 'domcontentloaded' })
-  await expect(page.getByText('Cargando agenda...')).toBeHidden({ timeout: 15_000 })
+  const agendaLoadingAfterReload = page.getByText('Cargando agenda...')
+  await expect(agendaLoadingAfterReload).toBeAttached({ timeout: 15_000 })
+  await expect(agendaLoadingAfterReload).toBeHidden({ timeout: 15_000 })
   await page.getByLabel('Fecha seleccionada').fill(process.env.QA_RESCHEDULE_DATE)
   await expect.poll(
     async () => (await readLocalReservations()).find((reservation) => reservation.notes === 'QA_REAGENDADO_CLEANUP')?.empleadoId,

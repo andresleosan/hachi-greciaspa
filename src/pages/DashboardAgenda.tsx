@@ -6,7 +6,7 @@ import AdminShell from '../components/AdminShell'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
 import { firebaseDb } from '../services/firebase'
-import { assignPendingReservasForDate, listEmpleados } from '../services/empleados'
+import { assignPendingReservasForDate, EmpleadoError, listEmpleados } from '../services/empleados'
 import { updateAdminReservaStatus } from '../services/reservas'
 import {
   filterAgendaBookings,
@@ -138,7 +138,7 @@ export default function DashboardAgenda() {
         } catch (assignmentLoadError) {
           if (active) {
             setAssignmentError(
-              assignmentLoadError instanceof Error
+              assignmentLoadError instanceof EmpleadoError
                 ? assignmentLoadError.message
                 : 'No se pudo completar la asignación automática. Intenta nuevamente.',
             )
@@ -158,9 +158,9 @@ export default function DashboardAgenda() {
           setBookings(items)
           setEmployees(employeeData)
         }
-      } catch (loadError) {
+      } catch {
         if (active) {
-          setError(loadError instanceof Error ? loadError.message : 'No se pudo cargar la agenda.')
+          setError('No se pudo cargar la agenda.')
         }
       } finally {
         if (active) setLoading(false)
@@ -264,8 +264,8 @@ export default function DashboardAgenda() {
         ),
       )
       closeDrawer()
-    } catch (actionError) {
-      setDrawerError(actionError instanceof Error ? actionError.message : 'No se pudo actualizar la reserva.')
+    } catch {
+      setDrawerError('No se pudo actualizar la reserva.')
     } finally {
       setBusyById((previous) => {
         const next = { ...previous }
