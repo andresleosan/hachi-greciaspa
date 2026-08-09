@@ -348,7 +348,7 @@ test('admin retries assignment after cancelling the blocking reservation', async
 test('client can rebook a completed reservation with prefilled booking details', async ({ page }) => {
   await login(page, process.env.QA_CLIENT_EMAIL, process.env.QA_CLIENT_PASSWORD, 'Cliente')
 
-  const card = page.locator('li.reserva-card').filter({ hasText: 'QA_REBOOK' })
+  const card = page.getByRole('listitem').filter({ hasText: 'QA_REBOOK' })
   await expect(card).toBeVisible()
   await expect(card.getByRole('link', { name: 'Reservar de nuevo', exact: true })).toBeVisible()
 
