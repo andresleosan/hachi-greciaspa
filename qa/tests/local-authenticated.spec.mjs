@@ -364,7 +364,16 @@ test('client can rebook a completed reservation with prefilled booking details',
 
   await page.getByRole('button', { name: 'Continuar', exact: true }).click()
   const dateGroup = page.getByRole('radiogroup', { name: 'Fecha' })
-  await expect(dateGroup.getByRole('radio', { checked: true })).toHaveCount(1)
+  const [year, month, day] = process.env.QA_AGENDA_DATE.split('-').map(Number)
+  const expectedWeekday = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][new Date(Date.UTC(year, month - 1, day)).getUTCDay()]
+  const expectedMonth = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][month - 1]
+  const selectedDate = dateGroup.getByRole('radio', {
+    name: new RegExp(`^${expectedWeekday}\\s+${day}\\s+${expectedMonth}$`, 'i'),
+    checked: true,
+  })
+  await expect(selectedDate).toHaveCount(1)
+  await expect(selectedDate).toBeVisible()
+  await expect(selectedDate).toHaveAttribute('aria-checked', 'true')
 
   await page.getByRole('button', { name: 'Continuar', exact: true }).click()
   const timeGroup = page.getByRole('radiogroup', { name: 'Horario' })

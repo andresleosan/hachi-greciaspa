@@ -10,6 +10,7 @@
 *.cer
 secrets/
 credentials/
+functions/.secret.local
 
 # Google Cloud / Firebase / Apps Script
 *-firebase-adminsdk-*.json
