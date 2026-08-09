@@ -344,3 +344,29 @@ test('admin retries assignment after cancelling the blocking reservation', async
   ).toBe('daniela-padilla')
   await expect(timeline.getByRole('button', { name: /Ver Grooming a las 16:00\.\s+Daniela/ })).toBeVisible({ timeout: 15_000 })
 })
+
+test('client can rebook a completed reservation with prefilled booking details', async ({ page }) => {
+  await login(page, process.env.QA_CLIENT_EMAIL, process.env.QA_CLIENT_PASSWORD, 'Cliente')
+
+  const card = page.locator('li.reserva-card').filter({ hasText: 'QA_REBOOK' })
+  await expect(card).toBeVisible()
+  await expect(card.getByRole('link', { name: 'Reservar de nuevo', exact: true })).toBeVisible()
+
+  await card.getByRole('link', { name: 'Reservar de nuevo', exact: true }).click()
+
+  const url = new URL(page.url())
+  expect(url.pathname).toBe('/reservar')
+  expect(url.searchParams.get('service')).toBe('spa-day')
+  expect(url.searchParams.get('timeSlot')).toBe('10:00')
+  expect(url.searchParams.get('date')).toBe(process.env.QA_AGENDA_DATE)
+
+  await expect(page.getByRole('radiogroup', { name: 'Servicio' }).getByRole('radio', { name: /Spa Day/ })).toHaveAttribute('aria-checked', 'true')
+
+  await page.getByRole('button', { name: 'Continuar', exact: true }).click()
+  const dateGroup = page.getByRole('radiogroup', { name: 'Fecha' })
+  await expect(dateGroup.getByRole('radio', { checked: true })).toHaveCount(1)
+
+  await page.getByRole('button', { name: 'Continuar', exact: true }).click()
+  const timeGroup = page.getByRole('radiogroup', { name: 'Horario' })
+  await expect(timeGroup.getByRole('radio', { name: '10:00', exact: true })).toHaveAttribute('aria-checked', 'true')
+})
