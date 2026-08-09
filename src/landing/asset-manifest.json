@@ -1,0 +1,88 @@
+{
+  "brand": {
+    "logo": "Logo.png",
+    "favicon": "FavIcon.png"
+  },
+  "story": [
+    {
+      "label": "01 · El punto de partida",
+      "file": "01 · El punto de partida.png"
+    },
+    {
+      "label": "02 · El cambio",
+      "file": "02 · El cambio.png"
+    },
+    {
+      "label": "03 · La experiencia",
+      "file": "03 · La experiencia.png"
+    },
+    {
+      "label": "04 · El resultado",
+      "file": "04 · El resultado.png"
+    }
+  ],
+  "services": [
+    {
+      "label": "El servicio 01",
+      "file": "El servicio 01.png"
+    },
+    {
+      "label": "El servicio 02",
+      "file": "El servicio 02.png"
+    },
+    {
+      "label": "El servicio 03",
+      "file": "El servicio 03.png"
+    },
+    {
+      "label": "El servicio 04",
+      "file": "El servicio 04.png"
+    },
+    {
+      "label": "El servicio 05",
+      "file": "El servicio 05.png"
+    }
+  ],
+  "gallery": [
+    {
+      "label": "Atención personal",
+      "file": "Atención personal.png"
+    },
+    {
+      "label": "Calma absoluta",
+      "file": "Calma absoluta.png"
+    },
+    {
+      "label": "Detalles que importan",
+      "file": "Detalles que importan.png"
+    },
+    {
+      "label": "El ritual del baño",
+      "file": "El ritual del baño.png"
+    },
+    {
+      "label": "Un día en el spa",
+      "file": "Un día en el spa.png"
+    },
+    {
+      "label": "El servicio 01",
+      "file": "El servicio 01.png"
+    },
+    {
+      "label": "El servicio 02",
+      "file": "El servicio 02.png"
+    },
+    {
+      "label": "El servicio 03",
+      "file": "El servicio 03.png"
+    },
+    {
+      "label": "El servicio 04",
+      "file": "El servicio 04.png"
+    },
+    {
+      "label": "El servicio 05",
+      "file": "El servicio 05.png"
+    }
+  ]
+}

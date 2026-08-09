@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProtectedRoute from '../components/ProtectedRoute'
+import AdminShell from '../components/AdminShell'
 import { useAuth } from '../hooks/useAuth'
 import AdminPrices from '../components/AdminPrices'
 import { firebaseDb } from '../services/firebase'
@@ -24,7 +25,6 @@ interface Metrics {
 }
 
 export default function DashboardPage() {
-  const [showSidebar, setShowSidebar] = useState(false)
   const { user, profile, error: profileError } = useAuth()
   const [bookings, setBookings] = useState<Reserva[]>([])
   const [metrics, setMetrics] = useState<Metrics>({ citasHoy: 0, serviciosHoy: 0, clientesTotales: 0 })
@@ -184,35 +184,7 @@ export default function DashboardPage() {
 
   return (
     <ProtectedRoute>
-      <div className="dashboard-layout">
-        <aside className={"dashboard-sidebar" + (showSidebar ? ' is-open' : '')}>
-          <div className="sidebar-brand">
-            <div className="sidebar-brand__mark">HG</div>
-            <div className="sidebar-brand__copy"><strong>Hachi & Grecia</strong><small>Admin</small></div>
-          </div>
-          <nav className="sidebar-nav">
-            <Link className="sidebar-link is-active" to="/dashboard"><span className="sidebar-link__icon">D</span> Dashboard</Link>
-            <Link className="sidebar-link" to="/dashboard/agenda"><span className="sidebar-link__icon">C</span> Citas</Link>
-            {profile?.role === 'admin' && <Link className="sidebar-link" to="/dashboard/empleados"><span className="sidebar-link__icon">E</span> Empleados</Link>}
-            <Link className="sidebar-link" to="/dashboard/mascotas"><span className="sidebar-link__icon">M</span> Mis mascotas</Link>
-            <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">U</span> Clientes <small className="sidebar-link__badge">próxim.</small></span>
-            <Link className="sidebar-link" to="/servicios"><span className="sidebar-link__icon">S</span> Servicios</Link>
-            <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">R</span> Reportes <small className="sidebar-link__badge">próxim.</small></span>
-          </nav>
-
-          <div className="sidebar-footer">
-            <div>{profile?.displayName || user?.email}<br/><small>{profile?.role === 'admin' ? 'Administrador' : 'Cliente'}</small></div>
-          </div>
-        </aside>
-        <main className="dashboard-main">
-          <header className="dashboard-topbar">
-            <button className="btn btn-ghost sidebar-toggle" onClick={() => setShowSidebar((s) => !s)} aria-label="Toggle sidebar">☰</button>
-            <div className="dashboard-topbar__banner">
-              <img src="/dashboard_header_zoom.png" alt="Dashboard" />
-            </div>
-            <div className="dashboard-title"><strong>Dashboard</strong><span>Resumen y actividad</span></div>
-          </header>
-
+      <AdminShell title="Dashboard" subtitle="Resumen y actividad">
           <section className="container">
             <div className="metric-grid">
               <div className="metric-card metric-card--teal">
@@ -369,8 +341,7 @@ export default function DashboardPage() {
               </div>
             )}
           </section>
-        </main>
-      </div>
+      </AdminShell>
     </ProtectedRoute>
   )
 }

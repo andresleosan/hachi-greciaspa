@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { publicAsset, SERVICE_ASSETS } from './assets'
 import { SERVICES, PRICING_SPA } from './data'
 import { loadMotion } from './motionRuntime'
 
-const REEL_IMAGES = ['/tr.png', '/br.png', '/bl.png', '/tl.png', '/hachi-greciaspa.png']
+const REEL_IMAGES = SERVICE_ASSETS.map(({ file }) => publicAsset(file))
 
 const REEL_SERVICE_IDS = ['spa-day', 'grooming', 'guarderia', 'pension']
 
@@ -101,9 +102,6 @@ function Reel({
     <section ref={reelRef} className={`sl-reel${flip ? ' sl-reel--flip' : ''}`} id={`servicio-${index}`}>
       <div className="sl-reel-inner">
         <div className="sl-reel-media">
-          <span className="sl-reel-index" aria-hidden="true">
-            {num}
-          </span>
           <img src={image} alt={service.title} loading="lazy" decoding="async" />
         </div>
         <div className="sl-reel-copy">

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   COMMERCIAL_NOTES,
   EXTRAS_LIST,
+  GALLERY,
   PRICING_SPA,
   SERVICE_PRICE_LABELS,
 } from './data'
@@ -30,5 +31,10 @@ describe('catalogo comercial', () => {
     expect(COMMERCIAL_NOTES).toContain('Precios sujetos a cambio sin previo aviso, consulta términos y condiciones al agendar.')
     expect(COMMERCIAL_NOTES).toContain('Nuestros productos son libres de sulfatos y parabenos, hipoalergénicos y cruelty free.')
     expect(COMMERCIAL_NOTES).toContain('Espacio libre de jaulas.')
+  })
+
+  it('expone diez entradas editoriales de galería sin rutas antiguas', () => {
+    expect(GALLERY).toHaveLength(10)
+    expect(GALLERY.every((item) => !/\/(tl|tr|bl|br|hachi-greciaspa)\.png$/.test(item.src))).toBe(true)
   })
 })

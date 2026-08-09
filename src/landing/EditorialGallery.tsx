@@ -75,7 +75,6 @@ export default function EditorialGallery() {
             className={`sl-gallery-item sl-gallery-item--${item.span}${item.offset ? ' sl-gallery-item--offset' : ''}`}
           >
             <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-            <figcaption>{item.caption}</figcaption>
           </figure>
         ))}
       </div>

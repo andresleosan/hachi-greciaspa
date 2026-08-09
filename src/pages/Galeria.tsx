@@ -1,16 +1,28 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import PublicLuxeShell from '../components/PublicLuxeShell'
+import { GALLERY_ASSETS, publicAsset } from '../landing/assets'
 import { loadMotion } from '../landing/motionRuntime'
 
-const GALERIA_ITEMS = [
-  { src: '/tl.png', alt: 'Baño y grooming — antes y después', label: 'Baño & Grooming', span: 'lg' },
-  { src: '/tr.png', alt: 'Spa canino — tratamiento', label: 'Spa Day', span: 'sm', offset: true },
-  { src: '/bl.png', alt: 'Corte de pelo profesional', label: 'Corte Profesional', span: 'sm' },
-  { src: '/br.png', alt: 'Estilismo canino', label: 'Estilismo', span: 'lg', offset: true },
-  { src: '/hachi-greciaspa.png', alt: 'Hachi & Grecia Spa — instalaciones', label: 'Nuestras instalaciones', span: 'wide' },
-  { src: '/contact-sheet.png', alt: 'Trabajos realizados', label: 'Trabajos realizados', span: 'wide' },
+const GALERIA_LAYOUT: ReadonlyArray<{ span: 'lg' | 'sm' | 'wide'; offset?: boolean }> = [
+  { span: 'lg' },
+  { span: 'sm', offset: true },
+  { span: 'sm' },
+  { span: 'lg', offset: true },
+  { span: 'wide' },
+  { span: 'lg' },
+  { span: 'sm', offset: true },
+  { span: 'sm' },
+  { span: 'lg', offset: true },
+  { span: 'wide' },
 ]
+
+const GALERIA_ITEMS = GALLERY_ASSETS.map((asset, index) => ({
+  src: publicAsset(asset.file),
+  alt: `${asset.label} en Hachi y Grecia Spa`,
+  label: asset.label,
+  ...GALERIA_LAYOUT[index],
+}))
 
 export default function Galeria() {
   const rootRef = useRef<HTMLElement>(null)

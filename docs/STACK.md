@@ -24,7 +24,8 @@
 - **Paleta:** `#0C0E0B` como fondo, `#F2EDE1` para texto, `#C9A96A` como acción/bronce silencioso y `#93A58C` para calma/aurora.
 - **Tipografía:** Fraunces para titulares editoriales y Manrope para interfaz, datos y cuerpo.
 - **Firma:** la "puerta de luz": escenas de scroll que se abren con `clip-path`, escala y capas de opacidad; parallax multicapa solo en imágenes de contenido.
-- **Motion:** GSAP + ScrollTrigger + Lenis se cargan de forma diferida en la landing; Motion se carga en el wizard de reserva. `prefers-reduced-motion` desactiva el runtime y deja el contenido en flujo normal.
+- **Motion:** GSAP + ScrollTrigger + Lenis se cargan de forma diferida en la landing; el hero usa un chunk R3F/Three diferido con fallback PNG; Motion se carga en el wizard de reserva. `prefers-reduced-motion` desactiva el runtime y deja el contenido en flujo normal.
+- **Assets oficiales:** `public/img/` contiene los PNG de `F:\Proyectos\hachi-greciaspa\Img`; `src/landing/asset-manifest.json` es la fuente única de rutas para storytelling, servicios, galería, logo y favicon.
 - **Defaults evitados:** fondo crema con terracota y serif genérica, negro con neón, bento grids decorativos y animaciones de partículas.
 
 ## Evaluación de seguridad: React Router

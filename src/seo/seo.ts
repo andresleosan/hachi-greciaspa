@@ -1,5 +1,5 @@
 export const SITE_URL = 'https://hachi-greciaspa.vercel.app'
-export const SEO_IMAGE_URL = `${SITE_URL}/hachi-greciaspa.png`
+export const SEO_IMAGE_URL = `${SITE_URL}/img/Logo.png`
 
 export interface SeoConfig {
   title: string

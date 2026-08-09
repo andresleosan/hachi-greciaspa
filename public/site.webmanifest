@@ -1,0 +1,14 @@
+{
+  "name": "Hachi & Grecia Spa",
+  "short_name": "Hachi & Grecia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0C0E0B",
+  "theme_color": "#C9A96A",
+  "icons": [
+    {
+      "src": "/img/FavIcon.png",
+      "type": "image/png"
+    }
+  ]
+}

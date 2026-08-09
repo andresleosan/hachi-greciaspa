@@ -18,6 +18,15 @@ export function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
+export function scrollToTop(): void {
+  if (typeof window === 'undefined') return
+
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  if (runtimePromise) {
+    void runtimePromise.then(({ lenis }) => lenis.scrollTo(0, { immediate: true }))
+  }
+}
+
 export function loadMotion(): Promise<MotionRuntime> {
   if (prefersReducedMotion()) {
     return Promise.reject(new Error('reduced motion'))

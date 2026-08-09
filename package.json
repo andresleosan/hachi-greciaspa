@@ -9,8 +9,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "assets:check": "node tools/verify-public-assets.mjs",
+    "lint": "eslint .",
     "preview": "vite preview",
-    "test:client": "vitest run src/services/reservaErrors.test.ts src/services/reservas.test.ts src/services/agenda.test.ts src/services/empleados.test.ts src/services/mascotas.test.ts src/services/bookingPrefill.test.ts src/services/dashboardMetrics.test.ts src/services/priceValidation.test.ts src/seo/seo.test.ts src/components/Footer.test.tsx src/components/PublicLuxeShell.test.tsx tools/CinematicHero.test.ts tools/PublicPages.test.ts src/types/empleado.test.ts src/config/contact.test.ts src/landing/data.test.ts src/components/PricesList.test.tsx",
+    "test:client": "vitest run src/services/reservaErrors.test.ts src/services/reservas.test.ts src/services/agenda.test.ts src/services/empleados.test.ts src/services/mascotas.test.ts src/services/bookingPrefill.test.ts src/services/dashboardMetrics.test.ts src/services/priceValidation.test.ts src/seo/seo.test.ts src/components/Footer.test.tsx src/components/PublicLuxeShell.test.tsx src/components/AuthShell.test.tsx tools/CinematicHero.test.ts tools/HeaderGlass.test.ts tools/PublicPages.test.ts src/types/empleado.test.ts src/config/contact.test.ts src/landing/data.test.ts src/components/PricesList.test.tsx src/pages/Servicios.test.tsx src/pages/Login.test.tsx src/pages/Register.test.tsx",
     "test": "npm run rules:test && npm --prefix functions test",
     "set-admin": "node tools/set-admin.js",
     "seed:employees": "node tools/seed-employees.mjs",
@@ -32,6 +34,7 @@
   },
   "homepage": "https://github.com/andresleosan/hachi-greciaspa#readme",
   "dependencies": {
+    "@react-three/fiber": "^9.7.0",
     "date-fns": "^4.3.0",
     "firebase": "^12.13.0",
     "gsap": "^3.15.0",
@@ -39,21 +42,28 @@
     "motion": "^13.0.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "7.18.2"
+    "react-router-dom": "7.18.2",
+    "three": "^0.185.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@firebase/rules-unit-testing": "^5.0.1",
     "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.0",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "^6.0.2",
     "autoprefixer": "^10.5.0",
+    "eslint": "^10.8.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "firebase-admin": "^14.2.0",
     "firebase-tools": "^15.18.0",
+    "globals": "^17.9.0",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.66.0",
     "vite": "^8.0.14",
     "vitest": "^4.1.10"
   }

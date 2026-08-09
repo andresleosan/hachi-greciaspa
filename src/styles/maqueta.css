@@ -791,7 +791,8 @@ main {
 }
 
 .service-card__thumb {
-  min-height: 130px;
+  min-height: 0;
+  aspect-ratio: 3 / 2;
   border-radius: 12px;
   background: linear-gradient(135deg, rgba(24, 170, 171, 0.18), rgba(246, 89, 113, 0.16)), linear-gradient(180deg, #fff, #eff1f1);
   border: 1px solid rgba(21, 34, 51, 0.08);
@@ -802,7 +803,8 @@ main {
 .service-card__thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   display: block;
 }
 
@@ -1057,7 +1059,7 @@ main {
 
 .gallery-tile {
   position: relative;
-  min-height: 190px;
+  aspect-ratio: 3 / 2;
   border-radius: var(--radius-lg);
   overflow: hidden;
   padding: 1rem;
@@ -1071,7 +1073,8 @@ main {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   z-index: 0;
 }
 
@@ -2052,7 +2055,7 @@ metric-card {
   }
 
   .card-grid--services .service-card__thumb {
-    min-height: 140px;
+    min-height: 0;
     border-radius: 12px;
   }
 }
@@ -2062,7 +2065,7 @@ metric-card {
     grid-template-columns: 1fr;
   }
   .service-card__thumb {
-    min-height: 180px;
+    min-height: 0;
   }
 }
 

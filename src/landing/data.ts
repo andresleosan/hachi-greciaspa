@@ -1,5 +1,7 @@
 /** Datos reales del spa — fuente única para la experiencia luxe. */
 
+import { GALLERY_ASSETS, publicAsset } from './assets'
+
 export const PRICING_SPA = {
   short: [
     { size: 'Mini', weight: '≤5 kg', price: '$240' },
@@ -123,13 +125,25 @@ export const FAQS: [string, string][] = [
   ],
 ]
 
-export const GALLERY = [
-  { src: '/tl.png', alt: 'Spa Day — baño de lujo', caption: 'El ritual del baño', span: 'lg' },
-  { src: '/tr.png', alt: 'Detalle de grooming', caption: 'Detalles que importan', span: 'sm', offset: true },
-  { src: '/bl.png', alt: 'Mascota en el spa', caption: 'Calma absoluta', span: 'sm' },
-  { src: '/br.png', alt: 'Cuidado personalizado', caption: 'Atención personal', span: 'lg', offset: true },
-  { src: '/hachi-greciaspa.png', alt: 'Hachi y Grecia Spa', caption: 'Un día en el spa', span: 'wide' },
-]
+const GALLERY_LAYOUT: ReadonlyArray<{ span: 'lg' | 'sm' | 'wide'; offset?: boolean }> = [
+  { span: 'lg' },
+  { span: 'sm', offset: true },
+  { span: 'sm' },
+  { span: 'lg', offset: true },
+  { span: 'wide' },
+  { span: 'lg' },
+  { span: 'sm', offset: true },
+  { span: 'sm' },
+  { span: 'lg', offset: true },
+  { span: 'wide' },
+] as const
+
+export const GALLERY = GALLERY_ASSETS.map((asset, index) => ({
+  src: publicAsset(asset.file),
+  alt: `${asset.label} en Hachi y Grecia Spa`,
+  caption: asset.label,
+  ...GALLERY_LAYOUT[index],
+}))
 
 export const TESTIMONIALS = [
   {

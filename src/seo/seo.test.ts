@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { getSeoConfig } from './seo'
+import { getSeoConfig, SEO_IMAGE_URL } from './seo'
 
 describe('SEO route metadata', () => {
+  it('uses the official logo for social previews', () => {
+    expect(SEO_IMAGE_URL).toMatch(/\/img\/Logo\.png$/)
+  })
+
   it('returns indexable metadata and root canonical for the landing', () => {
     expect(getSeoConfig('/')).toMatchObject({
       title: 'Hachi & Grecia Spa | Spa canino en CDMX',
