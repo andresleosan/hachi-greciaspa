@@ -32,7 +32,6 @@ export default function AuthShell({
             <h1>Un espacio para volver a lo esencial.</h1>
             <p>Gestiona cada visita con la misma calma y atención que ponemos en cada ritual.</p>
           </div>
-          <span className="auth-shell__brand-mark" aria-hidden="true">HG</span>
         </aside>
 
         <section className="auth-shell__form-panel" aria-labelledby="auth-shell-title">

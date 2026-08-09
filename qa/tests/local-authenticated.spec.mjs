@@ -15,13 +15,29 @@ for (const name of requiredEnvironment) {
 
 test.describe.configure({ mode: 'serial' })
 
-async function login(page, email, password, roleLabel) {
+async function login(page, email, password, roleLabel, {
+  assertNavigationVisible = true,
+  assertProfileVisible = true,
+} = {}) {
   await page.goto('/login?next=/dashboard', { waitUntil: 'domcontentloaded' })
   await page.getByLabel('Correo').fill(email)
-  await page.getByLabel('Contraseña').fill(password)
+  await page.getByRole('textbox', { name: 'Contraseña', exact: true }).fill(password)
   await page.getByRole('button', { name: 'Entrar', exact: true }).click()
   await expect(page).toHaveURL(/\/dashboard\/?$/)
-  await expect(page.getByText(roleLabel, { exact: true })).toBeVisible()
+  const profileRole = page.getByText(roleLabel, { exact: true })
+  if (assertProfileVisible) await expect(profileRole).toBeVisible({ timeout: 15_000 })
+  else await expect(profileRole).toBeAttached()
+  await expect(page.locator('button[aria-label="Abrir menú"]')).toBeAttached()
+  const navigation = page.getByRole('navigation', { name: 'Navegación del panel', exact: true })
+  await expect(navigation).toBeAttached()
+  if (assertNavigationVisible) await expect(navigation).toBeVisible()
+
+  if (roleLabel === 'Administrador') {
+    await expect(navigation.getByRole('link', { name: 'Empleados', exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Cerrar sesión', exact: true })).toBeVisible()
+  } else {
+    await expect(navigation.getByRole('link', { name: 'Empleados', exact: true })).toHaveCount(0)
+  }
 }
 
 async function readLocalReservations() {
@@ -40,11 +56,72 @@ async function readLocalReservations() {
 
 test('admin login works with the local emulator account', async ({ page }) => {
   await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador')
-  await page.getByRole('button', { name: /toggle sidebar|mostrar navegación/i }).count()
+  await expect(page.locator('button[aria-label="Abrir menú"]')).toBeAttached()
 })
 
 test('client login works with the local emulator account', async ({ page }) => {
   await login(page, process.env.QA_CLIENT_EMAIL, process.env.QA_CLIENT_PASSWORD, 'Cliente')
+})
+
+test('anonymous agenda access redirects to the AuthShell login', async ({ page }) => {
+  await page.goto('/dashboard/agenda', { waitUntil: 'domcontentloaded' })
+  await expect(page).toHaveURL(/\/login\?next=%2Fdashboard%2Fagenda(?:&|$)/)
+  await expect(page.getByRole('heading', { name: 'Iniciar sesión', exact: true })).toBeVisible()
+  await expect(page.getByRole('complementary', { name: 'Hachi & Grecia Spa', exact: true })).toBeVisible()
+})
+
+test('admin can navigate the dashboard shell between its main routes', async ({ page }) => {
+  await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador')
+  await expect(page.getByRole('heading', { level: 1, name: 'Dashboard', exact: true })).toBeVisible()
+
+  await page.getByRole('link', { name: 'Citas', exact: true }).click()
+  await expect(page).toHaveURL(/\/dashboard\/agenda\/?$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Agenda diaria', exact: true })).toBeVisible()
+
+  await page.getByRole('link', { name: 'Empleados', exact: true }).click()
+  await expect(page).toHaveURL(/\/dashboard\/empleados\/?$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Empleados', exact: true })).toBeVisible()
+})
+
+test('admin can open and close the mobile navigation drawer', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 })
+  await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador', {
+    assertNavigationVisible: false,
+    assertProfileVisible: false,
+  })
+
+  const menuToggle = page.getByRole('button', { name: 'Abrir menú', exact: true })
+  await expect(menuToggle).toBeVisible()
+  await expect(menuToggle).toHaveAttribute('aria-expanded', 'false')
+  await menuToggle.click()
+  await expect(page.getByRole('button', { name: 'Cerrar menú', exact: true })).toHaveAttribute('aria-expanded', 'true')
+  await expect(page.locator('#admin-sidebar').getByRole('button', { name: 'Cerrar menú', exact: true })).toBeVisible()
+
+  await page.locator('#admin-sidebar').getByRole('button', { name: 'Cerrar menú', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Abrir menú', exact: true })).toHaveAttribute('aria-expanded', 'false')
+})
+
+test('logout returns to login and protects a subsequent dashboard request', async ({ page }) => {
+  await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador')
+  await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
+  await expect(page).toHaveURL(/\/login\/?$/)
+  await expect(page.getByRole('heading', { name: 'Iniciar sesión', exact: true })).toBeVisible()
+
+  await page.goto('/dashboard', { waitUntil: 'domcontentloaded' })
+  await expect(page).toHaveURL(/\/login\?next=%2Fdashboard(?:&|$)/)
+})
+
+test('login and dashboard have no horizontal overflow on a 360px viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 })
+  await page.goto('/login', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('heading', { name: 'Iniciar sesión', exact: true })).toBeVisible()
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+
+  await login(page, process.env.QA_ADMIN_EMAIL, process.env.QA_ADMIN_PASSWORD, 'Administrador', {
+    assertNavigationVisible: false,
+    assertProfileVisible: false,
+  })
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
 })
 
 test('admin can create edit deactivate and reload an employee', async ({ page }) => {

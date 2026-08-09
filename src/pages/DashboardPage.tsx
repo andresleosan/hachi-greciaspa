@@ -212,8 +212,8 @@ export default function DashboardPage() {
             </div>
 
             <h3>Reservas recientes</h3>
-            {profileError && <p className="field-error">{profileError}</p>}
-            {loading && <p>Cargando...</p>}
+            {profileError && <p className="field-error" role="alert">{profileError}</p>}
+            {loading && <p role="status">Cargando...</p>}
             {!loading && bookings.length === 0 && <p>No hay reservas visibles.</p>}
             <ul className="list">
               {bookings.map((b) => (
@@ -332,7 +332,7 @@ export default function DashboardPage() {
                  </li>
               ))}
             </ul>
-            {cancelError && <div className="field-error">{cancelError}</div>}
+            {cancelError && <div className="field-error" role="alert">{cancelError}</div>}
 
             {/* Admin-only: precios */}
             {profile?.role === 'admin' && (

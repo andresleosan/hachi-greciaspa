@@ -2498,14 +2498,6 @@ html.lenis body {
   line-height: 1.75;
 }
 
-.auth-shell__brand-mark {
-  color: var(--sl-amber);
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  font-style: italic;
-  letter-spacing: 0.1em;
-}
-
 .auth-shell__form-panel {
   align-self: center;
   padding: clamp(1.5rem, 4vw, 3rem);
@@ -2716,6 +2708,11 @@ html.lenis body {
   .auth-form__field input,
   .auth-form__submit {
     transition: none;
+  }
+
+  .auth-shell__logo:hover,
+  .auth-shell__logo:focus-visible {
+    transform: none !important;
   }
 }
 
@@ -2966,6 +2963,13 @@ html.lenis body {
 .admin-shell {
   --admin-sidebar-width: 18rem;
   --admin-cream-muted: #aeb2a5;
+  --admin-surface: #ffffff;
+  --admin-surface-ink: #152233;
+  --admin-surface-muted: #43505f;
+  --admin-surface-accent: #087f80;
+  --admin-surface-border: #cfd8d8;
+  --admin-surface-danger: #b42318;
+  --admin-surface-success: #166534;
   min-height: 100svh;
   display: grid;
   grid-template-columns: var(--admin-sidebar-width) minmax(0, 1fr);
@@ -3220,6 +3224,73 @@ html.lenis body {
   padding-top: clamp(1.35rem, 3vw, 2.5rem);
 }
 
+/* Legacy dashboard cards are light surfaces inside the dark private shell. */
+.admin-shell .container > h3,
+.admin-shell .reserva-card,
+.admin-shell .admin-prices,
+.admin-shell .admin-prices__item,
+.admin-shell .admin-prices__new {
+  color: var(--admin-surface-ink);
+  background: var(--admin-surface);
+}
+
+.admin-shell .container > h3,
+.admin-shell .reserva-card strong,
+.admin-shell .admin-prices h4,
+.admin-shell .admin-prices h5,
+.admin-shell .admin-prices__row strong,
+.admin-shell .reserva-card__when {
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .reserva-card__meta,
+.admin-shell .reserva-card__notes,
+.admin-shell .admin-prices__summary,
+.admin-shell .admin-prices__hint,
+.admin-shell .admin-prices__state,
+.admin-shell .admin-prices__item small,
+.admin-shell .field-hint {
+  color: var(--admin-surface-muted);
+}
+
+.admin-shell .admin-prices__count {
+  color: var(--admin-surface-accent);
+}
+
+.admin-shell .reserva-card__status {
+  font-weight: 700;
+}
+
+.admin-shell .admin-prices .field label,
+.admin-shell .reserva-card .field label {
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .admin-prices .field input,
+.admin-shell .admin-prices .field textarea,
+.admin-shell .admin-prices .field select,
+.admin-shell .reserva-card .field input,
+.admin-shell .reserva-card .field textarea,
+.admin-shell .reserva-card .field select {
+  border-color: var(--admin-surface-border);
+  background: var(--admin-surface);
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .field input::placeholder,
+.admin-shell .field textarea::placeholder {
+  color: var(--admin-surface-muted);
+  opacity: 1;
+}
+
+.admin-shell .field-error {
+  color: var(--admin-surface-danger);
+}
+
+.admin-shell .field-success {
+  color: var(--admin-surface-success);
+}
+
 .admin-shell__menu-toggle:focus-visible,
 .admin-shell__drawer-close:focus-visible,
 .admin-shell__brand:focus-visible,
@@ -3303,6 +3374,166 @@ html.lenis body {
   .admin-shell *::before,
   .admin-shell *::after {
     scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
+/* Page content surfaces stay readable when rendered inside the dark shell. */
+.admin-shell .agenda-page,
+.admin-shell .empleados-page,
+.admin-shell .mascotas-page {
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .agenda-header,
+.admin-shell .agenda-panel,
+.admin-shell .agenda-filters,
+.admin-shell .agenda-unassigned,
+.admin-shell .agenda-empty,
+.admin-shell .empleados-panel,
+.admin-shell .mascotas-panel {
+  border-color: var(--admin-surface-border);
+  background: var(--admin-surface);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.12);
+}
+
+.admin-shell .agenda-header {
+  background: linear-gradient(135deg, rgba(24, 170, 171, 0.1), rgba(246, 89, 113, 0.08)), var(--admin-surface);
+}
+
+ .admin-shell .agenda-header h2,
+.admin-shell .agenda-panel h2,
+.admin-shell .agenda-unassigned h2,
+.admin-shell .agenda-incidents h3,
+ .admin-shell .empleados-intro h2,
+.admin-shell .empleados-panel h2,
+.admin-shell .empleados-panel h3,
+ .admin-shell .mascotas-intro h2,
+.admin-shell .mascotas-panel h2 {
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .agenda-date-card,
+.admin-shell .agenda-timeline-axis,
+.admin-shell .agenda-event-lane,
+.admin-shell .empleados-checkbox--status {
+  border-color: var(--admin-surface-border);
+  background: #f4f9f9;
+}
+
+.admin-shell .agenda-date-card label,
+.admin-shell .agenda-filters label,
+.admin-shell .agenda-drawer__details dd,
+.admin-shell .empleados-form .field label,
+.admin-shell .empleados-form-section h3,
+.admin-shell .empleados-fieldset legend {
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .agenda-date-card input,
+.admin-shell .agenda-filters select,
+.admin-shell .empleados-form .field input,
+.admin-shell .empleados-form .field select,
+.admin-shell .mascotas-form .field input,
+.admin-shell .mascotas-form .field textarea {
+  border-color: var(--admin-surface-border);
+  background: var(--admin-surface);
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .agenda-panel__hint,
+.admin-shell .agenda-incidents__head span,
+.admin-shell .agenda-filters__summary,
+.admin-shell .empleados-panel__head p,
+.admin-shell .empleados-hint,
+.admin-shell .empleados-state,
+.admin-shell .empleados-empty p,
+.admin-shell .empleados-person small,
+.admin-shell .mascotas-panel__head p,
+.admin-shell .mascota-item__select small,
+.admin-shell .mascotas-state,
+.admin-shell .mascotas-history-list span {
+  color: var(--admin-surface-muted);
+}
+
+.admin-shell .agenda-timeline-scroll {
+  scrollbar-color: var(--admin-surface-accent) var(--admin-surface);
+}
+
+.admin-shell .agenda-drawer {
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .agenda-drawer__close {
+  border-color: var(--admin-surface-border);
+  background: var(--admin-surface);
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .empleados-table th,
+.admin-shell .empleados-table td,
+.admin-shell .mascotas-history-list li {
+  border-color: var(--admin-surface-border);
+}
+
+.admin-shell .empleados-table-wrap {
+  overflow-x: auto;
+  scrollbar-color: var(--admin-surface-accent) var(--admin-surface);
+}
+
+.admin-shell .empleados-table th,
+.admin-shell .empleados-table td,
+.admin-shell .empleados-checkbox,
+.admin-shell .mascota-item__select,
+.admin-shell .mascotas-history-list li {
+  color: var(--admin-surface-ink);
+}
+
+.admin-shell .empleados-table th,
+.admin-shell .empleados-table td::before {
+  color: var(--admin-surface-muted);
+}
+
+.admin-shell .empleados-status--active {
+  border: 1px solid rgba(43, 107, 70, 0.35);
+  color: #166534;
+}
+
+.admin-shell .empleados-status--inactive {
+  border: 1px solid rgba(109, 98, 91, 0.35);
+  color: #5f554f;
+}
+
+.admin-shell .mascota-item {
+  border-color: var(--admin-surface-border);
+}
+
+.admin-shell .mascota-item.is-selected {
+  border-color: var(--admin-surface-accent);
+  background: rgba(24, 170, 171, 0.08);
+}
+
+.admin-shell .mascotas-history {
+  background: var(--admin-surface);
+}
+
+.admin-shell .agenda-page button:focus-visible,
+.admin-shell .agenda-page input:focus-visible,
+.admin-shell .agenda-page select:focus-visible,
+.admin-shell .empleados-page button:focus-visible,
+.admin-shell .empleados-page input:focus-visible,
+.admin-shell .empleados-page select:focus-visible,
+.admin-shell .mascotas-page button:focus-visible,
+.admin-shell .mascotas-page input:focus-visible,
+.admin-shell .mascotas-page select:focus-visible,
+.admin-shell .mascotas-page textarea:focus-visible {
+  outline-color: var(--sl-amber);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-shell .agenda-page *,
+  .admin-shell .empleados-page *,
+  .admin-shell .mascotas-page * {
     transition: none !important;
   }
 }

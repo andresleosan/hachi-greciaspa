@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { format } from 'date-fns'
+import AdminShell from '../components/AdminShell'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
 import { firebaseDb } from '../services/firebase'
@@ -276,13 +277,14 @@ export default function DashboardAgenda() {
 
   return (
     <ProtectedRoute requireRole="admin">
-      <main className="agenda-page">
+      <AdminShell title="Agenda diaria" subtitle="Operación diaria de reservas y asignaciones.">
+        <div className="agenda-page">
         <div className="container agenda-page__inner">
           <header className="agenda-header">
             <div>
               <Link className="agenda-back-link" to="/dashboard">Volver al dashboard</Link>
               <p className="eyebrow eyebrow--coral">Operación diaria</p>
-              <h1>Agenda diaria</h1>
+               <h2>Agenda diaria</h2>
               <p className="section-copy">Organizá las reservas del spa en una sola vista.</p>
             </div>
             <div className="agenda-date-card">
@@ -530,7 +532,8 @@ export default function DashboardAgenda() {
             </aside>
           </div>
         )}
-      </main>
+        </div>
+      </AdminShell>
     </ProtectedRoute>
   )
 }

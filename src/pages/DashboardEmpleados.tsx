@@ -1,8 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore'
 import { format } from 'date-fns'
-import { Link } from 'react-router-dom'
 
+import AdminShell from '../components/AdminShell'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
 import {
@@ -111,7 +111,6 @@ function getInitials(name: string) {
 
 export default function DashboardEmpleados() {
   const { user, profile, loading: authLoading } = useAuth()
-  const [showSidebar, setShowSidebar] = useState(false)
   const [employees, setEmployees] = useState<Empleado[]>([])
   const [futureReservationCounts, setFutureReservationCounts] = useState<Record<string, number>>({})
   const [services, setServices] = useState<Servicio[]>([])
@@ -304,45 +303,12 @@ export default function DashboardEmpleados() {
 
   return (
     <ProtectedRoute requireRole="admin">
-      <div className="dashboard-layout">
-        <aside id="empleados-sidebar" className={`dashboard-sidebar${showSidebar ? ' is-open' : ''}`}>
-          <div className="sidebar-brand">
-            <div className="sidebar-brand__mark">HG</div>
-            <div className="sidebar-brand__copy"><strong>Hachi &amp; Grecia</strong><small>Admin</small></div>
-          </div>
-          <nav className="sidebar-nav" aria-label="Navegación del panel">
-            <Link className="sidebar-link" to="/dashboard"><span className="sidebar-link__icon">D</span> Dashboard</Link>
-            <Link className="sidebar-link" to="/dashboard/agenda"><span className="sidebar-link__icon">C</span> Citas</Link>
-            <Link className="sidebar-link is-active" to="/dashboard/empleados"><span className="sidebar-link__icon">E</span> Empleados</Link>
-            <Link className="sidebar-link" to="/servicios"><span className="sidebar-link__icon">S</span> Servicios</Link>
-            <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">U</span> Clientes <small className="sidebar-link__badge">próxim.</small></span>
-            <span className="sidebar-link is-disabled" aria-disabled="true"><span className="sidebar-link__icon">R</span> Reportes <small className="sidebar-link__badge">próxim.</small></span>
-          </nav>
-          <div className="sidebar-footer">
-            <div>{profile?.displayName || user?.email}<br /><small>Administrador</small></div>
-          </div>
-        </aside>
-
-        <main className="dashboard-main">
-          <header className="dashboard-topbar">
-            <button
-              className="btn btn-ghost sidebar-toggle"
-              onClick={() => setShowSidebar((current) => !current)}
-              aria-label="Mostrar navegación"
-              aria-expanded={showSidebar}
-              aria-controls="empleados-sidebar"
-            >☰</button>
-            <div className="dashboard-topbar__banner">
-              <img src="/dashboard_header_zoom.png" alt="Administración del spa" />
-            </div>
-            <div className="dashboard-title"><strong>Empleados</strong><span>Equipo, servicios y horarios</span></div>
-          </header>
-
-          <section className="container empleados-page">
+      <AdminShell title="Empleados" subtitle="Equipo, servicios y horarios">
+        <section className="container empleados-page">
             <div className="empleados-intro">
               <div>
                 <span className="eyebrow eyebrow--coral">Operación del spa</span>
-                <h1>Administrar empleados</h1>
+                <h2>Administrar empleados</h2>
                 <p className="section-copy">Define quién puede atender cada servicio y en qué turnos está disponible para la asignación automática.</p>
               </div>
               <button className="btn btn-primary" type="button" onClick={startCreate} disabled={isBusy}>Nuevo empleado</button>
@@ -521,9 +487,8 @@ export default function DashboardEmpleados() {
                 </form>
               </section>
             </div>
-          </section>
-        </main>
-      </div>
+        </section>
+      </AdminShell>
     </ProtectedRoute>
   )
 }

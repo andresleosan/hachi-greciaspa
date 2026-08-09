@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import AdminShell from '../components/AdminShell'
 import ProtectedRoute from '../components/ProtectedRoute'
 import { useAuth } from '../hooks/useAuth'
 import {
@@ -140,13 +141,14 @@ export default function DashboardMascotas() {
 
   return (
     <ProtectedRoute>
-      <main className="mascotas-page">
+      <AdminShell title="Mis mascotas" subtitle="Perfil, cuidados e historial de tus mascotas.">
+      <div className="mascotas-page">
         <div className="container">
           <header className="mascotas-intro">
             <div>
               <Link className="agenda-back-link" to="/dashboard">Volver al dashboard</Link>
               <p className="eyebrow eyebrow--coral">Perfil de bienestar</p>
-              <h1>Mis mascotas</h1>
+              <h2>Mis mascotas</h2>
               <p className="section-copy">Guarda sus datos y consulta cada visita en un solo lugar.</p>
             </div>
             <button type="button" className="btn btn-primary" onClick={startCreate}>Agregar mascota</button>
@@ -246,7 +248,8 @@ export default function DashboardMascotas() {
             </section>
           </div>
         </div>
-      </main>
+      </div>
+      </AdminShell>
     </ProtectedRoute>
   )
 }

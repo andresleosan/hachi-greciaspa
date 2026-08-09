@@ -2211,7 +2211,7 @@ metric-card {
   background: linear-gradient(135deg, rgba(24, 170, 171, 0.12), rgba(246, 89, 113, 0.1)), rgba(255, 255, 255, 0.94);
 }
 
-.agenda-header h1 {
+.agenda-header h2 {
   margin-top: 0.6rem;
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 1;
@@ -2849,7 +2849,7 @@ metric-card {
   gap: 1.5rem;
 }
 
-.empleados-intro h1 {
+.empleados-intro h2 {
   margin-top: 0.85rem;
   font-size: clamp(1.8rem, 3vw, 2.8rem);
   line-height: 1;
@@ -3297,7 +3297,7 @@ metric-card {
   gap: 1.5rem;
 }
 
-.mascotas-intro h1 {
+.mascotas-intro h2 {
   margin-top: 0.85rem;
   font-size: clamp(1.8rem, 3vw, 2.8rem);
   line-height: 1;

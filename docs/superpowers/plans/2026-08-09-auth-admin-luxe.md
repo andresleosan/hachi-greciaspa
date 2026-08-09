@@ -219,6 +219,7 @@ Expected: PASS y TypeScript sin errores.
 **Files:**
 - Create: `src/pages/DashboardPage.test.tsx`
 - Modify: `src/pages/DashboardPage.tsx`
+- Modify: `src/styles/luxe.css` — asegurar contraste de contenido heredado dentro de tarjetas claras del dashboard.
 - Modify: `src/components/AdminShell.test.tsx` si se agrega un contrato de integración mínimo.
 - Modify: `package.json` si el test no está incluido en `test:client`.
 

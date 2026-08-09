@@ -26,6 +26,7 @@ describe('AuthShell', () => {
     expect(markup).toContain('auth-shell__brand-panel')
     expect(markup).toContain('auth-shell__form-panel')
     expect(markup).toContain('aria-labelledby="auth-shell-title"')
+    expect(markup).not.toContain('>HG</span>')
     expect(markup).not.toContain('site-header')
     expect(markup).not.toContain('site-footer')
   })

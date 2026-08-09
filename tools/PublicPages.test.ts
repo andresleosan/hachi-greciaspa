@@ -16,6 +16,8 @@ const footer = readFileSync(new URL('../src/components/Footer.tsx', import.meta.
 const landingSections = readFileSync(new URL('../src/landing/SectionsLuxe.tsx', import.meta.url), 'utf8')
 const legacyInicio = readFileSync(new URL('../src/app/pages/Inicio.html', import.meta.url), 'utf8')
 const luxeStyles = readFileSync(new URL('../src/styles/luxe.css', import.meta.url), 'utf8')
+const authShell = readFileSync(new URL('../src/components/AuthShell.tsx', import.meta.url), 'utf8')
+const adminShell = readFileSync(new URL('../src/components/AdminShell.tsx', import.meta.url), 'utf8')
 
 describe('public Luxe pages', () => {
   it('uses the shared shell for prices and team', () => {
@@ -75,5 +77,16 @@ describe('public Luxe pages', () => {
 
   it('removes the fictitious phone from the legacy public landing', () => {
     expect(legacyInicio).toContain('Contacto: contacto@hachigreciasp.com — +52 55 7887 5525')
+  })
+
+  it('keeps private shells free of decorative letter icons and preserves drawer contracts', () => {
+    expect(authShell).not.toContain('>HG</span>')
+    expect(adminShell).toContain('aria-expanded={isDrawerOpen}')
+    expect(adminShell).toContain('aria-controls="admin-sidebar"')
+    expect(adminShell).toContain('aria-label="Cerrar navegación"')
+    expect(adminShell).toContain('aria-label="Cerrar menú"')
+    expect(luxeStyles).toMatch(/\.admin-shell__sidebar\s*\{[\s\S]*?visibility:\s*hidden/)
+    expect(luxeStyles).toMatch(/\.admin-shell__sidebar\.is-open\s*\{[\s\S]*?visibility:\s*visible/)
+    expect(luxeStyles).toMatch(/\.admin-shell__sidebar\s*\{[\s\S]*?pointer-events:\s*none/)
   })
 })
