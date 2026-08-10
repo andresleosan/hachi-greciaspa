@@ -1,7 +1,7 @@
 # Runbook Operativo — Fase 3
 
 Proyecto: `hachi-greciaspa`
-Estado: transición operativa; las verificaciones de Google Cloud Console permanecen pendientes.
+Estado al 2026-08-09: transición operativa; las verificaciones de Google Cloud Console permanecen pendientes.
 
 ## Alcance
 
@@ -84,10 +84,12 @@ concurrencia create/create y concurrencia create/reschedule.
 `npm run qa:local` ejecuta el flujo de creación/cancelación mediante callable
 contra emuladores y no prueba App Check productivo.
 
-Evidencia local fechada 2026-08-07: cliente `103 passed`, rules `74 passed, 0
-failed`, Functions `159 passed, 2 skipped`, typecheck/build de cliente y
-Functions verdes, y `npm run qa:local` con `12 passed, 0 failed`. Esta evidencia
-no autoriza despliegue ni declara production-ready.
+Evidencia local fechada 2026-08-09: cliente `34 archivos / 156 passed`, rules
+`74 passed, 0 failed`, Functions `159 passed, 2 skipped`, typecheck/build de
+cliente verdes, seed `2 passed, 0 failed`, `npm audit --omit=dev` con `0
+vulnerabilities` y `npm run qa:local` con `22 passed, 0 failed`. `firebase use`
+devolvió `hachi-greciaspa`. Esta evidencia es local, no autoriza despliegue ni
+declara production-ready.
 
 ### Gates Externos Antes De Producción
 
@@ -211,18 +213,19 @@ Los valores exactos de DNS deben copiarse de las instrucciones vigentes de Verce
 
 Costos de planificación: Vercel Free `$0`, Firebase Spark `$0`, Blaze/Functions `$0–3/mes`, Resend `$0–3/mes`, Cloudflare DNS `$0`; la compra del dominio es independiente. El budget de `$10/mes` aún no está configurado y sus alertas no imponen un límite duro de facturación.
 
-## Evidencia Local — 2026-08-07
+## Evidencia Local — 2026-08-09
 
 Estos resultados pertenecen al repositorio local. No autorizan despliegue ni demuestran que los gates externos estén completados.
 
 ```text
-npm run test:client                    103 passed, 0 failed
+npm run test:client                    34 archivos, 156 passed
+npm test                                Rules 74 passed, 0 failed; Functions 159 passed, 2 skipped
 npx tsc --noEmit                         PASS
 npm run build                            PASS
-npm run rules:test                       74 passed, 0 failed
-npm --prefix functions test              159 passed, 2 skipped
-npm --prefix functions run typecheck     PASS
-npm --prefix functions run build         PASS
+npm run qa:local                         22 passed, 0 failed
+node --test qa/local/seed.test.mjs       2 passed, 0 failed
+npm audit --omit=dev                     0 vulnerabilities
+firebase use                             hachi-greciaspa (read-only discovery)
 git diff --check                         PASS
 ```
 
@@ -243,7 +246,7 @@ efímeras `example.test`, siembra fixtures locales y ejecuta Playwright. Las cre
 viven en el entorno de los procesos y se elimina el override temporal de `functions/.secret.local`
 al finalizar. No se leen `.env`, cuentas de servicio ni secretos productivos.
 
-Evidencia local del 2026-08-07: **12 passed, 0 failed**, con reporte HTML en
+Evidencia local del 2026-08-09: **22 passed, 0 failed**, con reporte HTML en
 `qa/reports/local/index.html`. Cubre login admin/cliente, CRUD de empleados, agenda y filtros,
 creación/cancelación de reserva, reagendado mediante callable con preservación/limpieza de
 `empleadoId`, retry de asignación posterior a cancelación, catálogo público de precios/servicios y

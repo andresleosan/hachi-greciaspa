@@ -1,10 +1,10 @@
 # Fase 3 — Backlog Post-MVP
 
-> **Estado al 2026-08-04:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
+> **Estado al 2026-08-09:** El proyecto está en transición operativa. La implementación local de recordatorios está en el código y Resend es el proveedor primario documentado; la configuración de producción sigue pendiente.
 >
-> **Evidencia local al 2026-08-07:** client `103 passed`; `tsc --noEmit` y build del cliente verdes; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; typecheck y build de Functions verdes. El harness `npm run qa:local` verificó `12 passed, 0 failed` contra emuladores, incluyendo creación mediante callable, retry de asignación posterior a cancelación y las rutas públicas de precios, servicios y contacto/WhatsApp. Esta evidencia no constituye verificación de producción.
+> **Evidencia local al 2026-08-09:** client `34 archivos / 156 passed`; `tsc --noEmit` y build del cliente verdes; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; el harness `npm run qa:local` verificó `22 passed, 0 failed` contra emuladores; el seed local verificó `2 passed, 0 failed`; `npm audit --omit=dev` reportó `0 vulnerabilities`; `firebase use` devolvió `hachi-greciaspa`. Esta evidencia es local y no constituye verificación de producción.
 >
-> **Pendiente de verificación externa:** App Check en Firebase Console, rollback operativo, autorización de producción, dominio y `RESEND_API_KEY` en Secret Manager/Resend, Billing/Blaze, budget alert, despliegue y browser QA contra producción.
+> **Pendiente de verificación externa:** App Check en Firebase Console, dominio y `RESEND_API_KEY` en Secret Manager/Resend, Billing/Blaze, budget alert, backups, observabilidad, rollback operativo, autorización de producción, despliegue y browser QA contra producción. No se ejecutó ninguna acción productiva.
 
 Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
 
@@ -70,7 +70,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Hardening de `firestore.rules`: el dueño solo puede cancelar con el cambio exacto `status -> 'cancelled'`; las escrituras directas del cliente sobre `date`/`timeSlot` están denegadas y no son una vía de reagendado.
 - [x] Controles en `DashboardPage`: cancelar reservas propias `pending`/`confirmed` y mostrar reagendado solo para reservas propias `pending` con fecha futura.
 - [x] Validación server-side en la callable `rescheduleReserva`: usa Admin SDK, autentica y valida ownership/estado, fecha y hora futuras en `America/Mexico_City`, y es la autoridad para rechazar slots activos ocupados dentro de una transacción que comparte el lock de disponibilidad con `createReserva`.
-- [x] Tests (evidencia local fechada 2026-08-07; no verificación de producción): reglas (`74 passed, 0 failed`), Functions (`159 passed, 2 skipped`) y cliente (`103 passed`) para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
+- [x] Tests (evidencia local fechada 2026-08-09; no verificación de producción): reglas (`74 passed, 0 failed`), Functions (`159 passed, 2 skipped`) y cliente (`156 passed` en 34 archivos) para ownership, estados, allowlists, conflictos de slot y mapeo de errores.
 
 **Operación separada, no completada por esta tarea:** desplegar la callable, configurar producción y verificar el comportamiento en el entorno desplegado.
 
@@ -125,9 +125,9 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Browser QA completo del retry posterior a cancelación: el caso E2E dedicado en `qa/tests/local-authenticated.spec.mjs` pasó contra los emuladores locales.
 - [ ] Despliegue, backfill productivo, configuración productiva y browser QA contra producción.
 
-**Actualización de evidencia 2026-08-07:** la suite actual de rules registra `74 passed, 0 failed` y Functions `159 passed, 2 skipped` después del hardening local de reservas, email y recordatorios; el resto de la evidencia de browser QA local de esta sección sigue vigente.
+**Actualización de evidencia 2026-08-09:** la suite actual de rules registra `74 passed, 0 failed` y Functions `159 passed, 2 skipped` después del hardening local de reservas, email y recordatorios; el resto de la evidencia de browser QA local de esta sección sigue vigente.
 
-**Verificación local fechada 2026-08-07:** client `103/103`; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; typecheck y builds verdes. La QA previa contra emuladores verificó autorización no-admin, CRUD de empleados, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. El harness automatizado `npm run qa:local` verificó login por rol, CRUD de empleados, agenda/filtros, creación/cancelación mediante callable, reagendado con preservación/limpieza de `empleadoId`, retry de asignación posterior a cancelación y las rutas públicas de catálogo/contacto (`12 passed, 0 failed`). Toda verificación contra producción sigue pendiente.
+**Verificación local fechada 2026-08-09:** client `34 archivos / 156 passed`; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; typecheck y build del cliente verdes. La QA previa contra emuladores verificó autorización no-admin, CRUD de empleados, persistencia de servicios/turnos tras reload, asignación inicial, salto por conflicto, cola, filtros de agenda y scroll horizontal móvil. El harness automatizado `npm run qa:local` verificó login por rol, CRUD de empleados, agenda/filtros, creación/cancelación mediante callable, reagendado con preservación/limpieza de `empleadoId`, retry de asignación posterior a cancelación y las rutas públicas de catálogo/contacto (`22 passed, 0 failed`). Toda verificación contra producción sigue pendiente.
 
 **Refs:** `docs/SCHEMA.md` `empleados`, `firestore.rules` `empleados`.
 
@@ -160,7 +160,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Query param en URL: `/reservar?service=X&timeSlot=Y&date=Z` (R3.3 ya planificó algo similar).
 - [x] Test E2E: cliente abre una reserva `completed` del fixture local y verifica el re-booking desde el dashboard.
 
-**Verificación local:** el parser seguro de query params está cubierto por `src/services/bookingPrefill.test.ts`; `npm run qa:local` completó 22 pruebas (`22 passed, 0 failed`), incluyendo el flujo de re-booking con una reserva `completed` del fixture local `QA_REBOOK`. El E2E no crea ni completa la cita durante la prueba. El browser QA de producción, Resend, App Check, Billing, Secret Manager y despliegue permanecen pendientes como gates operativos.
+**Verificación local fechada 2026-08-09:** el parser seguro de query params está cubierto por `src/services/bookingPrefill.test.ts`; `npm run qa:local` completó 22 pruebas (`22 passed, 0 failed`), incluyendo el flujo de re-booking con una reserva `completed` del fixture local `QA_REBOOK`. El E2E no crea ni completa la cita durante la prueba. El browser QA de producción, Resend, App Check, Billing, Secret Manager, backups, observabilidad y despliegue permanecen pendientes como gates operativos.
 
 **Refs:** `src/pages/Reservar.tsx`, `DashboardPage.tsx`.
 
@@ -175,7 +175,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar; usa `confirmaciones/{reservaId}` y clave determinística de Resend.
 - [x] Variables de plantilla: nombre del cliente, servicio, fecha, hora y enlace al dashboard.
 
-**Verificación local:** 74 casos de rules, 159 tests de Functions (2 skips existentes), 103 tests de cliente, typecheck y build pasan. El harness local cubre los flujos autenticados principales y las páginas públicas contra emuladores. La creación cliente de reservas ahora exige allowlist de campos, servicio activo y snapshot coherente, estado `pending`, `createdBy: 'client'` y que `userEmail` coincida con el email del token; esto evita que el trigger de confirmación se use para enviar a destinatarios arbitrarios. La configuración de Resend, dominio, Secret Manager, Billing/Blaze, despliegue y browser QA de producción permanecen pendientes como gates operativos.
+**Verificación local fechada 2026-08-09:** 74 casos de rules, 159 tests de Functions (2 skips existentes), 156 tests de cliente en 34 archivos, typecheck y build pasan. El harness local cubre los flujos autenticados principales y las páginas públicas contra emuladores. La creación cliente de reservas ahora exige allowlist de campos, servicio activo y snapshot coherente, estado `pending`, `createdBy: 'client'` y que `userEmail` coincida con el email del token; esto evita que el trigger de confirmación se use para enviar a destinatarios arbitrarios. La configuración de Resend, dominio, Secret Manager, Billing/Blaze, budget, backups, observabilidad, despliegue, rollback y browser QA de producción permanecen pendientes como gates operativos.
 
 **Refs:** T3.1 (mismo proveedor), T3.3 (link cancelación).
 
@@ -311,7 +311,7 @@ Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
 | C (sin proveedor externo) | $0 incremental; backups < 1 GB = $0 |
 | D | $0 |
 
-**Si se migra a Blaze por uso de Cloud Functions**: budget de $10/mes configurado vía T3.10.
+**Si se migra a Blaze por uso de Cloud Functions**: debe configurarse y verificarse un budget de $10/mes vía T3.10 antes de producción; actualmente sigue pendiente.
 
 ## Fuera de alcance de Fase 3
 
