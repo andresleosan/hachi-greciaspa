@@ -34,7 +34,7 @@ describe('reminder email rendering', () => {
         expect(html).toContain('Baño y corte');
         expect(html).toContain('15 de enero de 2026');
         expect(html).toContain('10:30');
-        expect(html).toContain('https://hachi-greciaspa.web.app/dashboard');
+        expect(html).toContain('https://hachi-greciaspa.vercel.app/dashboard');
     });
     it('escapes every interpolated reminder value before rendering HTML', () => {
         const html = renderReminderHtml({
@@ -59,7 +59,21 @@ describe('confirmation email rendering', () => {
         expect(html).toContain('Baño y corte');
         expect(html).toContain('15 de enero de 2026');
         expect(html).toContain('10:30');
-        expect(html).toContain('https://hachi-greciaspa.web.app/dashboard');
+        expect(html).toContain('https://hachi-greciaspa.vercel.app/dashboard');
+    });
+    it('uses the configured dashboard URL in both email templates', () => {
+        const originalValue = process.env.PUBLIC_APP_URL;
+        process.env.PUBLIC_APP_URL = 'https://spa.example/';
+        try {
+            expect(renderReminderHtml(input)).toContain('https://spa.example/dashboard');
+            expect(renderConfirmationHtml(confirmationInput)).toContain('https://spa.example/dashboard');
+        }
+        finally {
+            if (originalValue === undefined)
+                delete process.env.PUBLIC_APP_URL;
+            else
+                process.env.PUBLIC_APP_URL = originalValue;
+        }
     });
     it('escapes confirmation values before rendering HTML', () => {
         const html = renderConfirmationHtml({
