@@ -17,9 +17,9 @@ const REMINDER_TEMPLATE = `<!doctype html>
 </html>`
 
 export function renderReminderHtml(input: ReminderEmailInput): string {
-  return REMINDER_TEMPLATE.replaceAll('{{recipientName}}', escapeHtml(input.recipientName))
+  return REMINDER_TEMPLATE.replaceAll('{{dashboardUrl}}', escapeHtml(getDashboardUrl()))
+    .replaceAll('{{recipientName}}', escapeHtml(input.recipientName))
     .replaceAll('{{serviceName}}', escapeHtml(input.serviceName))
     .replaceAll('{{date}}', escapeHtml(input.date))
     .replaceAll('{{timeSlot}}', escapeHtml(input.timeSlot))
-    .replaceAll('{{dashboardUrl}}', escapeHtml(getDashboardUrl()))
 }

@@ -14,9 +14,9 @@ const CONFIRMATION_TEMPLATE = `<!doctype html>
   </body>
 </html>`;
 export function renderConfirmationHtml(input) {
-    return CONFIRMATION_TEMPLATE.replaceAll('{{recipientName}}', escapeHtml(input.recipientName))
+    return CONFIRMATION_TEMPLATE.replaceAll('{{dashboardUrl}}', escapeHtml(getDashboardUrl()))
+        .replaceAll('{{recipientName}}', escapeHtml(input.recipientName))
         .replaceAll('{{serviceName}}', escapeHtml(input.serviceName))
         .replaceAll('{{date}}', escapeHtml(input.date))
-        .replaceAll('{{timeSlot}}', escapeHtml(input.timeSlot))
-        .replaceAll('{{dashboardUrl}}', escapeHtml(getDashboardUrl()));
+        .replaceAll('{{timeSlot}}', escapeHtml(input.timeSlot));
 }

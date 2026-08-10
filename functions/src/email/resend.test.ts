@@ -75,6 +75,26 @@ describe('reminder email rendering', () => {
     expect(html).not.toContain('<script>')
     expect(html).not.toContain('<img')
   })
+
+  it('preserves a dashboard placeholder inside interpolated values', () => {
+    const reminderHtml = renderReminderHtml({
+      ...input,
+      serviceName: 'Servicio {{dashboardUrl}} <spa>',
+    })
+    const confirmationHtml = renderConfirmationHtml({
+      ...confirmationInput,
+      recipientName: 'Ana {{dashboardUrl}} <spa>',
+    })
+
+    expect(reminderHtml).toContain('Servicio {{dashboardUrl}} &lt;spa&gt;')
+    expect(reminderHtml).not.toContain(
+      'Servicio https://hachi-greciaspa.vercel.app/dashboard',
+    )
+    expect(confirmationHtml).toContain('Ana {{dashboardUrl}} &lt;spa&gt;')
+    expect(confirmationHtml).not.toContain(
+      'Ana https://hachi-greciaspa.vercel.app/dashboard',
+    )
+  })
 })
 
 describe('confirmation email rendering', () => {
