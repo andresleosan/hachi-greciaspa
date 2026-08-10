@@ -19,14 +19,17 @@ export const REQUIRED_CHECKS = Object.freeze([
 
 export const AUDIT_CHECKS = Object.freeze([
   { label: 'client audit', executable: NPM, args: ['audit', '--omit=dev'], kind: 'audit' },
-  { label: 'functions audit', executable: NPM, args: ['audit', '--prefix', 'functions', '--audit-level=high'], kind: 'audit' },
+  { label: 'functions audit', executable: NPM, args: ['audit', '--prefix', 'functions'], kind: 'audit' },
 ])
 
 export const PRODUCTION_GATES = Object.freeze([
   { label: 'Dominio propio', reason: 'Dominio no adquirido ni verificado.' },
   { label: 'Resend y DNS', reason: 'Resend y SPF/DKIM/DMARC no configurados.' },
   { label: 'Secret Manager', reason: 'RESEND_API_KEY no configurada en Secret Manager.' },
-  { label: 'Billing y budget', reason: 'Billing/Blaze y budget de $10/mes no verificados.' },
+  {
+    label: 'Billing y budget',
+    reason: 'La evidencia externa de Billing/Blaze y budget no es evaluada por este comando; revisar la documentación y la autorización operativa.',
+  },
   { label: 'browser QA', reason: 'QA de navegador completo pendiente.' },
   { label: 'rollback', reason: 'Procedimiento de rollback pendiente de revision operativa.' },
   { label: 'autorizacion', reason: 'Autorizacion explicita de produccion pendiente.' },
@@ -177,7 +180,7 @@ ${gateRows}
 ${auditOutput}
 
 ## Restricciones
-No se activo Billing/Blaze, no se configuro Resend, no se leyeron secretos y no se ejecuto deploy. Este resultado local no es autorizacion de produccion; no production deployment was performed.
+La evidencia externa no es evaluada por este comando. No se ejecutaron acciones externas durante este preflight, no se configuro Resend, no se leyeron secretos y no se ejecuto deploy. Este resultado local no es autorizacion de produccion; no production deployment was performed.
 `
 }
 

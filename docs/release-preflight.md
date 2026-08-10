@@ -1,7 +1,7 @@
 # Release Preflight
 
-Fecha: 2026-08-08T03:12:49.660Z
-Commit: 16b11b6a4e270e8ff6d47ea78db5b5044e3c26a7
+Fecha: 2026-08-10T02:54:28.511Z
+Commit: d32d665e67520f6d56c4c8913623c292a2ef8cd9
 Resultado local: PASS_WITH_WARNINGS
 
 ## Checks locales
@@ -15,7 +15,7 @@ Resultado local: PASS_WITH_WARNINGS
 | functions build | required | 0 | PASS |
 | diff check | required | 0 | PASS |
 | client audit | audit | 0 | PASS |
-| functions audit | audit | 0 | PASS |
+| functions audit | audit | 1 | WARN |
 
 ## Gates de produccion
 | Gate | Estado | Motivo |
@@ -23,7 +23,7 @@ Resultado local: PASS_WITH_WARNINGS
 | Dominio propio | BLOCKED | Dominio no adquirido ni verificado. |
 | Resend y DNS | BLOCKED | Resend y SPF/DKIM/DMARC no configurados. |
 | Secret Manager | BLOCKED | RESEND_API_KEY no configurada en Secret Manager. |
-| Billing y budget | BLOCKED | Billing/Blaze y budget de $10/mes no verificados. |
+| Billing y budget | BLOCKED | La evidencia externa de Billing/Blaze y budget no es evaluada por este comando; revisar la documentación y la autorización operativa. |
 | browser QA | BLOCKED | QA de navegador completo pendiente. |
 | rollback | BLOCKED | Procedimiento de rollback pendiente de revision operativa. |
 | autorizacion | BLOCKED | Autorizacion explicita de produccion pendiente. |
@@ -79,4 +79,4 @@ To address all issues (including breaking changes), run:
 ```
 
 ## Restricciones
-No se activo Billing/Blaze, no se configuro Resend, no se leyeron secretos y no se ejecuto deploy. Este resultado local no es autorizacion de produccion; no production deployment was performed.
+La evidencia externa no es evaluada por este comando. No se ejecutaron acciones externas durante este preflight, no se configuro Resend, no se leyeron secretos y no se ejecuto deploy. Este resultado local no es autorizacion de produccion; no production deployment was performed.

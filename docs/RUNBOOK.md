@@ -1,7 +1,7 @@
 # Runbook Operativo — Fase 3
 
 Proyecto: `hachi-greciaspa`
-Estado al 2026-08-09: transición operativa; cuenta de facturación, Blaze, budget y notificaciones de Google Cloud Console confirmados por el operador. Los demás gates productivos permanecen pendientes.
+Estado al 2026-08-09: transición operativa; cuenta de facturación, Blaze y budget de Google Cloud Console confirmados por el operador; umbrales visibles en `10%`, `50%` y `100%`. El modo de gasto real/pronosticado y los destinatarios aprobados, junto con los demás gates productivos, permanecen pendientes.
 
 ## Alcance
 

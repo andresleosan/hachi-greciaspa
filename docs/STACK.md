@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-09 (MVP, catálogo público, harness de browser QA local y código/tests de T3.5 verificados localmente; cuenta de facturación, Blaze, budget y notificaciones confirmados por el operador).
+Última actualización: 2026-08-09 (MVP, catálogo público, harness de browser QA local y código/tests de T3.5 verificados localmente; cuenta de facturación, Blaze y budget confirmados por el operador; modo de notificación y destinatarios pendientes).
 
 ## Stack técnico
 
@@ -178,7 +178,7 @@ El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Se
 
 **Qué:** El operador confirmó en Google Cloud Console un budget mensual de `$10` para el proyecto `hachi-greciaspa`, con gasto observado `$0.00/$10.00`, alcance de proyecto y alertas `10% ($1)`, `50% ($5)` y `100% ($10)`. La cuenta `Pago de Firebase` y Blaze también fueron confirmados, sin registrar IDs ni datos de pago.
 
-**Impacto residual:** Con Blaze activo, un evento imprevisto (loop infinito de un Cloud Function, query sin límite disparada por un bot, abuso del storage) puede generar facturación variable. La alerta configurada notifica, pero nunca es un hard cap ni evita cargos adicionales.
+**Impacto residual:** Con Blaze activo, un evento imprevisto (loop infinito de un Cloud Function, query sin límite disparada por un bot, abuso del storage) puede generar facturación variable. Los umbrales visibles no demuestran por sí solos el modo de notificación ni los destinatarios; las alertas, cuando estén verificadas, nunca serán un hard cap ni evitarán cargos adicionales.
 
 **Estado:** budget y umbrales visibles confirmados por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. Pendiente verificar el modo de gasto real/pronosticado y los destinatarios aprobados. El budget es alert-only: las alertas notifican, pero no imponen un límite duro de facturación.
 

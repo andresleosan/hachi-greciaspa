@@ -47,6 +47,22 @@ describe('release preflight', () => {
     expect(report).not.toContain('firebase deploy')
   })
 
+  it('does not claim that external billing changes happened during preflight', () => {
+    const report = renderPreflightReport(localPassResult)
+
+    expect(report).toContain('La evidencia externa no es evaluada por este comando')
+    expect(report).toContain('No se ejecutaron acciones externas durante este preflight')
+    expect(report).not.toMatch(/Billing\/Blaze.{0,30}(activ|desactiv|configur)/i)
+  })
+
+  it('keeps the functions audit sensitive to moderate advisories', () => {
+    expect(AUDIT_CHECKS.find((check) => check.label === 'functions audit')?.args).toEqual([
+      'audit',
+      '--prefix',
+      'functions',
+    ])
+  })
+
   it('blocks after a required failure but still runs audits as warnings', async () => {
     const calls = []
     const result = await runReleasePreflight({
