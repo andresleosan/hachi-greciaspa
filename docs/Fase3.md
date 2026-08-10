@@ -175,7 +175,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar; usa `confirmaciones/{reservaId}` y clave determinística de Resend.
 - [x] Variables de plantilla: nombre del cliente, servicio, fecha, hora y enlace al dashboard.
 
-**Verificación local fechada 2026-08-09:** 74 casos de rules, 159 tests de Functions (2 skips existentes), 156 tests de cliente en 34 archivos, typecheck y build pasan. El harness local cubre los flujos autenticados principales y las páginas públicas contra emuladores. La creación cliente de reservas ahora exige allowlist de campos, servicio activo y snapshot coherente, estado `pending`, `createdBy: 'client'` y que `userEmail` coincida con el email del token; esto evita que el trigger de confirmación se use para enviar a destinatarios arbitrarios. La configuración de Resend, dominio, Secret Manager, backups, observabilidad, despliegue, rollback y browser QA de producción permanece pendiente como gates operativos. Cuenta de facturación, Blaze, budget y notificaciones están confirmados por el operador.
+**Verificación local fechada 2026-08-09:** 74 casos de rules, 159 tests de Functions (2 skips existentes), 156 tests de cliente en 34 archivos, typecheck y build pasan. El harness local cubre los flujos autenticados principales y las páginas públicas contra emuladores. La creación cliente de reservas ahora exige allowlist de campos, servicio activo y snapshot coherente, estado `pending`, `createdBy: 'client'` y que `userEmail` coincida con el email del token; esto evita que el trigger de confirmación se use para enviar a destinatarios arbitrarios. La configuración de Resend, dominio, Secret Manager, backups, observabilidad, despliegue, rollback y browser QA de producción permanece pendiente como gates operativos. Cuenta de facturación, Blaze y budget están confirmados; los umbrales de alertas son visibles/confirmados, pero el modo real/pronosticado y los destinatarios aprobados siguen pendientes.
 
 **Refs:** T3.1 (mismo proveedor), T3.3 (link cancelación).
 
@@ -224,7 +224,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Documentar en `docs/RUNBOOK.md` cómo restaurar toda la base Firestore desde un backup (procedimiento, no script automático).
 - [ ] Verificar primer export manual después de configurar.
 
-**Verificación local:** el runbook documenta exportación y restauración total de Firestore, alcance, IAM/lifecycle, contención y rollback no destructivo. Bucket, Scheduler, primer export y la configuración operativa de backups siguen pendientes; cuenta de facturación, Blaze, budget y notificaciones están confirmados.
+**Verificación local:** el runbook documenta exportación y restauración total de Firestore, alcance, IAM/lifecycle, contención y rollback no destructivo. Bucket, Scheduler, primer export y la configuración operativa de backups siguen pendientes; cuenta de facturación, Blaze y budget están confirmados, mientras que el modo real/pronosticado y los destinatarios de alertas siguen pendientes.
 
 **Refs:** operación, no código.
 
