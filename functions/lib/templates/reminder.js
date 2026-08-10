@@ -1,5 +1,5 @@
 import { getDashboardUrl } from './appUrl.js';
-import { escapeHtml } from './html.js';
+import { renderHtmlTemplate } from './html.js';
 const REMINDER_TEMPLATE = `<!doctype html>
 <html lang="es">
   <body>
@@ -14,9 +14,11 @@ const REMINDER_TEMPLATE = `<!doctype html>
   </body>
 </html>`;
 export function renderReminderHtml(input) {
-    return REMINDER_TEMPLATE.replaceAll('{{dashboardUrl}}', escapeHtml(getDashboardUrl()))
-        .replaceAll('{{recipientName}}', escapeHtml(input.recipientName))
-        .replaceAll('{{serviceName}}', escapeHtml(input.serviceName))
-        .replaceAll('{{date}}', escapeHtml(input.date))
-        .replaceAll('{{timeSlot}}', escapeHtml(input.timeSlot));
+    return renderHtmlTemplate(REMINDER_TEMPLATE, {
+        dashboardUrl: getDashboardUrl(),
+        recipientName: input.recipientName,
+        serviceName: input.serviceName,
+        date: input.date,
+        timeSlot: input.timeSlot,
+    });
 }

@@ -17,6 +17,7 @@ import {
   EmailProviderError,
 } from './resend.js'
 import { renderConfirmationHtml } from '../templates/confirmation.js'
+import { renderHtmlTemplate } from '../templates/html.js'
 import { renderReminderHtml } from '../templates/reminder.js'
 
 let resendClient: {
@@ -95,6 +96,22 @@ describe('reminder email rendering', () => {
       'Ana https://hachi-greciaspa.vercel.app/dashboard',
     )
   })
+
+  it('does not render a placeholder from one input field inside another', () => {
+    const html = renderReminderHtml({
+      ...input,
+      serviceName: '{{date}}',
+    })
+
+    expect(html).toContain('Servicio: <strong>{{date}}</strong>')
+    expect(html).not.toContain('Servicio: <strong>15 de enero de 2026</strong>')
+  })
+
+  it('leaves unknown template tokens unchanged', () => {
+    expect(renderHtmlTemplate('Hola {{known}} {{unknown}}', { known: 'Ana' })).toBe(
+      'Hola Ana {{unknown}}',
+    )
+  })
 })
 
 describe('confirmation email rendering', () => {
@@ -117,6 +134,24 @@ describe('confirmation email rendering', () => {
       expect(renderConfirmationHtml(confirmationInput)).toContain(
         'https://spa.example/dashboard',
       )
+    } finally {
+      if (originalValue === undefined) delete process.env.PUBLIC_APP_URL
+      else process.env.PUBLIC_APP_URL = originalValue
+    }
+  })
+
+  it('escapes configured URL characters without changing user text', () => {
+    const originalValue = process.env.PUBLIC_APP_URL
+    process.env.PUBLIC_APP_URL = 'https://spa.example/a&b'
+
+    try {
+      const html = renderConfirmationHtml({
+        ...confirmationInput,
+        recipientName: 'Ana & Luisa',
+      })
+
+      expect(html).toContain('href="https://spa.example/a&amp;b/dashboard"')
+      expect(html).toContain('Hola Ana &amp; Luisa')
     } finally {
       if (originalValue === undefined) delete process.env.PUBLIC_APP_URL
       else process.env.PUBLIC_APP_URL = originalValue

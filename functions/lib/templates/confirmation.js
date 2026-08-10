@@ -1,5 +1,5 @@
 import { getDashboardUrl } from './appUrl.js';
-import { escapeHtml } from './html.js';
+import { renderHtmlTemplate } from './html.js';
 const CONFIRMATION_TEMPLATE = `<!doctype html>
 <html lang="es">
   <body>
@@ -14,9 +14,11 @@ const CONFIRMATION_TEMPLATE = `<!doctype html>
   </body>
 </html>`;
 export function renderConfirmationHtml(input) {
-    return CONFIRMATION_TEMPLATE.replaceAll('{{dashboardUrl}}', escapeHtml(getDashboardUrl()))
-        .replaceAll('{{recipientName}}', escapeHtml(input.recipientName))
-        .replaceAll('{{serviceName}}', escapeHtml(input.serviceName))
-        .replaceAll('{{date}}', escapeHtml(input.date))
-        .replaceAll('{{timeSlot}}', escapeHtml(input.timeSlot));
+    return renderHtmlTemplate(CONFIRMATION_TEMPLATE, {
+        dashboardUrl: getDashboardUrl(),
+        recipientName: input.recipientName,
+        serviceName: input.serviceName,
+        date: input.date,
+        timeSlot: input.timeSlot,
+    });
 }

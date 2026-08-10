@@ -112,7 +112,14 @@ git commit -m "feat: centralize temporary app url"
 **Files:**
 - Modify: `functions/src/templates/reminder.ts`
 - Modify: `functions/src/templates/confirmation.ts`
+- Modify: `functions/src/templates/html.ts`
 - Modify: `functions/src/email/resend.test.ts`
+- Modify: `functions/lib/templates/html.js` (artefacto compilado versionado)
+- Modify: `functions/lib/templates/appUrl.js` (artefacto compilado versionado)
+- Modify: `functions/lib/templates/appUrl.test.js` (artefacto compilado versionado)
+- Modify: `functions/lib/templates/reminder.js` (artefacto compilado versionado)
+- Modify: `functions/lib/templates/confirmation.js` (artefacto compilado versionado)
+- Modify: `functions/lib/email/resend.test.js` (artefacto compilado versionado)
 
 **Interfaces:**
 - Consumes: `getDashboardUrl()` de `functions/src/templates/appUrl.ts`.
@@ -165,7 +172,7 @@ Expected: ambos comandos exit `0`.
 - [ ] **Step 6: Commit de templates y tests**
 
 ```powershell
-git add functions/src/templates/reminder.ts functions/src/templates/confirmation.ts functions/src/email/resend.test.ts
+git add functions/src/templates/html.ts functions/src/templates/reminder.ts functions/src/templates/confirmation.ts functions/src/email/resend.test.ts functions/lib/templates/html.js functions/lib/templates/appUrl.js functions/lib/templates/appUrl.test.js functions/lib/templates/reminder.js functions/lib/templates/confirmation.js functions/lib/email/resend.test.js
 git commit -m "feat: point transactional emails to app url"
 ```
 
@@ -176,6 +183,7 @@ git commit -m "feat: point transactional emails to app url"
 **Files:**
 - Modify: `docs/STACK.md`
 - Modify: `docs/RUNBOOK.md`
+- Modify: `docs/release-preflight.md` (evidencia generada versionada)
 
 **Interfaces:**
 - Consumes: el helper y fallback implementados en Tasks 1 y 2.
@@ -210,7 +218,9 @@ Expected: diff check exit `0`, suite Functions verde y preflight `PASS_WITH_WARN
 - [ ] **Step 4: Revisión final de alcance**
 
 Confirmar con `git status --short --branch` que solo cambiaron los templates,
-tests, helper y dos documentos; mantener sin stagear
+tests, helper, los artefactos compilados versionados bajo `functions/lib`,
+los tres documentos planificados (incluido `docs/release-preflight.md`);
+mantener sin stagear
 `graphify-out/cache/last_query_stamp`.
 
 - [ ] **Step 5: Commit de documentación y evidencia generada**
