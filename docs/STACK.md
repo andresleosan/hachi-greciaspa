@@ -1,6 +1,6 @@
 # STACK — Hachi & Grecia Spa
 
-Última actualización: 2026-08-09 (MVP, catálogo público, harness de browser QA local y código/tests de T3.5 verificados localmente; Blaze confirmado, cuenta de facturación y budget pendientes).
+Última actualización: 2026-08-09 (MVP, catálogo público, harness de browser QA local y código/tests de T3.5 verificados localmente; cuenta de facturación, Blaze, budget y notificaciones confirmados por el operador).
 
 ## Stack técnico
 
@@ -55,7 +55,7 @@ La reevaluación de `npm audit --omit=dev` al 2026-08-09 reporta `0 vulnerabilit
 - La disponibilidad consulta todos los activos del mismo `serviceId` y `date`, usa `durationMin` del catálogo y rechaza solapamientos. No existe un límite de documentos conocido para esa consulta; el lock serializa la carrera, pero no sustituye una futura estrategia de particionamiento o retención.
 - La contención deliberada del lock queda acotada al servicio/día, como trade-off para soportar intervalos de duración variable sin imponer una migración de reservas existentes.
 - La evidencia local cubre callable, cuota, límite activo, fecha futura, snapshots canónicos, ownership de mascota y concurrencia; no constituye evidencia de producción.
-- **Gates productivos pendientes:** habilitar/verificar App Check en Firebase Console, confirmar la cuenta de facturación y budget alert, configurar dominio y `RESEND_API_KEY` en Secret Manager para Resend, desplegar con autorización explícita, revisar/probar rollback operativo y ejecutar browser QA contra producción. Blaze está confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
+- **Gates productivos pendientes:** habilitar/verificar App Check en Firebase Console, configurar dominio y `RESEND_API_KEY` en Secret Manager para Resend, configurar backups, observabilidad, desplegar con autorización explícita, revisar/probar rollback operativo y ejecutar browser QA contra producción. Cuenta de facturación, Blaze, budget y notificaciones están confirmados el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
 
 ### T3.5 — Empleados y autoasignación local
 
@@ -70,8 +70,8 @@ La reevaluación de `npm audit --omit=dev` al 2026-08-09 reporta `0 vulnerabilit
 - No se ejecutó backfill productivo, no se desplegaron Functions y no se cambió configuración de producción en esta tarea.
 
 - La integración de email transaccional, confirmación inmediata y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
-- La implementación local de creación callable ya aplica cuota, fecha futura y disponibilidad transaccional; la activación de App Check en Console, la cuenta de facturación, budget alert, Secret Manager/Resend, deploy, rollback operativo y browser QA productivo siguen siendo gates antes de producción. Blaze está confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
-- Las alertas de presupuesto no están configuradas en Google Cloud Console. La consola mostró: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` Revisar permisos IAM y alcance del proyecto o cuenta es un diagnóstico pendiente, no una causa confirmada. Sigue siendo COST-1/T3.10 y no debe considerarse completado.
+- La implementación local de creación callable ya aplica cuota, fecha futura y disponibilidad transaccional; la activación de App Check en Console, Secret Manager/Resend, deploy, rollback operativo y browser QA productivo siguen siendo gates antes de producción. Cuenta de facturación, Blaze, budget y notificaciones están confirmados por el operador el 2026-08-09; hora no informada; fuente: confirmación/captura del operador.
+- El budget mensual de `$10` está confirmado para el proyecto `hachi-greciaspa`, con gasto observado `$0.00/$10.00` y alertas en `10% ($1)`, `50% ($5)` y `100% ($10)`. Las alertas son alert-only y no constituyen un hard cap.
 - La activación de App Check en consola y la comprobación de rechazo de writes no autorizados en producción siguen pendientes; la suite del emulador de rules no prueba esa configuración de despliegue.
 - La agenda y terapeutas tienen implementación local; la corrida estable de browser QA en emuladores ya pasó y permanecen pendientes el despliegue, la configuración operativa y el browser QA contra producción. Backups y observabilidad siguen siendo trabajo de Fase 3.
 - `npm run qa:local` ejecuta browser QA autenticado y público contra emuladores con 22 casos: login por rol, CRUD de empleados, agenda/filtros, creación/cancelación, reagendado, retry de asignación posterior a cancelación, re-booking, catálogo de precios/servicios y contacto/WhatsApp. La última corrida registró `22 passed, 0 failed`; la corrida local no valida producción.
@@ -79,7 +79,7 @@ La reevaluación de `npm audit --omit=dev` al 2026-08-09 reporta `0 vulnerabilit
 
 ## Servicios de pago: Firebase
 
-Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actualmente: **Blaze (pay-as-you-go), confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador**; la cuenta de facturación asociada sigue **no verificada**.
+Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actualmente: **Blaze (pay-as-you-go), confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador**; la cuenta de facturación `Pago de Firebase` también está confirmada por el operador, sin registrar ID ni datos de pago.
 
 ### Estimación mensual (Blaze/pay-as-you-go)
 
@@ -90,7 +90,7 @@ Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actua
 | **Cloud Storage** | 5 GiB almacenamiento, 1 GB/día egress | no usado (declarado en firebase.ts pero sin callers) | $0 |
 | **Hosting** | 10 GB almacenamiento, 360 MB egress/día | build estático < 5 MB | $0 |
 
-**Costo mensual estimado del uso esperado en Blaze: `$0–3/mes`** — la evidencia local no genera consumo productivo. El uso medido esperado sigue siendo bajo, pero las lecturas/escrituras de cuota, snapshots, consultas de reservas e índices agregan consumo variable de Firestore. No hay alertas de presupuesto configuradas todavía y no existe hard cap de facturación.
+**Costo mensual estimado del uso esperado en Blaze: `$0–3/mes`** — la evidencia local no genera consumo productivo. El uso medido esperado sigue siendo bajo, pero las lecturas/escrituras de cuota, snapshots, consultas de reservas e índices agregan consumo variable de Firestore. El budget mensual confirmado muestra `$0.00/$10.00`; sus alertas son alert-only y no existe hard cap de facturación.
 
 ### Cuándo se excede el free tier (proyección)
 
@@ -105,7 +105,7 @@ Conclusión: Authentication, Firestore, Storage y Hosting sin Functions pueden
 permanecer dentro de sus cuotas Spark al ritmo estimado. La callable y cualquier
 otra Cloud Function requieren una cuenta de facturación asociada y Blaze para producción, por lo que el
 producto completo no puede considerarse Spark-only. El riesgo adicional es una
-viralidad inesperada o logs mal diseñados; no hay budget alert configurada.
+viralidad inesperada o logs mal diseñados; existe una alerta de budget, pero no es un hard cap.
 
 ### Costos en Blaze (pay-as-you-go)
 
@@ -158,7 +158,7 @@ Fuera de cuota: `$0.015/GB-mes` de storage, `$4.50/millón` de operaciones Clase
 
 ## Email transaccional Fase 3
 
-Proveedor recomendado: **Resend**. Fallback operativo: **Postmark**. Estado: integración implementada en `functions/`; cuenta, secreto, dominio, cuenta de facturación, alertas de presupuesto, backups, observabilidad y despliegue todavía no están configurados/verificados. Blaze está confirmado el 2026-08-09.
+Proveedor recomendado: **Resend**. Fallback operativo: **Postmark**. Estado: integración implementada en `functions/`; cuenta, secreto, dominio, backups, observabilidad y despliegue todavía no están configurados/verificados. Cuenta de facturación, Blaze, budget y alertas están confirmados el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
 
 Baseline de planificación: **900 recordatorios/mes**. El costo del proveedor de email se mantiene separado del costo de Firebase Functions/Blaze:
 
@@ -168,21 +168,19 @@ Baseline de planificación: **900 recordatorios/mes**. El costo del proveedor de
 | Postmark | Basic: $15/mes (10,000 incluidos) | $0 de uso medido estimado; Blaze requerido; reserva incidental $0-3 | $15-18 |
 | SendGrid | Essentials desde $19.95/mes | $0 de uso medido estimado; Blaze requerido; reserva incidental $0-3 | $19.95-22.95 |
 
-Para 900 ejecuciones mensuales, Functions queda dentro de las cuotas sin costo publicadas en Blaze. Blaze está activo y es obligatorio para desplegar Functions aunque el uso medido estimado sea bajo. **Budget alert: no verificada**; la consola mostró el error documentado en COST-1. Las alertas no imponen un límite duro de facturación.
+Para 900 ejecuciones mensuales, Functions queda dentro de las cuotas sin costo publicadas en Blaze. Blaze está activo y es obligatorio para desplegar Functions aunque el uso medido estimado sea bajo. **Budget alert: verificada** para `hachi-greciaspa`, con alertas `10%`, `50%` y `100%`; las alertas no imponen un límite duro de facturación.
 
 El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Secret Manager, caller exclusivo en Firebase Functions, máximo tres retries con backoff acotado y registro sanitizado de fallas permanentes. Recordatorios y confirmaciones usan estados separados (`recordatorios` y `confirmaciones`) y no modifican reservas cuando el proveedor falla. El código de integración está implementado; todavía no hay credenciales, dominio ni despliegue configurados.
 
 ## Hallazgo de costo
 
-### COST-1 — Budget alert bloqueada en Google Cloud Console (severidad BAJA)
+### COST-1 — Budget alert verificada, sin hard cap (severidad BAJA)
 
-**Qué:** No se configuró el budget de `$10/mes` ni sus notificaciones en Google Cloud Console para el proyecto `hachi-greciaspa`. Blaze está confirmado el 2026-08-09, pero la cuenta de facturación no está marcada por falta de evidencia específica.
+**Qué:** El operador confirmó en Google Cloud Console un budget mensual de `$10` para el proyecto `hachi-greciaspa`, con gasto observado `$0.00/$10.00`, alcance de proyecto y alertas `10% ($1)`, `50% ($5)` y `100% ($10)`. La cuenta `Pago de Firebase` y Blaze también fueron confirmados, sin registrar IDs ni datos de pago.
 
-**Impacto si no se corrige:** Con Blaze activo, un evento imprevisto (loop infinito de un Cloud Function, query sin límite disparada por un bot, abuso del storage) puede generar facturación sin aviso. Sin alerta, el operador se entera por el recibo; además, una alerta nunca es un hard cap.
+**Impacto residual:** Con Blaze activo, un evento imprevisto (loop infinito de un Cloud Function, query sin límite disparada por un bot, abuso del storage) puede generar facturación variable. La alerta configurada notifica, pero nunca es un hard cap ni evita cargos adicionales.
 
-**Bloqueador observado:** la consola mostró exactamente: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` El diagnóstico pendiente es revisar permisos IAM y alcance del proyecto o cuenta; no está confirmado como causa raíz.
-
-**Corrección:** crear un budget de $10 en Google Cloud Console ("Facturación → Presupuestos"), con notificaciones de gasto real y pronosticado a $1, $5 y $10, y verificar el alcance y estado guardado. Las alertas notifican, pero no imponen un límite duro de facturación.
+**Estado:** verificado por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. El budget es alert-only: las alertas notifican, pero no imponen un límite duro de facturación.
 
 ## Servicios externos
 

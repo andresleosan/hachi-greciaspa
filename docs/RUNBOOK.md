@@ -1,7 +1,7 @@
 # Runbook Operativo — Fase 3
 
 Proyecto: `hachi-greciaspa`
-Estado al 2026-08-09: transición operativa; Blaze está confirmado, pero la cuenta de facturación, el budget y las notificaciones de Google Cloud Console permanecen pendientes.
+Estado al 2026-08-09: transición operativa; cuenta de facturación, Blaze, budget y notificaciones de Google Cloud Console confirmados por el operador. Los demás gates productivos permanecen pendientes.
 
 ## Alcance
 
@@ -17,7 +17,7 @@ npm run release:preflight
 
 El comando ejecuta la matriz local de tests, rules, Functions, typechecks, builds, `git diff --check` y auditorías. `PASS` indica un comando sin errores; `WARN` conserva un advisory de auditoría; `BLOCKED` indica un fallo de un check requerido; `PASS_WITH_WARNINGS` significa que la evidencia local pasó, pero existen warnings o gates externos pendientes.
 
-El reporte se escribe en `docs/release-preflight.md`. Un preflight local exitoso no autoriza producción, no configura proveedores externos y no ejecuta deploy. La salida nunca debe interpretarse como `production ready` mientras los gates de dominio, Resend, Secret Manager, cuenta de facturación, budget, browser QA, rollback y autorización continúen bloqueados.
+El reporte se escribe en `docs/release-preflight.md`. Un preflight local exitoso no autoriza producción, no configura proveedores externos y no ejecuta deploy. La salida nunca debe interpretarse como `production ready` mientras los gates de dominio, Resend, Secret Manager, browser QA, rollback y autorización continúen bloqueados.
 
 El preflight no lee valores de `.env`, claves, tokens ni cuentas de servicio. No ejecutar `npm audit fix --force`; los advisories conocidos se conservan como evidencia para una decisión separada.
 
@@ -93,17 +93,17 @@ declara production-ready.
 
 ### Gates Externos Antes De Producción
 
-Los siguientes puntos no se consideran completados por los checks locales:
+Confirmaciones externas del operador — 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador:
+
+- [x] Cuenta de facturación `Pago de Firebase` confirmada, sin registrar ID ni datos de pago.
+- [x] Plan Blaze confirmado.
+- [x] Budget mensual de `$10`, alcance exclusivo del proyecto `hachi-greciaspa`, gasto observado `$0.00/$10.00`.
+- [x] Alertas de budget confirmadas en `10% ($1)`, `50% ($5)` y `100% ($10)`.
+
+Los siguientes puntos no se consideran completados por los checks locales ni por la evidencia de Billing/Budget:
 
 - [ ] Firebase Console: habilitar App Check con el proveedor aprobado y
   verificar rechazo de invocaciones sin token válido en el entorno desplegado.
-- [ ] Billing: confirmar la cuenta de facturación requerida para Functions. La
-  cuenta de facturación permanece no verificada.
-- [x] Plan Blaze: confirmado el 2026-08-09; hora no informada por el operador;
-  fuente: confirmación/captura del operador. La confirmación no incluye la
-  cuenta de facturación.
-- [ ] Budget alert: crear y verificar la alerta aprobada, incluido su alcance y
-  destinatarios. La consola mostró: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` El diagnóstico de permisos IAM o alcance del proyecto/cuenta queda pendiente; es una hipótesis, no una causa confirmada.
 - [ ] Secret Manager/Resend: verificar dominio y configurar el secreto
   `RESEND_API_KEY` sin escribir su valor en repositorio, logs o frontend.
 - [ ] Deploy/autorización: revisar Rules, Functions y cliente con el operador y
@@ -163,10 +163,10 @@ No se ejecutó backfill productivo, no se desplegaron Functions, no se usaron cr
 
 Completar en el orden indicado antes de habilitar o desplegar una Function programada:
 
-- [ ] **Cuenta de facturación:** confirmar que el proyecto `hachi-greciaspa` está asociado a la cuenta de facturación correcta. Estado actual: **no verificado**.
-- [x] **Plan Blaze:** confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. La cuenta de facturación asociada no está marcada por falta de evidencia específica.
-- [ ] **Budget:** crear un presupuesto de `$10/mes`, con alcance limitado al proyecto y a la cuenta de facturación correctos. Estado actual: **no verificado**; la consola mostró: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` El diagnóstico de permisos IAM o alcance del proyecto/cuenta está pendiente y no confirma la causa.
-- [ ] **Notificaciones:** configurar alertas de gasto real y gasto pronosticado en `$1`, `$5` y `$10`. Estado actual: **no verificado**.
+- [x] **Cuenta de facturación:** `Pago de Firebase` confirmada por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. No se registra ID ni datos de pago.
+- [x] **Plan Blaze:** confirmado por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
+- [x] **Budget:** confirmado por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. Es mensual, de `$10`, con alcance exclusivo del proyecto `hachi-greciaspa`; gasto observado `$0.00/$10.00`.
+- [x] **Notificaciones:** confirmadas por el operador el 2026-08-09; hora no informada por el operador; alertas en `10% ($1)`, `50% ($5)` y `100% ($10)`. No se registran destinatarios completos.
 - **Registro operativo:** después de completar los pasos anteriores en consola, registrar los destinatarios de las notificaciones y la fecha de verificación. No completar esos campos de forma anticipada.
 
 Google Cloud Budgets envía alertas, pero no impone un límite duro de facturación. La alerta de `$10` no evita cargos adicionales. Ante un gasto inesperado, ejecutar el procedimiento de emergencia de este documento.
@@ -174,10 +174,10 @@ Google Cloud Budgets envía alertas, pero no impone un límite duro de facturaci
 Registro posterior a la verificación:
 
 ```text
-Cuenta de facturación confirmada: [completar después de verificar]
+Cuenta de facturación confirmada: sí (`Pago de Firebase`; verificado 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador)
 Plan Blaze confirmado: sí (verificado 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador)
-Budget de $10 creado y alcance confirmado: [pendiente; bloqueado por error de consola]
-Alertas real/pronosticado en $1, $5 y $10: [completar después de verificar]
+Budget mensual de $10 creado y alcance exclusivo de `hachi-greciaspa` confirmado: sí (gasto observado `$0.00/$10.00`)
+Alertas confirmadas: sí, `10% ($1)`, `50% ($5)` y `100% ($10)`
 Destinatarios: [completar después de verificar]
 Fecha de verificación: [completar después de verificar]
 Operador: [completar después de verificar]
@@ -190,7 +190,6 @@ Autorizar producción solo cuando cada punto tenga evidencia y autorización exp
 - [ ] Dominio propio del spa verificado en Resend, con SPF, DKIM y DMARC configurados según las instrucciones del proveedor; no usar un dominio compartido, personal o de prueba en producción.
 - [ ] App Check habilitado y verificado en Firebase Console; el rechazo de una invocación sin App Check válido está probado en producción.
 - [ ] Secret Manager configurado con el secreto exacto `RESEND_API_KEY`; no colocar su valor en el repositorio, logs o frontend.
-- [ ] Cuenta de facturación y budget alert verificados en Google Cloud Console. Blaze está confirmado, pero este gate sigue pendiente.
 - [x] Evidencia local de build y typecheck registrada abajo.
 - [x] Evidencia local de las pruebas de reglas registrada abajo.
 - [ ] Callable `createReserva` desplegada y autorizada; no usar el bypass del emulador fuera de local.
@@ -214,7 +213,7 @@ Esta secuencia requiere acción del operador y no forma parte del preflight loca
 
 Los valores exactos de DNS deben copiarse de las instrucciones vigentes de Vercel, Cloudflare y Resend; nunca se inventan en el repositorio. `hachi-greciaspa.vercel.app` no es un dominio válido para verificar Resend porque el operador no controla su DNS.
 
-Costos de planificación: Vercel Free `$0`, Firebase Blaze/pay-as-you-go con Functions `$0–3/mes` para el uso esperado, Resend `$0–3/mes`, Cloudflare DNS `$0`; la compra del dominio es independiente. Blaze está activo, el budget de `$10/mes` aún no está configurado y sus alertas no imponen un límite duro de facturación.
+Costos de planificación: Vercel Free `$0`, Firebase Blaze/pay-as-you-go con Functions `$0–3/mes` para el uso esperado, Resend `$0–3/mes`, Cloudflare DNS `$0`; la compra del dominio es independiente. Blaze está activo y el budget mensual de `$10` está confirmado para `hachi-greciaspa`; sus alertas son alert-only y no imponen un límite duro de facturación.
 
 ## Evidencia Local — 2026-08-09
 
@@ -293,7 +292,7 @@ La carpeta debe conservar el `export_metadata` y los archivos generados por Fire
 
 ### Programación diaria
 
-La automatización diaria debe ejecutar el mismo export total mediante un componente controlado por Cloud Scheduler, con una cuenta de servicio de mínimo privilegio y sin exponer credenciales en el repositorio. Antes de habilitarla se deben verificar la cuenta de facturación, permisos IAM, lifecycle de 90 días, alertas de presupuesto y una ejecución manual exitosa. Esta automatización no está configurada en el entorno actual.
+La automatización diaria debe ejecutar el mismo export total mediante un componente controlado por Cloud Scheduler, con una cuenta de servicio de mínimo privilegio y sin exponer credenciales en el repositorio. Antes de habilitarla se deben verificar permisos IAM, lifecycle de 90 días y una ejecución manual exitosa; la cuenta de facturación, Blaze y el budget ya están confirmados. Esta automatización no está configurada en el entorno actual.
 
 ### Restauración total
 
@@ -329,7 +328,7 @@ Esta secuencia es una instrucción operativa pendiente; no se ha ejecutado desde
 
 1. Verificar el dominio propio del spa en Resend y sus registros SPF, DKIM y DMARC.
 2. Crear `RESEND_API_KEY` en Firebase Secret Manager sin exponer su valor en el repositorio, logs o frontend.
-3. Confirmar la cuenta de facturación y configurar el presupuesto de `$10/mes` con alertas de gasto real y pronosticado en `$1`, `$5` y `$10`. Blaze ya está activo.
+3. Mantener la evidencia de cuenta de facturación, Blaze y budget mensual de `$10` con alcance `hachi-greciaspa`; alertas confirmadas en `10%`, `50%` y `100%`. No se registran IDs ni destinatarios completos.
 4. Obtener autorización explícita para producción.
 5. Desplegar solo después de que todos los gates de release estén en verde.
 6. Ejecutar una prueba controlada y verificar la idempotencia.

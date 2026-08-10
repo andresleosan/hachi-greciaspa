@@ -4,7 +4,7 @@
 >
 > **Evidencia local al 2026-08-09:** client `34 archivos / 156 passed`; `tsc --noEmit` y build del cliente verdes; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; el harness `npm run qa:local` verificó `22 passed, 0 failed` contra emuladores; el seed local verificó `2 passed, 0 failed`; `npm audit --omit=dev` reportó `0 vulnerabilities`; `firebase use` devolvió `hachi-greciaspa`. Esta evidencia es local y no constituye verificación de producción.
 >
-> **Pendiente de verificación externa:** App Check en Firebase Console, dominio y `RESEND_API_KEY` en Secret Manager/Resend, cuenta de facturación, budget alert, backups, observabilidad, rollback operativo, autorización de producción, despliegue y browser QA contra producción. Blaze fue confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. No se marcó la cuenta de facturación por falta de evidencia específica. Durante esta intervención no se ejecutaron acciones productivas.
+> **Pendiente de verificación externa:** App Check en Firebase Console, dominio y `RESEND_API_KEY` en Secret Manager/Resend, backups, observabilidad, rollback operativo, autorización de producción, despliegue y browser QA contra producción. Cuenta de facturación, Blaze, budget y notificaciones fueron confirmados por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. Durante esta intervención no se ejecutaron acciones productivas.
 
 Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
 
@@ -83,7 +83,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] `bookingSlotGuards/{encodeURIComponent(serviceId)}__{date}` serializa la disponibilidad entre `createReserva` y `rescheduleReserva`, incluso entre usuarios distintos del mismo servicio/día. Es server-only, se crea lazy sin backfill, contiene `serviceId`, `date` y `updatedAt`, y la contención deliberada queda acotada al servicio/día para soportar duraciones variables.
 - [x] El orden local verificado lee el lock antes de consultar disponibilidad/conflictos y escribe el lock junto con la creación o el reagendado solo en el commit exitoso. La consulta no tiene un límite de documentos conocido; quedan pendientes futuras estrategias de particionamiento o retención.
 - [x] La evidencia local cubre Rules, Functions, cliente, builds y browser QA contra emuladores.
-- [ ] Permanecen pendientes App Check Console, cuenta de facturación, budget alert, Secret Manager/Resend, deploy con autorización explícita, verificación del lock privado en producción, rollback operativo no destructivo y browser QA productivo. Blaze está confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
+- [ ] Permanecen pendientes App Check Console, Secret Manager/Resend, deploy con autorización explícita, verificación del lock privado en producción, backups, observabilidad, rollback operativo no destructivo y browser QA productivo. Cuenta de facturación, Blaze, budget y notificaciones están confirmados el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
 
 **Refs:** `docs/SCHEMA.md`, `docs/adr/ADR-002-cancelacion-cliente.md`, `docs/adr/ADR-008-creacion-reservas-callable.md`, `firestore.rules:55-82`.
 
@@ -160,7 +160,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Query param en URL: `/reservar?service=X&timeSlot=Y&date=Z` (R3.3 ya planificó algo similar).
 - [x] Test E2E: cliente abre una reserva `completed` del fixture local y verifica el re-booking desde el dashboard.
 
-**Verificación local fechada 2026-08-09:** el parser seguro de query params está cubierto por `src/services/bookingPrefill.test.ts`; `npm run qa:local` completó 22 pruebas (`22 passed, 0 failed`), incluyendo el flujo de re-booking con una reserva `completed` del fixture local `QA_REBOOK`. El E2E no crea ni completa la cita durante la prueba. El browser QA de producción, Resend, App Check, cuenta de facturación, Secret Manager, backups, observabilidad y despliegue permanecen pendientes como gates operativos.
+**Verificación local fechada 2026-08-09:** el parser seguro de query params está cubierto por `src/services/bookingPrefill.test.ts`; `npm run qa:local` completó 22 pruebas (`22 passed, 0 failed`), incluyendo el flujo de re-booking con una reserva `completed` del fixture local `QA_REBOOK`. El E2E no crea ni completa la cita durante la prueba. El browser QA de producción, Resend, App Check, Secret Manager, backups, observabilidad y despliegue permanecen pendientes como gates operativos.
 
 **Refs:** `src/pages/Reservar.tsx`, `DashboardPage.tsx`.
 
@@ -175,7 +175,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Idempotente: si la reserva se actualiza (no se crea nueva), no reenviar; usa `confirmaciones/{reservaId}` y clave determinística de Resend.
 - [x] Variables de plantilla: nombre del cliente, servicio, fecha, hora y enlace al dashboard.
 
-**Verificación local fechada 2026-08-09:** 74 casos de rules, 159 tests de Functions (2 skips existentes), 156 tests de cliente en 34 archivos, typecheck y build pasan. El harness local cubre los flujos autenticados principales y las páginas públicas contra emuladores. La creación cliente de reservas ahora exige allowlist de campos, servicio activo y snapshot coherente, estado `pending`, `createdBy: 'client'` y que `userEmail` coincida con el email del token; esto evita que el trigger de confirmación se use para enviar a destinatarios arbitrarios. La configuración de Resend, dominio, cuenta de facturación, Secret Manager, budget, backups, observabilidad, despliegue, rollback y browser QA de producción permanecen pendientes como gates operativos. Blaze está confirmado.
+**Verificación local fechada 2026-08-09:** 74 casos de rules, 159 tests de Functions (2 skips existentes), 156 tests de cliente en 34 archivos, typecheck y build pasan. El harness local cubre los flujos autenticados principales y las páginas públicas contra emuladores. La creación cliente de reservas ahora exige allowlist de campos, servicio activo y snapshot coherente, estado `pending`, `createdBy: 'client'` y que `userEmail` coincida con el email del token; esto evita que el trigger de confirmación se use para enviar a destinatarios arbitrarios. La configuración de Resend, dominio, Secret Manager, backups, observabilidad, despliegue, rollback y browser QA de producción permanece pendiente como gates operativos. Cuenta de facturación, Blaze, budget y notificaciones están confirmados por el operador.
 
 **Refs:** T3.1 (mismo proveedor), T3.3 (link cancelación).
 
@@ -200,14 +200,15 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 ---
 
 #### T3.10 — Budget alerts en Google Cloud Console (COST-1)
-**Por qué:** STACK.md COST-1 documentó que no hay alerta de facturación. Sin esto, cualquier bug en Cloud Functions puede generar costos sin aviso.
+**Por qué:** Sin una alerta de presupuesto, cualquier bug en Cloud Functions puede generar costos sin aviso.
 
 **AC:**
-- [ ] Crear budget en Google Cloud Console: presupuesto de $10/mes y alertas de gasto real y pronosticado a $1, $5 y $10.
-- [ ] Documentar en `docs/STACK.md` que se configuró (link al budget).
-- [ ] Con Blaze activo para Functions de T3.1, este paso es bloqueante, no opcional.
+- [x] Budget mensual de `$10` confirmado en Google Cloud Console para el proyecto `hachi-greciaspa`, con gasto observado `$0.00/$10.00`.
+- [x] Alcance confirmado: solo el proyecto `hachi-greciaspa`; no se registra ID de cuenta.
+- [x] Alertas confirmadas en `10% ($1)`, `50% ($5)` y `100% ($10)`.
+- [x] Blaze y la cuenta de facturación confirmados por el operador.
 
-**Estado operativo 2026-08-09:** Blaze está activo; hora no informada por el operador; fuente: confirmación/captura del operador. La creación del budget está bloqueada porque la consola mostró exactamente: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` Revisar permisos IAM y alcance del proyecto o cuenta es el diagnóstico pendiente; todavía no es una causa confirmada. La cuenta de facturación tampoco está verificada.
+**Estado operativo 2026-08-09:** cuenta de facturación, Blaze, budget y notificaciones confirmados por el operador; hora no informada por el operador; fuente: confirmación/captura del operador. El budget es mensual, de `$10`, con alcance solo `hachi-greciaspa`, gasto observado `$0.00/$10.00` y alertas en `10%`, `50%` y `100%`. Las alertas son alert-only y no constituyen un hard cap.
 
 **Refs:** `docs/STACK.md` líneas 55-63 (COST-1).
 
@@ -222,7 +223,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Documentar en `docs/RUNBOOK.md` cómo restaurar toda la base Firestore desde un backup (procedimiento, no script automático).
 - [ ] Verificar primer export manual después de configurar.
 
-**Verificación local:** el runbook documenta exportación y restauración total de Firestore, alcance, IAM/lifecycle, contención y rollback no destructivo. Bucket, Scheduler, cuenta de facturación, budget y primer export siguen pendientes de configuración y evidencia externa; Blaze está confirmado.
+**Verificación local:** el runbook documenta exportación y restauración total de Firestore, alcance, IAM/lifecycle, contención y rollback no destructivo. Bucket, Scheduler, primer export y la configuración operativa de backups siguen pendientes; cuenta de facturación, Blaze, budget y notificaciones están confirmados.
 
 **Refs:** operación, no código.
 
@@ -313,7 +314,7 @@ Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
 | C (sin proveedor externo) | $0 incremental; backups < 1 GB = $0 |
 | D | $0 |
 
-**Con Blaze/pay-as-you-go activo** (confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador): debe configurarse y verificarse un budget de $10/mes vía T3.10 antes de producción; actualmente sigue pendiente por el error de consola descrito en T3.10. Las alertas no imponen un límite duro de facturación.
+**Con Blaze/pay-as-you-go activo** (confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador): el budget mensual de `$10` para `hachi-greciaspa` y sus alertas `10%`, `50%` y `100%` están confirmados. Las alertas son alert-only y no imponen un límite duro de facturación.
 
 ## Fuera de alcance de Fase 3
 
