@@ -21,6 +21,12 @@ El reporte se escribe en `docs/release-preflight.md`. Un preflight local exitoso
 
 El preflight no lee valores de `.env`, claves, tokens ni cuentas de servicio. No ejecutar `npm audit fix --force`; los advisories conocidos se conservan como evidencia para una decisión separada.
 
+## URL Temporal De Los Enlaces De Email
+
+El dashboard enlazado por los emails apunta temporalmente a Vercel mediante `PUBLIC_APP_URL`. Si la configuración no define esa variable, la aplicación usa `https://hachi-greciaspa.vercel.app` como fallback. `PUBLIC_APP_URL` no es un secreto y no debe agregarse a Secret Manager.
+
+Cuando exista un dominio propio, actualizar `PUBLIC_APP_URL` al nuevo origen y repetir las pruebas relevantes y el `npm run release:preflight` antes de autorizar producción. Este cambio de URL no sustituye la verificación del dominio remitente y los registros DNS requeridos por Resend.
+
 ## Creación De Reservas Callable
 
 ### Contrato Y Controles Locales

@@ -172,6 +172,8 @@ Para 900 ejecuciones mensuales, Functions queda dentro de las cuotas sin costo p
 
 El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Secret Manager, caller exclusivo en Firebase Functions, máximo tres retries con backoff acotado y registro sanitizado de fallas permanentes. Recordatorios y confirmaciones usan estados separados (`recordatorios` y `confirmaciones`) y no modifican reservas cuando el proveedor falla. El código de integración está implementado; todavía no hay credenciales, dominio ni despliegue configurados.
 
+Los enlaces al dashboard en los emails usan `PUBLIC_APP_URL`, una configuración pública y no secreta. Mientras no exista un dominio propio, el fallback temporal es `https://hachi-greciaspa.vercel.app`. Esta URL solo determina el destino de los enlaces de la aplicación; no demuestra ni reemplaza la verificación del dominio remitente de Resend mediante DNS.
+
 ## Hallazgo de costo
 
 ### COST-1 — Budget y umbrales visibles, verificación de notificaciones pendiente (severidad BAJA)
