@@ -98,7 +98,8 @@ Confirmaciones externas del operador — 2026-08-09; hora no informada por el op
 - [x] Cuenta de facturación `Pago de Firebase` confirmada, sin registrar ID ni datos de pago.
 - [x] Plan Blaze confirmado.
 - [x] Budget mensual de `$10`, alcance exclusivo del proyecto `hachi-greciaspa`, gasto observado `$0.00/$10.00`.
-- [x] Alertas de budget confirmadas en `10% ($1)`, `50% ($5)` y `100% ($10)`.
+- [x] Umbrales de alertas visibles/confirmados en `10% ($1)`, `50% ($5)` y `100% ($10)`.
+- [ ] Notificaciones: verificar el modo de gasto real/pronosticado y los destinatarios aprobados; no registrar destinatarios completos.
 
 Los siguientes puntos no se consideran completados por los checks locales ni por la evidencia de Billing/Budget:
 
@@ -166,7 +167,8 @@ Completar en el orden indicado antes de habilitar o desplegar una Function progr
 - [x] **Cuenta de facturación:** `Pago de Firebase` confirmada por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. No se registra ID ni datos de pago.
 - [x] **Plan Blaze:** confirmado por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
 - [x] **Budget:** confirmado por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. Es mensual, de `$10`, con alcance exclusivo del proyecto `hachi-greciaspa`; gasto observado `$0.00/$10.00`.
-- [x] **Notificaciones:** confirmadas por el operador el 2026-08-09; hora no informada por el operador; alertas en `10% ($1)`, `50% ($5)` y `100% ($10)`. No se registran destinatarios completos.
+- [x] **Umbrales de alertas:** visibles/confirmados el 2026-08-09; hora no informada por el operador; `10% ($1)`, `50% ($5)` y `100% ($10)`.
+- [ ] **Notificaciones:** pendiente verificar el modo de gasto real/pronosticado y los destinatarios aprobados. No se registran destinatarios completos.
 - **Registro operativo:** después de completar los pasos anteriores en consola, registrar los destinatarios de las notificaciones y la fecha de verificación. No completar esos campos de forma anticipada.
 
 Google Cloud Budgets envía alertas, pero no impone un límite duro de facturación. La alerta de `$10` no evita cargos adicionales. Ante un gasto inesperado, ejecutar el procedimiento de emergencia de este documento.
@@ -177,10 +179,12 @@ Registro posterior a la verificación:
 Cuenta de facturación confirmada: sí (`Pago de Firebase`; verificado 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador)
 Plan Blaze confirmado: sí (verificado 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador)
 Budget mensual de $10 creado y alcance exclusivo de `hachi-greciaspa` confirmado: sí (gasto observado `$0.00/$10.00`)
-Alertas confirmadas: sí, `10% ($1)`, `50% ($5)` y `100% ($10)`
-Destinatarios: [completar después de verificar]
-Fecha de verificación: [completar después de verificar]
-Operador: [completar después de verificar]
+Umbrales de alertas visibles/confirmados: sí, `10% ($1)`, `50% ($5)` y `100% ($10)`
+Modo de notificación real/pronosticado: [pendiente de verificar]
+Destinatarios aprobados: [pendiente de verificar; no registrar completos]
+Fecha de verificación: 2026-08-09
+Hora de verificación: no informada por el operador
+Operador: no registrado en el repositorio
 ```
 
 ## Gate De Release

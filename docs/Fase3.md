@@ -4,7 +4,7 @@
 >
 > **Evidencia local al 2026-08-09:** client `34 archivos / 156 passed`; `tsc --noEmit` y build del cliente verdes; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; el harness `npm run qa:local` verificó `22 passed, 0 failed` contra emuladores; el seed local verificó `2 passed, 0 failed`; `npm audit --omit=dev` reportó `0 vulnerabilities`; `firebase use` devolvió `hachi-greciaspa`. Esta evidencia es local y no constituye verificación de producción.
 >
-> **Pendiente de verificación externa:** App Check en Firebase Console, dominio y `RESEND_API_KEY` en Secret Manager/Resend, backups, observabilidad, rollback operativo, autorización de producción, despliegue y browser QA contra producción. Cuenta de facturación, Blaze, budget y notificaciones fueron confirmados por el operador el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. Durante esta intervención no se ejecutaron acciones productivas.
+> **Pendiente de verificación externa:** App Check en Firebase Console, dominio y `RESEND_API_KEY` en Secret Manager/Resend, modo de notificación real/pronosticado y destinatarios aprobados, backups, observabilidad, rollback operativo, autorización de producción, despliegue y browser QA contra producción. Cuenta de facturación, Blaze y budget fueron confirmados por el operador el 2026-08-09; los umbrales `10%/50%/100%` son visibles/confirmados, pero el modo y destinatarios siguen pendientes; hora no informada por el operador; fuente: confirmación/captura del operador. Durante esta intervención no se ejecutaron acciones productivas.
 
 Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
 
@@ -83,7 +83,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] `bookingSlotGuards/{encodeURIComponent(serviceId)}__{date}` serializa la disponibilidad entre `createReserva` y `rescheduleReserva`, incluso entre usuarios distintos del mismo servicio/día. Es server-only, se crea lazy sin backfill, contiene `serviceId`, `date` y `updatedAt`, y la contención deliberada queda acotada al servicio/día para soportar duraciones variables.
 - [x] El orden local verificado lee el lock antes de consultar disponibilidad/conflictos y escribe el lock junto con la creación o el reagendado solo en el commit exitoso. La consulta no tiene un límite de documentos conocido; quedan pendientes futuras estrategias de particionamiento o retención.
 - [x] La evidencia local cubre Rules, Functions, cliente, builds y browser QA contra emuladores.
-- [ ] Permanecen pendientes App Check Console, Secret Manager/Resend, deploy con autorización explícita, verificación del lock privado en producción, backups, observabilidad, rollback operativo no destructivo y browser QA productivo. Cuenta de facturación, Blaze, budget y notificaciones están confirmados el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
+- [ ] Permanecen pendientes App Check Console, Secret Manager/Resend, modo de notificación real/pronosticado y destinatarios aprobados, deploy con autorización explícita, verificación del lock privado en producción, backups, observabilidad, rollback operativo no destructivo y browser QA productivo. Cuenta de facturación, Blaze y budget están confirmados; los umbrales `10%/50%/100%` son visibles/confirmados el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
 
 **Refs:** `docs/SCHEMA.md`, `docs/adr/ADR-002-cancelacion-cliente.md`, `docs/adr/ADR-008-creacion-reservas-callable.md`, `firestore.rules:55-82`.
 
@@ -205,10 +205,11 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 **AC:**
 - [x] Budget mensual de `$10` confirmado en Google Cloud Console para el proyecto `hachi-greciaspa`, con gasto observado `$0.00/$10.00`.
 - [x] Alcance confirmado: solo el proyecto `hachi-greciaspa`; no se registra ID de cuenta.
-- [x] Alertas confirmadas en `10% ($1)`, `50% ($5)` y `100% ($10)`.
+- [x] Umbrales visibles/confirmados en `10% ($1)`, `50% ($5)` y `100% ($10)`.
+- [ ] Verificar el modo de gasto real/pronosticado y los destinatarios aprobados; no registrar destinatarios completos.
 - [x] Blaze y la cuenta de facturación confirmados por el operador.
 
-**Estado operativo 2026-08-09:** cuenta de facturación, Blaze, budget y notificaciones confirmados por el operador; hora no informada por el operador; fuente: confirmación/captura del operador. El budget es mensual, de `$10`, con alcance solo `hachi-greciaspa`, gasto observado `$0.00/$10.00` y alertas en `10%`, `50%` y `100%`. Las alertas son alert-only y no constituyen un hard cap.
+**Estado operativo 2026-08-09:** cuenta de facturación, Blaze y budget confirmados por el operador; hora no informada por el operador; fuente: confirmación/captura del operador. El budget es mensual, de `$10`, con alcance solo `hachi-greciaspa`, gasto observado `$0.00/$10.00` y umbrales visibles/confirmados en `10%`, `50%` y `100%`. La captura no demuestra el modo de gasto real/pronosticado ni los destinatarios aprobados, que quedan pendientes. El budget es alert-only y no constituye un hard cap.
 
 **Refs:** `docs/STACK.md` líneas 55-63 (COST-1).
 
@@ -314,7 +315,7 @@ Track D (largo plazo): T3.13 (privacidad) cuando se lance a usuarios reales
 | C (sin proveedor externo) | $0 incremental; backups < 1 GB = $0 |
 | D | $0 |
 
-**Con Blaze/pay-as-you-go activo** (confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador): el budget mensual de `$10` para `hachi-greciaspa` y sus alertas `10%`, `50%` y `100%` están confirmados. Las alertas son alert-only y no imponen un límite duro de facturación.
+**Con Blaze/pay-as-you-go activo** (confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador): el budget mensual de `$10` para `hachi-greciaspa` y sus umbrales visibles `10%`, `50%` y `100%` están confirmados. El modo de gasto real/pronosticado y los destinatarios aprobados siguen pendientes. El budget es alert-only y no impone un límite duro de facturación.
 
 ## Fuera de alcance de Fase 3
 
