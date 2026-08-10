@@ -4,7 +4,7 @@
 >
 > **Evidencia local al 2026-08-09:** client `34 archivos / 156 passed`; `tsc --noEmit` y build del cliente verdes; rules `74 passed, 0 failed`; Functions `159 passed, 2 skipped`; el harness `npm run qa:local` verificó `22 passed, 0 failed` contra emuladores; el seed local verificó `2 passed, 0 failed`; `npm audit --omit=dev` reportó `0 vulnerabilities`; `firebase use` devolvió `hachi-greciaspa`. Esta evidencia es local y no constituye verificación de producción.
 >
-> **Pendiente de verificación externa:** App Check en Firebase Console, dominio y `RESEND_API_KEY` en Secret Manager/Resend, cuenta de facturación, budget alert, backups, observabilidad, rollback operativo, autorización de producción, despliegue y browser QA contra producción. Blaze fue confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. No se marcó la cuenta de facturación por falta de evidencia específica. No se ejecutó ninguna acción productiva.
+> **Pendiente de verificación externa:** App Check en Firebase Console, dominio y `RESEND_API_KEY` en Secret Manager/Resend, cuenta de facturación, budget alert, backups, observabilidad, rollback operativo, autorización de producción, despliegue y browser QA contra producción. Blaze fue confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. No se marcó la cuenta de facturación por falta de evidencia específica. Durante esta intervención no se ejecutaron acciones productivas.
 
 Creado por Cronos el 2026-07-31, después del cierre de Fase 2 (MVP funcional completo, build y tests verdes).
 
