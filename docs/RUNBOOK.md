@@ -103,8 +103,8 @@ Confirmaciones externas del operador — 2026-08-09; hora no informada por el op
 
 Los siguientes puntos no se consideran completados por los checks locales ni por la evidencia de Billing/Budget:
 
-- [ ] Firebase Console: habilitar App Check con el proveedor aprobado y
-  verificar rechazo de invocaciones sin token válido en el entorno desplegado.
+- [x] Firebase Console: App Check web con reCAPTCHA v3 habilitado; confirmado por el operador el 2026-08-09, hora no informada, fuente: confirmación del operador.
+- [ ] Producción: verificar rechazo de invocaciones sin token App Check válido en el entorno desplegado.
 - [ ] Secret Manager/Resend: verificar dominio y configurar el secreto
   `RESEND_API_KEY` sin escribir su valor en repositorio, logs o frontend.
 - [ ] Deploy/autorización: revisar Rules, Functions y cliente con el operador y
@@ -192,7 +192,8 @@ Operador: no registrado en el repositorio
 Autorizar producción solo cuando cada punto tenga evidencia y autorización explícita:
 
 - [ ] Dominio propio del spa verificado en Resend, con SPF, DKIM y DMARC configurados según las instrucciones del proveedor; no usar un dominio compartido, personal o de prueba en producción.
-- [ ] App Check habilitado y verificado en Firebase Console; el rechazo de una invocación sin App Check válido está probado en producción.
+- [x] App Check habilitado y verificado en Firebase Console; confirmado por el operador el 2026-08-09, hora no informada.
+- [ ] Rechazo de una invocación sin App Check válido probado en producción.
 - [ ] Secret Manager configurado con el secreto exacto `RESEND_API_KEY`; no colocar su valor en el repositorio, logs o frontend.
 - [x] Evidencia local de build y typecheck registrada abajo.
 - [x] Evidencia local de las pruebas de reglas registrada abajo.

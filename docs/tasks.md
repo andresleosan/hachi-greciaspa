@@ -158,7 +158,7 @@ Estas son las inconsistencias de la Fase 1 que conviene cerrar para evitar deuda
 **Por qué:** La integración de App Check reduce el abuso desde clientes no verificables; la activación y validación en Firebase Console siguen siendo pasos operativos.
 
 **AC:**
-- [ ] Configurar Firebase App Check con reCAPTCHA v3 en Firebase Console.
+- [x] Configurar Firebase App Check con reCAPTCHA v3 en Firebase Console; confirmado por el operador el 2026-08-09, hora no informada, fuente: confirmación del operador.
 - [x] Integrar `initializeAppCheck(app, { provider: new ReCaptchaV3Provider(siteKey), isTokenAutoRefreshEnabled: true })` en `src/services/firebase.ts`.
 - [x] Documentar keys en `.env.example`.
 - [ ] Validar: con App Check habilitado, los writes anónimos no autorizados fallan.
