@@ -183,7 +183,7 @@ Si `getUserProfile` falla, `profile` queda en `null` silenciosamente. No hay fee
 | H1 | Ejecutar `npm audit fix` | ✅ Corregido (24→19 vulns, restantes en devDeps) |
 | H2 | Eliminar parámetro `role` de `register()` | ✅ Corregido |
 | H3 | Agregar `firebase-debug.log` a `.gitignore` | ✅ Corregido |
-| H4 | Rate limiting en login/register | ⏳ Requiere Cloud Functions o Firebase App Check |
+| H4 | Rate limiting en login/register | ⏳ App Check integrado y Console confirmada; falta probar rechazo productivo |
 
 ## Hallazgos nuevos detectados por tests de reglas (2026-07-31)
 
@@ -241,7 +241,7 @@ La protección contra fuerza bruta requiere una de estas opciones:
 - **Cloud Function** que rate-limit por IP antes de `signInWithEmailAndPassword`
 - **Firebase Extensions** como `Rate Limiter`
 
-Ninguna es trivial de implementar sin infraestructura adicional. Se recomienda priorizar para la fase2.
+La integración local de App Check con reCAPTCHA v3 y la habilitación en Console ya están confirmadas; queda probar el rechazo productivo de invocaciones sin token válido antes de cerrar H4.
 
 ### Nota sobre vulnerabilidades restantes (H1)
 Las 19 vulns restantes son:

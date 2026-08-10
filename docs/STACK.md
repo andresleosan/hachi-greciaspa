@@ -187,7 +187,7 @@ El contrato de implementación está en ADR-004: `RESEND_API_KEY` en Firebase Se
 | Servicio | Estado | Cuándo se consideraría |
 |---|---|---|
 | Email transaccional (Resend; Postmark fallback) | Código implementado en `functions/`; no configurado/desplegado | Verificación de dominio, secreto y despliegue de recordatorios/confirmaciones |
-| App Check con reCAPTCHA v3 | Código integrado; bypass local del emulador verificado; activación y enforcement productivos pendientes | Habilitar y verificar en Firebase Console |
+| App Check con reCAPTCHA v3 | Código integrado; Console confirmada por el operador; rechazo/enforcement productivo pendiente | Probar rechazo de invocaciones sin token válido |
 
 ## Limpieza de servicios sin uso
 
