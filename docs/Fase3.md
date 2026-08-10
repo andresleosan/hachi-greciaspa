@@ -160,7 +160,7 @@ Convertir el MVP funcional en un producto **operable por el spa real**:
 - [x] Query param en URL: `/reservar?service=X&timeSlot=Y&date=Z` (R3.3 ya planificó algo similar).
 - [x] Test E2E: cliente abre una reserva `completed` del fixture local y verifica el re-booking desde el dashboard.
 
-**Verificación local fechada 2026-08-09:** el parser seguro de query params está cubierto por `src/services/bookingPrefill.test.ts`; `npm run qa:local` completó 22 pruebas (`22 passed, 0 failed`), incluyendo el flujo de re-booking con una reserva `completed` del fixture local `QA_REBOOK`. El E2E no crea ni completa la cita durante la prueba. El browser QA de producción, Resend, App Check, Secret Manager, backups, observabilidad y despliegue permanecen pendientes como gates operativos.
+**Verificación local fechada 2026-08-09:** el parser seguro de query params está cubierto por `src/services/bookingPrefill.test.ts`; `npm run qa:local` completó 22 pruebas (`22 passed, 0 failed`), incluyendo el flujo de re-booking con una reserva `completed` del fixture local `QA_REBOOK`. El E2E no crea ni completa la cita durante la prueba. El browser QA de producción, rechazo productivo de App Check, Resend, Secret Manager, backups, observabilidad y despliegue permanecen pendientes como gates operativos.
 
 **Refs:** `src/pages/Reservar.tsx`, `DashboardPage.tsx`.
 

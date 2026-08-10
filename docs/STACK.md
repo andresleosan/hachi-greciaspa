@@ -70,9 +70,9 @@ La reevaluación de `npm audit --omit=dev` al 2026-08-09 reporta `0 vulnerabilit
 - No se ejecutó backfill productivo, no se desplegaron Functions y no se cambió configuración de producción en esta tarea.
 
 - La integración de email transaccional, confirmación inmediata y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
-- La implementación local de creación callable ya aplica cuota, fecha futura y disponibilidad transaccional; la activación de App Check en Console, Secret Manager/Resend, modo de notificación real/pronosticado, destinatarios aprobados, deploy, rollback operativo y browser QA productivo siguen siendo gates antes de producción. Cuenta de facturación, Blaze y budget están confirmados por el operador el 2026-08-09; hora no informada; fuente: confirmación/captura del operador.
+- La implementación local de creación callable ya aplica cuota, fecha futura y disponibilidad transaccional; el rechazo productivo de App Check, Secret Manager/Resend, modo de notificación real/pronosticado, destinatarios aprobados, deploy, rollback operativo y browser QA productivo siguen siendo gates antes de producción. La habilitación de App Check en Console fue confirmada por el operador el 2026-08-09; cuenta de facturación, Blaze y budget también están confirmados; hora no informada; fuente: confirmación del operador.
 - El budget mensual de `$10` está confirmado para el proyecto `hachi-greciaspa`, con gasto observado `$0.00/$10.00` y umbrales visibles/confirmados en `10% ($1)`, `50% ($5)` y `100% ($10)`. La captura no demuestra el modo real/pronosticado ni los destinatarios aprobados. El budget es alert-only y no constituye un hard cap.
-- La activación de App Check en consola y la comprobación de rechazo de writes no autorizados en producción siguen pendientes; la suite del emulador de rules no prueba esa configuración de despliegue.
+- La habilitación de App Check en Console está confirmada; la comprobación de rechazo de writes no autorizados en producción sigue pendiente. La suite del emulador de rules no prueba esa configuración de despliegue.
 - La agenda y terapeutas tienen implementación local; la corrida estable de browser QA en emuladores ya pasó y permanecen pendientes el despliegue, la configuración operativa y el browser QA contra producción. Backups y observabilidad siguen siendo trabajo de Fase 3.
 - `npm run qa:local` ejecuta browser QA autenticado y público contra emuladores con 22 casos: login por rol, CRUD de empleados, agenda/filtros, creación/cancelación, reagendado, retry de asignación posterior a cancelación, re-booking, catálogo de precios/servicios y contacto/WhatsApp. La última corrida registró `22 passed, 0 failed`; la corrida local no valida producción.
 - La creación del navegador durante esa QA usa la callable real contra el Functions Emulator. El bypass de App Check es exclusivo del emulador y no prueba el rechazo de tokens ausentes o inválidos en producción.
@@ -198,6 +198,6 @@ Tras Fase 1 (M6) + Fase 2 (T2.7):
 ## Pendientes técnicos conocidos (cross-ref tasks.md)
 
 - `tasks.md` T2.1-T2.8 — cierre documentado con deuda residual y sub-items pendientes.
-- `AUDITORIA.md` H4 — integración App Check implementada; activación/verificación de producción pendiente.
+- `AUDITORIA.md` H4 — integración App Check y Console confirmadas; rechazo/verificación productiva pendiente.
 - `AUDITORIA.md` M2 — dashboard con datos reales implementado para reservas y métricas básicas.
 - H1 (npm audit): las tres auditorías fueron ejecutadas el `2026-08-07` y tienen alcances distintos: full client `npm audit --audit-level=high`: 15 vulnerabilidades (`11 moderate`, `4 high`); client `npm audit --omit=dev`: `0 vulnerabilities`; Functions `npm --prefix functions audit --omit=dev`: `7 moderate`. Estas cifras conservan sus comandos y alcances originales.
