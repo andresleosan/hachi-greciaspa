@@ -99,8 +99,9 @@ Los siguientes puntos no se consideran completados por los checks locales:
   verificar rechazo de invocaciones sin token válido en el entorno desplegado.
 - [ ] Billing: confirmar la cuenta de facturación requerida para Functions. La
   cuenta de facturación permanece no verificada.
-- [x] Plan Blaze: confirmado el 2026-08-09. La confirmación no incluye la cuenta
-  de facturación.
+- [x] Plan Blaze: confirmado el 2026-08-09; hora no informada por el operador;
+  fuente: confirmación/captura del operador. La confirmación no incluye la
+  cuenta de facturación.
 - [ ] Budget alert: crear y verificar la alerta aprobada, incluido su alcance y
   destinatarios. La consola mostró: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` El diagnóstico de permisos IAM o alcance del proyecto/cuenta queda pendiente; es una hipótesis, no una causa confirmada.
 - [ ] Secret Manager/Resend: verificar dominio y configurar el secreto
@@ -163,7 +164,7 @@ No se ejecutó backfill productivo, no se desplegaron Functions, no se usaron cr
 Completar en el orden indicado antes de habilitar o desplegar una Function programada:
 
 - [ ] **Cuenta de facturación:** confirmar que el proyecto `hachi-greciaspa` está asociado a la cuenta de facturación correcta. Estado actual: **no verificado**.
-- [x] **Plan Blaze:** confirmado el 2026-08-09. La cuenta de facturación asociada no está marcada por falta de evidencia específica.
+- [x] **Plan Blaze:** confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador. La cuenta de facturación asociada no está marcada por falta de evidencia específica.
 - [ ] **Budget:** crear un presupuesto de `$10/mes`, con alcance limitado al proyecto y a la cuenta de facturación correctos. Estado actual: **no verificado**; la consola mostró: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` El diagnóstico de permisos IAM o alcance del proyecto/cuenta está pendiente y no confirma la causa.
 - [ ] **Notificaciones:** configurar alertas de gasto real y gasto pronosticado en `$1`, `$5` y `$10`. Estado actual: **no verificado**.
 - **Registro operativo:** después de completar los pasos anteriores en consola, registrar los destinatarios de las notificaciones y la fecha de verificación. No completar esos campos de forma anticipada.
@@ -174,7 +175,7 @@ Registro posterior a la verificación:
 
 ```text
 Cuenta de facturación confirmada: [completar después de verificar]
-Plan Blaze confirmado: sí (verificado 2026-08-09)
+Plan Blaze confirmado: sí (verificado 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador)
 Budget de $10 creado y alcance confirmado: [pendiente; bloqueado por error de consola]
 Alertas real/pronosticado en $1, $5 y $10: [completar después de verificar]
 Destinatarios: [completar después de verificar]

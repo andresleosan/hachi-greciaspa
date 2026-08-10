@@ -55,7 +55,7 @@ La reevaluación de `npm audit --omit=dev` al 2026-08-09 reporta `0 vulnerabilit
 - La disponibilidad consulta todos los activos del mismo `serviceId` y `date`, usa `durationMin` del catálogo y rechaza solapamientos. No existe un límite de documentos conocido para esa consulta; el lock serializa la carrera, pero no sustituye una futura estrategia de particionamiento o retención.
 - La contención deliberada del lock queda acotada al servicio/día, como trade-off para soportar intervalos de duración variable sin imponer una migración de reservas existentes.
 - La evidencia local cubre callable, cuota, límite activo, fecha futura, snapshots canónicos, ownership de mascota y concurrencia; no constituye evidencia de producción.
-- **Gates productivos pendientes:** habilitar/verificar App Check en Firebase Console, confirmar la cuenta de facturación y budget alert, configurar dominio y `RESEND_API_KEY` en Secret Manager para Resend, desplegar con autorización explícita, revisar/probar rollback operativo y ejecutar browser QA contra producción. Blaze está confirmado el 2026-08-09.
+- **Gates productivos pendientes:** habilitar/verificar App Check en Firebase Console, confirmar la cuenta de facturación y budget alert, configurar dominio y `RESEND_API_KEY` en Secret Manager para Resend, desplegar con autorización explícita, revisar/probar rollback operativo y ejecutar browser QA contra producción. Blaze está confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
 
 ### T3.5 — Empleados y autoasignación local
 
@@ -70,7 +70,7 @@ La reevaluación de `npm audit --omit=dev` al 2026-08-09 reporta `0 vulnerabilit
 - No se ejecutó backfill productivo, no se desplegaron Functions y no se cambió configuración de producción en esta tarea.
 
 - La integración de email transaccional, confirmación inmediata y recordatorios está implementada en `functions/`, pero no está configurada ni desplegada; el proveedor elegido está documentado en ADR-004 y no se usa ninguna credencial desde el frontend.
-- La implementación local de creación callable ya aplica cuota, fecha futura y disponibilidad transaccional; la activación de App Check en Console, la cuenta de facturación, budget alert, Secret Manager/Resend, deploy, rollback operativo y browser QA productivo siguen siendo gates antes de producción. Blaze está confirmado el 2026-08-09.
+- La implementación local de creación callable ya aplica cuota, fecha futura y disponibilidad transaccional; la activación de App Check en Console, la cuenta de facturación, budget alert, Secret Manager/Resend, deploy, rollback operativo y browser QA productivo siguen siendo gates antes de producción. Blaze está confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador.
 - Las alertas de presupuesto no están configuradas en Google Cloud Console. La consola mostró: `No se pudo configurar una alerta de presupuesto. Vuelve a intentarlo o, si el error persiste, visita Google Cloud Console.` Revisar permisos IAM y alcance del proyecto o cuenta es un diagnóstico pendiente, no una causa confirmada. Sigue siendo COST-1/T3.10 y no debe considerarse completado.
 - La activación de App Check en consola y la comprobación de rechazo de writes no autorizados en producción siguen pendientes; la suite del emulador de rules no prueba esa configuración de despliegue.
 - La agenda y terapeutas tienen implementación local; la corrida estable de browser QA en emuladores ya pasó y permanecen pendientes el despliegue, la configuración operativa y el browser QA contra producción. Backups y observabilidad siguen siendo trabajo de Fase 3.
@@ -79,7 +79,7 @@ La reevaluación de `npm audit --omit=dev` al 2026-08-09 reporta `0 vulnerabilit
 
 ## Servicios de pago: Firebase
 
-Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actualmente: **Blaze (pay-as-you-go), confirmado el 2026-08-09**; la cuenta de facturación asociada sigue **no verificada**.
+Proyecto Firebase: `hachi-greciaspa` (ver `.firebaserc`). Plan documentado actualmente: **Blaze (pay-as-you-go), confirmado el 2026-08-09; hora no informada por el operador; fuente: confirmación/captura del operador**; la cuenta de facturación asociada sigue **no verificada**.
 
 ### Estimación mensual (Blaze/pay-as-you-go)
 
