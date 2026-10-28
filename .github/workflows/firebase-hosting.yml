@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '22.23.4'
           cache: 'npm'
         # v5/v6 of setup-node targets Node 24 by default; v4 falls back to Node 20 with a warning.
 
