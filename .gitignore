@@ -55,3 +55,7 @@ Thumbs.db
 
 # Backups que dejan los scripts de la agencia al actualizar
 *.bak-*
+
+# Incremental TypeScript cache
+*.tsbuildinfo
+*serviceAccount*.json
